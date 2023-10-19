@@ -1,0 +1,15 @@
+.btnContainer{
+    width: 25rem;
+    height: 3rem;
+    border: none;
+    cursor: pointer;
+    background-color: #374068;
+    color: white;
+    font-size: 15px;
+    border-radius: .5rem;
+    transition: .2s;
+}
+.btnContainer:hover{
+    background-color: #303650;
+
+}
