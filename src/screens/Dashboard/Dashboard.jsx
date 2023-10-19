@@ -48,7 +48,7 @@ const Dashboard = () => {
                     <VerticalContainer>
                         <ListBox data={dados} items={['uno', 'duos']}/>
                         <CarImage data={dados} curVehicle={curVehicle}/>
-                        <MechanicalPendences data={dados} curVehicle={curVehicle}/>  
+                        <MechanicalPendences fetchData={fetchData} data={dados} curVehicle={curVehicle}/>  
                     </VerticalContainer>
                     <VerticalContainer>
                         <CarDescription data={dados}/>

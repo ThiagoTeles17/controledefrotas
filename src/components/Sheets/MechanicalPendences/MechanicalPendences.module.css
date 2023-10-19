@@ -29,6 +29,7 @@
     padding: 1rem;
     color: white;
     border-bottom: 1px solid rgb(255, 190, 93);
+    text-transform: uppercase;
 }
 .rmvBtn{
     color: white;
@@ -93,6 +94,7 @@
     text-transform: uppercase;
     border-radius: .3rem;
     border: none;
+    
 }
 .modalInput:focus{
     border-width: 0px;

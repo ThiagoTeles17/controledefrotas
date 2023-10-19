@@ -3,10 +3,10 @@ import {CiCircleRemove} from 'react-icons/ci';
 import {HiCheck} from 'react-icons/hi';
 import {BsTools} from 'react-icons/bs';
 import {AiFillPlusCircle} from 'react-icons/ai';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 
-const MechanicalPendences = ({data, curVehicle}) => {
+const MechanicalPendences = ({data, curVehicle, fetchData}) => {
 
     const pendencesList = data.pendenciasMec ? data.pendenciasMec[curVehicle] : '';
 
@@ -19,19 +19,36 @@ const MechanicalPendences = ({data, curVehicle}) => {
     }
     
     const handleAddPendence = () =>{
+        let pendencias = data.pendenciasMec;
 
-        let newArray = [...data.pendenciasMec[curVehicle], pendenceValue];
-
+        //concat pendenceValue without change the previous pendences.
+        let newArray = {'pendenciasMec':{
+            ...pendencias, 
+            [curVehicle] : [
+                ...pendencias[curVehicle],
+                pendenceValue
+            ]
+        }
+        };
+        //concat previous data from json with the new pendences.
+        let toPostArray = {
+            ...data,
+            ...newArray
+        };
+        console.log(toPostArray)
+        //fetch new data from toPostArray to json
         fetch('http://localhost:5000/assistencia', {
             method : 'POST',
             headers : {
                 'Accept' : 'application/json',
-                'Content-Type' : 'application.json'
+                'Content-Type' : 'application/json'
             },
-            body : JSON.stringify(newArray)
+            body : JSON.stringify(toPostArray)
         })
         .then (response => response.json)
         .catch(err => console.log(err))
+
+        setModalVisible(!modalVisible);
 
     }
 
@@ -68,15 +85,24 @@ const MechanicalPendences = ({data, curVehicle}) => {
             className={styles.modal}
             >   
                     <span className={styles.modalTitle}>Nova Pendência</span>
-                              
+                    <form style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem'}}> 
                     <div style={{display: 'flex', flexDirection: 'column', alignItems: 'start'}}>
                         <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Descrição:</span>
-                        <input onChange={(val) => setPendenceValue(val.target.value)} className={styles.modalInput} type='text'></input>
+                        <input autoFocus onChange={(val) => setPendenceValue(val.target.value)} className={styles.modalInput} type='text'></input>
                     </div>
                     <div style={{display: 'flex', gap: '.8rem'}}>
-                        <button className={styles.modalBtn} onClick={handleAddPendence}>Adicionar</button>
+
+                        <button 
+                        onSubmit={(e) => {e.preventDefault(); handleAddPendence()}} 
+                        type='submit' 
+                        className={styles.modalBtn} 
+                        onClick={handleAddPendence}>
+                            Adicionar
+                        </button>
+
                         <button onClick={() => setModalVisible(false)} className={styles.modalBtn}>Cancelar</button>
-                    </div>            
+                    </div> 
+                    </form>            
                 
             </Modal>    
     
