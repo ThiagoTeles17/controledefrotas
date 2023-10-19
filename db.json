@@ -1,0 +1,44 @@
+{
+  "assistencia": {
+		"veiculos":{
+			"prisma" : {
+				"modelo" : "GM Prisma 2020/2021",
+				"placa" : "RLM3112",
+				"renavam" : "2384239482394",
+				"imagem" : "https://media.gm.com/content/dam/Media/images/BR/Vehicles/Chevrolet/autom%C3%B3veis/Prisma/2019/product/Chevrolet-Prisma-2019-1.jpg"
+			}
+		},
+		"pendenciasMec": {
+			"prisma": [
+				"Troca de Óleo"
+			]
+		},
+		"historicoMec" : {
+			"prisma": {
+				"Troca de Óleo" : {
+					"date" : "25/04/2023",
+					"shop" : "Borracharia"
+				}
+				
+			}
+		},
+		"seguros" : {
+			"prisma" : {
+				"seguradora" : "Gente Seguradora",
+				"vigencia" : "maio 2024"	
+			}
+		},
+		"pneus" : {
+			"prisma": {
+				"dd" : "Bom",
+				"de" : "Bom",
+				"td" : "Ruim",
+				"te" : "Ruim",
+				"estepe" : "Médio"
+			}
+		},
+		"atividades" : {
+			"prisma" : "CRAS Martello"
+		}
+  }
+}
