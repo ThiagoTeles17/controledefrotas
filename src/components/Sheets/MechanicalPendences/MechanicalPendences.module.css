@@ -70,7 +70,8 @@
 }
 .modal{
     width: 25rem;
-    height: 12rem;
+    min-height: 12rem;
+    height: auto;
     border-radius: .2rem;
     position: absolute;
     top: 50%;
