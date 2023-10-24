@@ -13,6 +13,7 @@ import LargeBtn from "../../components/Buttons/LargeBtn/LargeBtn";
 import VehicleControl from "../../components/Sheets/VehicleControl/VehicleControl";
 
 import {VscLoading} from 'react-icons/vsc'
+import {AiFillCar} from 'react-icons/ai';
 
 import { ApiContext } from "../../context/ApiContext";
 
@@ -62,6 +63,7 @@ const Dashboard = () => {
                             `https://consultas.detrannet.sc.gov.br/servicos/consultaveiculo.asp?placa=${dados.veiculos[curVehicle].placa}&renavam=${dados.veiculos[curVehicle].renavam}`
                             : ''
                         }
+                        icon={<AiFillCar/>}
                         />
                         <VehicleControl years={[2021, 2022, 2023]} months={['01', '02', '03', '04', '05', '06']}/>
                         <MaintenancesHistory data={dados} curVehicle={curVehicle}/>

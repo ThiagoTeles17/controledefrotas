@@ -1,9 +1,11 @@
 import styles from './LargeBtn.module.css';
+import {AiFillCar} from 'react-icons/ai';
 
-const LargeBtn = ({title, link}) => {
+const LargeBtn = ({title, link, icon}) => {
     return(
-    <a target='_blank' href={link}>
+    <a target='_blank' href={link} style={{textDecoration: 'none'}}>
         <button className={styles.btnContainer}>
+            {icon}
             {title}
         </button>
     </a>

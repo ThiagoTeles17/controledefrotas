@@ -1,4 +1,8 @@
 .btnContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
     width: 25rem;
     height: 3rem;
     border: none;
@@ -8,8 +12,8 @@
     font-size: 15px;
     border-radius: .5rem;
     transition: .2s;
+
 }
 .btnContainer:hover{
     background-color: #303650;
-
 }

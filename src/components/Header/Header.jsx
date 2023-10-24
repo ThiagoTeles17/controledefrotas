@@ -18,7 +18,7 @@ const Header = ({screens, handleOnClick}) => {
             <div className={styles.titleContainer}>
                <img className={styles.logo} src={brasao} alt="" />
                <div style={{display: 'flex', flexDirection: 'column'}}>
-                    <h2>Relatório de veículos</h2>
+                    <h2>Controle de Frota</h2>
                     <h1>Secretaria Municipal de Assistência Social</h1>
                </div>
                

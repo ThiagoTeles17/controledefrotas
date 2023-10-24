@@ -1,44 +1,121 @@
 {
   "assistencia": {
-		"veiculos":{
-			"prisma" : {
-				"modelo" : "GM Prisma 2020/2021",
-				"placa" : "RLM3112",
-				"renavam" : "2384239482394",
-				"imagem" : "https://media.gm.com/content/dam/Media/images/BR/Vehicles/Chevrolet/autom%C3%B3veis/Prisma/2019/product/Chevrolet-Prisma-2019-1.jpg"
-			}
-		},
-		"pendenciasMec": {
-			"prisma": [
-				"Troca de Óleo"
-			]
-		},
-		"historicoMec" : {
-			"prisma": {
-				"Troca de Óleo" : {
-					"date" : "25/04/2023",
-					"shop" : "Borracharia"
-				}
-				
-			}
-		},
-		"seguros" : {
-			"prisma" : {
-				"seguradora" : "Gente Seguradora",
-				"vigencia" : "maio 2024"	
-			}
-		},
-		"pneus" : {
-			"prisma": {
-				"dd" : "Bom",
-				"de" : "Bom",
-				"td" : "Ruim",
-				"te" : "Ruim",
-				"estepe" : "Médio"
-			}
-		},
-		"atividades" : {
-			"prisma" : "CRAS Martello"
-		}
+    "veiculos": {
+      "prisma": {
+        "modelo": "GM Prisma 2018/2019",
+        "placa": "QJK9849",
+        "renavam": "1171245928",
+        "imagem": "https://media.gm.com/content/dam/Media/images/BR/Vehicles/Chevrolet/autom%C3%B3veis/Prisma/2019/product/Chevrolet-Prisma-2019-1.jpg",
+        "despesa": "287",
+        "ufOrigem": "sc",
+        "unidade": "Proteção Social Básica"
+      },
+      "sprinter": {
+        "modelo": "MB Sprinter 2021/2022",
+        "placa": "RLM8J42",
+        "renavam": "1292052888",
+        "imagem": "https://www.divelp.com.br/wp-content/uploads/2022/07/Sprinter-416-Cdi-2022.jpg",
+        "despesa": "287",
+        "ufOrigem": "sc",
+        "unidade": "Proteção Social Básica"
+      },
+      "palio": {
+        "modelo": "Fiat Palio Weekend 2013/2014",
+        "placa": "MLJ3810",
+        "renavam": "604086814",
+        "imagem": "https://4.bp.blogspot.com/-8pUmfX0m-gM/T9lfZUSJQbI/AAAAAAAAT9o/DPlwjfL9KFE/s1600/Fiat-Palio-Weekend-2013-traseira.jpg",
+        "despesa": "287",
+        "ufOrigem": "sc",
+        "unidade": "Proteção Social Básica"
+      }
+    },
+    "pendenciasMec": {
+      "prisma": [],
+      "sprinter": [],
+      "palio": [
+        "efa"
+      ]
+    },
+    "historicoMec": {
+      "prisma": {
+        "555": {
+          "date": "2023-10-21",
+          "shop": ""
+        },
+        "troca de oleo": {
+          "date": "2023-10-23",
+          "shop": "exclusiva"
+        },
+        "troca de oleo 2": {
+          "date": "2023-10-23",
+          "shop": "exclusiva"
+        },
+        "troca palhetas": {
+          "date": "2023-10-23",
+          "shop": "posto brasília"
+        },
+        "troca de óleo": {
+          "date": "2023-10-23",
+          "shop": "Posto delta"
+        },
+        "da": {
+          "date": "2023-10-23",
+          "shop": "posto"
+        }
+      },
+      "sprinter": {},
+      "palio": {}
+    },
+    "seguros": {
+      "prisma": {
+        "seguradora": "MAPFRE",
+        "vigencia": "fevereiro 2024"
+      },
+      "sprinter": {
+        "seguradora": "",
+        "vigencia": ""
+      },
+      "palio": {
+        "seguradora": "",
+        "vigencia": ""
+      }
+    },
+    "pneus": {
+      "prisma": {
+        "tipo": "185/65 r15",
+        "dd": "Bom",
+        "de": "Bom",
+        "td": "Ruim",
+        "te": "Ruim",
+        "estepe": "Médio"
+      },
+      "sprinter": {
+        "tipo": "195/75 r16",
+        "dd": "Bom",
+        "de": "Bom",
+        "td": "Bom",
+        "te": "Bom",
+        "estepe": "Bom"
+      },
+      "palio": {
+        "tipo": "165/75 r14",
+        "dd": "Ruim",
+        "de": "Ruim",
+        "td": "Médio",
+        "te": "Médio",
+        "estepe": "Médio"
+      }
+    },
+    "atividades": {
+      "prisma": "CRAS Martello",
+      "sprinter": "CRAS/Transporte Passageiros",
+      "palio": "CRAS Central"
+    },
+	"unidades": [
+	  "Proteção Social Básica",
+	  "Proteção Social de Alta Complexidade",
+	  "Proteção Social de Média Complexidade",
+	  "Gestão"
+	]
   }
 }

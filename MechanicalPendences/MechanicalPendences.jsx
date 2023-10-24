@@ -10,11 +10,6 @@ const MechanicalPendences = ({data, curVehicle, fetchData}) => {
 
     const pendencesList = data.pendenciasMec ? data.pendenciasMec[curVehicle] : '';
 
-    let date = new Date();
-    let curYear = String(date.getFullYear());
-    let curMonth = String(date.getMonth()+1);
-    let curDay = String(date.getDate());
-
 
     const [modalVisible, setModalVisible] = useState(false);
     const [modalContent, setModalContent] = useState('');
@@ -25,21 +20,12 @@ const MechanicalPendences = ({data, curVehicle, fetchData}) => {
     const [curConfirmPendence, setCurConfirmPendence] = useState('');
     const [serviceDescription, setServiceDescription] = useState('');
     const [serviceShop, setServiceShop] = useState('');
-    const [serviceDate, setServiceDate] = useState(`${curYear}-${curMonth.padStart(2, "0")}-${curDay.padStart(2, "0")}`);
+    const [serviceDate, setServiceDate] = useState('');
 
 
-    //prevent scroll when modal is open
-    useEffect(() => {
-        if (modalVisible) {
-          document.body.style.overflow = 'hidden';
-        } else {
-          document.body.style.overflow = 'unset';
-        }
-      }, [modalVisible]);
-
-    //Set content that will show on modal
+    //Set content that will show on screen
     const handleModalContent = () => {
-        if(modalContent === 'add'){
+        if(modalContent == 'add'){
             return(
                 <form style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem'}}> 
 
@@ -64,28 +50,29 @@ const MechanicalPendences = ({data, curVehicle, fetchData}) => {
                     </form>      
             );
         }
-        else if (modalContent === 'confirmPendence'){
+        else if (modalContent == 'confirmPendence'){
             return(
-                <form onSubmit={(e) => {e.preventDefault(); handleConfirmPendence()}} style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem'}}> 
+                <form style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem'}}> 
 
-                <span className={styles.modalTitle}>Marcar como concluído</span>
+                <span className={styles.modalTitle}>Marcar como Concluído</span>
                     <div style={{display: 'flex', flexDirection: 'column', alignItems: 'start'}}>
                         <span style={{fontSize: '12px', marginBottom: '.3rem', marginTop: '.5rem'}}>Descrição do serviço realizado:</span>
-                        <input value={serviceDescription} autoFocus onChange={(val) => setServiceDescription(val.target.value)} className={styles.modalInput} type='text'></input>
+                        <input autoFocus onChange={(val) => setServiceDescription(val.target.value)} className={styles.modalInput} type='text'></input>
                         
                         <span style={{fontSize: '12px', marginBottom: '.3rem', marginTop: '.5rem'}}>Oficina:</span>
                         <input onChange={(val) => setServiceShop(val.target.value)} className={styles.modalInput} type='text'></input>
 
                         <span style={{fontSize: '12px', marginBottom: '.3rem', marginTop: '.5rem'}}>Data do serviço:</span>
-                        <input value={serviceDate} onChange={(val) => setServiceDate(val.target.value)} className={styles.modalInput} type='date'></input>
+                        <input onChange={(val) => setServiceDate(val.target.value)} className={styles.modalInput} type='date'></input>
 
                     </div>
                     <div style={{display: 'flex', gap: '.8rem'}}>
-                        <button
-                        className={styles.modalBtn}
+                        <button 
+                        onSubmit={handleConfirmPendence(e)} 
                         type='submit'
+                        className={styles.modalBtn} 
                         >
-                        Confirmar
+                            Confirmar
                         </button>
                         <button onClick={() => setModalVisible(false)} className={styles.modalBtn}>Cancelar</button>
                     </div> 
@@ -99,79 +86,40 @@ const MechanicalPendences = ({data, curVehicle, fetchData}) => {
     //On click to confirm pendence
     const handleOnClickConfirm = (item) => {
         setCurConfirmPendence(item);
-        setServiceDescription(item);
         setModalContent('confirmPendence');
         setModalVisible(!modalVisible);
     }
     //On confirm pendence
-    const handleConfirmPendence = () => {
+    const handleConfirmPendence = (e) => {
+
+        e.preventDefault()
 
         let mecHistory = data.historicoMec;
-        let pendencias = data.pendenciasMec;
 
-        //filter pendeces list to remove the current pendence
-        let filteredArray = data.pendenciasMec[curVehicle].filter((pendenceItem) => {
-            if(pendenceItem != curConfirmPendence){
-                return pendenceItem
-            }
-        });
-
-        //set new history item structure
         let newHistoryItem = {
             [serviceDescription]: {
-                'date' : serviceDate,
-                'shop' : serviceShop
+                'date' : [serviceDate],
+                'shop' : [serviceShop]
             }
         };
 
-        //concat new history item to previous history
         let newArray = {'historicoMec' : {
             ...mecHistory,
             [curVehicle] : {
                 ...mecHistory[curVehicle],
-                ...newHistoryItem
+                newHistoryItem
             }
-        },
-        'pendenciasMec' : {
-            ...pendencias,
-            [curVehicle] : [
-                ...filteredArray
-            ]
         }
         };
+        console.log(newArray);
 
-        let toPostArray = {
-            ...data,
-            ...newArray
-        }
-
-        fetch('http://localhost:5000/assistencia', {
-            method : 'POST',
-            headers : {
-                'Accept' : 'application/json',
-                'Content-Type' : 'application/json'
-            },
-            body : JSON.stringify(toPostArray)
-
-        })
-        .then (resp => resp.json())
-        .catch (err => console.log(err))
-        
-        fetchData();
-
-        setServiceDate(`${curYear}-${curMonth.padStart(2, "0")}-${curDay.padStart(2, "0")}`);
-        setServiceDescription('');
-        setServiceShop('');
-        setModalVisible(!modalVisible);
-
-        
     };
 
     //On click add button
-    const handleOnClickAdd = () => {
+        const handleOnClickAdd = () => {
             setModalContent('add');
             setModalVisible(!modalVisible);
-    }
+        }
     //On add new pendence
     const handleAddPendence = () =>{
         let pendencias = data.pendenciasMec;
