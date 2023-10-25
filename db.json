@@ -37,32 +37,6 @@
       ]
     },
     "historicoMec": {
-      "prisma": {
-        "555": {
-          "date": "2023-10-21",
-          "shop": ""
-        },
-        "troca de oleo": {
-          "date": "2023-10-23",
-          "shop": "exclusiva"
-        },
-        "troca de oleo 2": {
-          "date": "2023-10-23",
-          "shop": "exclusiva"
-        },
-        "troca palhetas": {
-          "date": "2023-10-23",
-          "shop": "posto brasília"
-        },
-        "troca de óleo": {
-          "date": "2023-10-23",
-          "shop": "Posto delta"
-        },
-        "da": {
-          "date": "2023-10-23",
-          "shop": "posto"
-        }
-      },
       "sprinter": {},
       "palio": {}
     },
@@ -111,11 +85,11 @@
       "sprinter": "CRAS/Transporte Passageiros",
       "palio": "CRAS Central"
     },
-	"unidades": [
-	  "Proteção Social Básica",
-	  "Proteção Social de Alta Complexidade",
-	  "Proteção Social de Média Complexidade",
-	  "Gestão"
-	]
+    "unidades": [
+      "Proteção Social Básica",
+      "Proteção Social de Alta Complexidade",
+      "Proteção Social de Média Complexidade",
+      "Gestão"
+    ]
   }
 }

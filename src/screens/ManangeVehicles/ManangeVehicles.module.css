@@ -61,7 +61,7 @@ table ,th, td{
 .modal{
     width: 55rem;
     min-height: 12rem;
-    height: auto;
+    height: 38rem;
     border-radius: .2rem;
     position: absolute;
     top: 50%;
@@ -118,8 +118,24 @@ table ,th, td{
     color: rgb(145, 145, 145);
 }
 
+.modalSelectHalf{
+    width: 10.5rem;
+    height: 2rem;
+    font-size: 14px;
+    padding-left: .7rem;
+    border-radius: .3rem;
+    border: none;
+}
+.modalSelectHalf:focus{
+    border-width: 0px;
+    border: none;
+    outline: 2px solid black;
+}
+
+
 .modalTitle{
     color: white;
+    margin-bottom: 2rem;
 }
 .modalBtn{
     padding: .5rem;
