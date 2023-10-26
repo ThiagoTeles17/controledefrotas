@@ -30,11 +30,13 @@
       }
     },
     "pendenciasMec": {
-      "prisma": [],
-      "sprinter": [],
-      "palio": [
-        "efa"
-      ]
+      "prisma": [
+        "troca de óleo"
+      ],
+      "sprinter": [
+        "revisão geral"
+      ],
+      "palio": []
     },
     "historicoMec": {
       "sprinter": {},

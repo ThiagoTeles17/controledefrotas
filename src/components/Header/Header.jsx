@@ -4,6 +4,10 @@ import brasao from '../../assets/imgs/brasao.png'
 import { useState, useContext } from "react";
 import { ScreenContext } from "../../context/ScreenContext";
 
+import { AiFillCar } from 'react-icons/ai';
+import { FiTool } from 'react-icons/fi';
+import {BsPersonVcard} from 'react-icons/bs'
+
 const Header = ({screens, handleOnClick}) => {
 
     const {curScreen, setCurScreen} = useContext(ScreenContext);
@@ -11,6 +15,12 @@ const Header = ({screens, handleOnClick}) => {
     const handleOnClickScreen = (screen) => {
         setCurScreen(screen);
         handleOnClick(screen);
+    };
+
+    const headerIcons = {
+        'Visão Geral' : <AiFillCar size={20}/>,
+        'Gerenciar Veículos' : <FiTool size={25}/>,
+        'Condutores' : <BsPersonVcard/>
     };
 
     return(
@@ -26,12 +36,14 @@ const Header = ({screens, handleOnClick}) => {
             <div className={styles.screensContainer}>
                 {
                     screens.map((screen, index) => {
+                        
                         return(
-                            <div 
-                            className={curScreen == screen ? styles.screenBtnSelected : styles.screenBtn}
-                            onClick={() => handleOnClickScreen(screen)}>
-                                {screen}
-                            </div>                          
+                                <div 
+                                className={curScreen == screen ? styles.screenBtnSelected : styles.screenBtn}
+                                onClick={() => handleOnClickScreen(screen)}>
+                                    {headerIcons[screen]}
+                                    {screen}
+                                </div>                        
                         );
                     })
                 }

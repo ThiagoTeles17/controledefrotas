@@ -1,7 +1,7 @@
 import styles from './Tires.module.css';
 import { useState } from 'react';
 
-import {GiFlatTire} from 'react-icons/gi';
+import {GiCarWheel} from 'react-icons/gi';
 
 
 const Tires = ({data, curVehicle}) => {
@@ -21,7 +21,7 @@ const Tires = ({data, curVehicle}) => {
 
     return(
         <div className={styles.boxContainer}>
-            <div className={styles.boxHeader}><GiFlatTire/>Pneus</div>
+            <div className={styles.boxHeader}><GiCarWheel/>Pneus</div>
 
             <div className={styles.itemContainer}>
                 {tires[curVehicle].tipo ? tires[curVehicle].tipo : 'Tipo de pneu não especificado'}

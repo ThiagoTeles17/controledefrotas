@@ -5,6 +5,7 @@ import {BsTools} from 'react-icons/bs';
 import {AiFillPlusCircle} from 'react-icons/ai';
 import { useEffect, useState } from 'react';
 import Modal from 'react-modal';
+import brasao from '../../../assets/imgs/brasao.png';
 
 const MechanicalPendences = ({data, curVehicle, fetchData}) => {
 
@@ -41,9 +42,12 @@ const MechanicalPendences = ({data, curVehicle, fetchData}) => {
     const handleModalContent = () => {
         if(modalContent === 'add'){
             return(
-                <form style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem'}}> 
 
-                <span className={styles.modalTitle}>Nova Pendência</span>
+
+                <form style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem'}}> 
+                <img style={{width: '3rem', marginBottom: '.5rem'}} src={brasao} alt="" />
+
+                <span className={styles.modalTitle}>Cadastrar Pendência</span>
                     <div style={{display: 'flex', flexDirection: 'column', alignItems: 'start'}}>
                         <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Descrição:</span>
                         <input autoFocus onChange={(val) => setPendenceValue(val.target.value)} className={styles.modalInput} type='text'></input>
@@ -278,6 +282,7 @@ const MechanicalPendences = ({data, curVehicle, fetchData}) => {
             <Modal
             isOpen={modalVisible}
             className={styles.modal}
+            style={{overlay: {backgroundColor: 'rgba(214, 214, 214, 0.5)'}}}
             >   
             {handleModalContent()}
             </Modal>    

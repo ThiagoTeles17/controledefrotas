@@ -14,35 +14,46 @@ const CarDescritpion = ({data}) => {
             {
             data.veiculos &&
             <div className={styles.descContainer}>
+                {data.atividades[curVehicle]  &&
                 <Box 
                 title='Atividade:' 
-                content={data.atividades[curVehicle] ? data.atividades[curVehicle] : ''}
+                content={data.atividades[curVehicle]}
                 />
+                }
 
+                {data.veiculos[curVehicle].modelo &&
                 <Box 
                 title='Modelo:' 
-                content={data.veiculos[curVehicle].modelo ? data.veiculos[curVehicle].modelo : ''}
+                content={data.veiculos[curVehicle].modelo}
                 />
+                }
+                
+                {data.veiculos[curVehicle].placa &&
                 <Box 
                 title='Placa:' 
-                content={data.veiculos[curVehicle].placa ? data.veiculos[curVehicle].placa : ''}
+                content={data.veiculos[curVehicle].placa}
                 />
+                }
 
+                {data.veiculos[curVehicle].renavam &&
                 <Box 
                 title='Renavam:' 
-                content={data.veiculos[curVehicle].renavam ? data.veiculos[curVehicle].renavam : ''}
+                content={data.veiculos[curVehicle].renavam}
                 />
+                }
+                {data.seguros[curVehicle].seguradora &&
                 <div style={{display: 'flex', flexDirection: 'row', width: '100%'}}>
                     <DoubleBox 
                     border_right={true} 
                     title='Seguradora:'
                     content={data.seguros[curVehicle] ? data.seguros[curVehicle].seguradora : ''} 
                     />
-                <DoubleBox 
+                    <DoubleBox 
                     title='Vigência até:'
                     content={data.seguros[curVehicle] ? data.seguros[curVehicle].vigencia : ''} 
-                />
+                    />
                 </div>
+                }
             </div>
             }
         </>

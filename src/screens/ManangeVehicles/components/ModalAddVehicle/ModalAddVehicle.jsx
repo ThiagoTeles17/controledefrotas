@@ -1,0 +1,354 @@
+import { useState } from "react";
+import styles from './ModalAddVehicle.module.css';
+
+import brasao from '../../../../assets/imgs/brasao.png'
+
+import ReactInputMask from "react-input-mask";
+import {GiCarWheel} from 'react-icons/gi';
+import {AiOutlineSchedule} from 'react-icons/ai';
+
+
+export const ModalAddVehicle = ({dados, fetchData, modalVisible, setModalVisible}) => {
+
+    const [marca, setMarca] = useState('');
+    const [modelo, setModelo] = useState('');
+    const [placa, setPlaca] = useState('');
+    const [renavam, setRenavam] = useState('');
+    const [atividade, setAtividade] = useState('');
+    const [despesa, setDespesa] = useState('');
+    const [ufOrigem, setUfOrigem] = useState('sc');
+    const [anoFabricacao, setAnoFabricacao] = useState('');
+    const [unidade, setUnidade] = useState(dados.unidades && dados.unidades[0]);
+    const [imagem, setImagem] = useState('');
+    const [seguradora, setSeguradora] = useState('');
+    const [vigenciaSeguro, setVigenciaSeguro] = useState('');
+    const [pneus, setPneus] = useState([]);
+    const [agendamento, setAgendamento] = useState(false);
+
+    const handleCancelModal = () => {
+        setModalVisible(!modalVisible);
+        setMarca('');
+        setModelo('');
+        setPlaca('');
+        setRenavam('');
+        setDespesa('');
+        setUfOrigem('sc');
+        setAnoFabricacao('');
+        setUnidade(dados.unidades && dados.unidades[0]);
+        setImagem('');
+        setSeguradora('');
+        setVigenciaSeguro('');
+        setPneus('');
+        setAgendamento(false);
+    };
+    const handleAddCar = (event) => {
+        event.preventDefault();
+
+        //concat previous vehicles with new
+        let newVehicle = {'veiculos' : {
+            ...dados.veiculos,
+            [modelo] : {
+                'modelo' : marca + ' ' + modelo + ' ' + anoFabricacao,
+                'placa' : placa,
+                'renavam' : renavam,
+                'imagem' : imagem,
+                'despesa' : despesa,
+                'ufOrigem' : ufOrigem,
+                'unidade' : unidade,
+                'precisaAgendar' : agendamento
+            }
+
+        }}
+
+        //concat previous insurances with new
+        let newInsurance = {'seguros' : {
+            ...dados.seguros,
+            [modelo] : {
+                'seguradora' : seguradora,
+                'vigencia' : vigenciaSeguro
+            }
+        }}
+        let newActivity = {
+            'atividades' : {
+                [modelo] : atividade
+            }
+        }
+
+        let toPostArray = {
+            ...dados,
+            ...newVehicle,
+            ...newInsurance
+        }
+        console.log(toPostArray)
+
+    };
+
+    return(
+        <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                <img style={{width: '3rem', marginBottom: '.5rem'}} src={brasao} alt="" />
+
+                <span className={styles.modalTitle}>Adicionar Veículo</span>
+
+                <form onSubmit={(e) => handleAddCar(e)} style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', rowGap: '1rem'}}> 
+                    <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '1rem'}}>
+                    <div style={{display: 'flex', flexDirection: 'row', gap: '1rem'}}>
+                        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem'}}>
+                                    <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '1rem'}}>
+                                        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'start'}}>
+                                            <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Marca:</span>
+                                            <input
+                                            value={marca}
+                                            onChange={(text) => setMarca(text.target.value)}
+                                            placeholder="marca do veículo" 
+                                            autoFocus 
+                                            className={styles.modalInputHalf} 
+                                            type='text'
+                                            ></input>
+                                        </div> 
+                                        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'start'}}>
+                                            <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Modelo:</span>
+                                            <input 
+                                            value={modelo}
+                                            onChange={(text) => setModelo(text.target.value)}
+                                            placeholder="modelo do veículo" 
+                                            className={styles.modalInputHalf} 
+                                            type='text'
+                                            ></input>
+                                        </div> 
+                                </div>
+        
+                                <div style={{display: 'flex', flexDirection: 'column', alignItems: 'start'}}>
+                                    <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Ano de fabricação/modelo:</span>
+                                    <ReactInputMask 
+                                    value={anoFabricacao}
+                                    onChange={text => setAnoFabricacao(text.target.value)}
+                                    mask={"9999/9999"} 
+                                    placeholder="ano de fabricação/modelo do veículo" 
+                                    className={styles.modalInput} 
+                                    type='text'
+                                    ></ReactInputMask>
+                                </div>
+
+                                <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '1rem'}}>
+                                    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'start'}}>
+                                        <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Placa:</span>
+                                        <input
+                                        value={placa}
+                                        onChange={(text) => setPlaca(text.target.value)}
+                                        maxLength={7} 
+                                        placeholder="placa"  
+                                        className={styles.modalInputHalf} 
+                                        type='text'
+                                        ></input>
+                                    </div> 
+                                    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'start'}}>
+                                        <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Renavam:</span>
+                                        <input 
+                                        value={renavam}
+                                        onChange={(text) => setRenavam(text.target.value)}
+                                        placeholder="renavam" 
+                                        className={styles.modalInputHalf} 
+                                        type='text'
+                                        ></input>
+                                    </div> 
+                                </div>
+
+                                <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '1rem'}}>
+                                    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'start'}}>
+                                        <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Despesa Orçamentária:</span>
+                                        <input 
+                                        value={despesa}
+                                        onChange={text => setDespesa(text.target.value)}
+                                        maxLength={3}
+                                        placeholder="despesa"
+                                        className={styles.modalInputHalf} 
+                                        type='text'
+                                        ></input>
+                                    </div> 
+                                    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'start'}}>
+                                        <span style={{fontSize: '12px', marginBottom: '.3rem'}}>UF de Origem:</span>
+                                        <select value={ufOrigem} onChange={(val) => setUfOrigem(val.target.value)} className={styles.modalInputHalf} type='text'>
+                                            <option value={'pr'}>PR</option>
+                                            <option value={'sc'}>SC</option>
+                                            <option value={'rs'}>RS</option>
+                                        </select>
+                                    </div>    
+                                </div>
+                                <div style={{display: 'flex', flexDirection: 'column', alignItems: 'start'}}>
+                                    <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Unidade:</span>
+                                    <select value={unidade} onChange={(val) => setUnidade(val.target.value)} className={styles.modalInput} type='text'>
+                                        {dados.unidades && 
+                                            dados.unidades.map((item, index) => {
+                                                return(
+                                                    <option key={index} value={item}>{item}</option>
+                                                );
+                                            })
+                                        }
+                                    </select>
+                                </div> 
+                                <div style={{display: 'flex', flexDirection: 'column', alignItems: 'start'}}>
+                                    <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Atividade:</span>
+                                    <input 
+                                    value={atividade}
+                                    onChange={(text) => setAtividade(text.target.value)}
+                                    placeholder="atividade" 
+                                    className={styles.modalInput} 
+                                    type='text'
+                                    ></input>
+                                </div> 
+                            
+                             </div>
+
+                             <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem'}}>
+                                <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '1rem'}}>
+                                    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'start'}}>
+                                            <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Seguradora:</span>
+                                            <input 
+                                            value={seguradora}
+                                            onChange={text => setSeguradora(text.target.value)}
+                                            placeholder="seguradora"
+                                            className={styles.modalInputHalf} 
+                                            type='text'
+                                            ></input>
+                                    </div>
+                                    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'start'}}>
+                                            <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Vigência Seguro Até:</span>
+                                            <ReactInputMask
+                                            mask={"99/99/9999"}
+                                            value={vigenciaSeguro}
+                                            onChange={text => setVigenciaSeguro(text.target.value)}
+                                            placeholder="vigência"
+                                            className={styles.modalInputHalf} 
+                                            type='text'
+                                            ></ReactInputMask>
+                                    </div>
+                                </div>
+
+                                <span style={{marginTop: '1rem'}}>
+                                    <GiCarWheel/> Estado dos pneus:
+                                </span> 
+
+                                    <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '.5rem'}}>
+                                            <div className={styles.verticalFlex}>
+                                                <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Dianteiro Esquerdo:</span>
+                                                <select
+                                                defaultValue={'selecionar'}
+                                                onChange={(val) => setPneus(
+                                                    {
+                                                        ...pneus,
+                                                        'de' : val.target.value
+                                                    }
+                                                )}
+                                                className={styles.modalSelectSmall}
+                                                >
+                                                    <option disabled value="selecionar">Selecionar</option>
+                                                    <option value="Bom">Bom</option>
+                                                    <option value="Médio">Médio</option>
+                                                    <option value="Ruim">Ruim</option>
+                                                </select>
+                                            </div>
+                                            <div className={styles.verticalFlex}>
+                                                <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Dianteiro Direito:</span>
+                                                <select
+                                                defaultValue={'selecionar'}
+                                                onChange={(val) => setPneus(
+                                                    {
+                                                        ...pneus,
+                                                        'dd' : val.target.value
+                                                    }
+                                                )} 
+                                                className={styles.modalSelectSmall}
+                                                >
+                                                    <option disabled value="selecionar">Selecionar</option>
+                                                    <option value="Bom">Bom</option>
+                                                    <option value="Médio">Médio</option>
+                                                    <option value="Ruim">Ruim</option>
+                                                </select>
+                                            </div>
+                                    </div>
+
+                                    <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '.5rem'}}>
+                                        <div className={styles.verticalFlex}>
+                                            <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Traseiro Esquerdo:</span>
+                                            <select
+                                            defaultValue={'selecionar'}
+                                            onChange={(val) => setPneus(
+                                                {
+                                                    ...pneus,
+                                                    'te' : val.target.value
+                                                }
+                                            )}   
+                                            className={styles.modalSelectSmall}
+                                            >
+                                                <option disabled value="selecionar">Selecionar</option>
+                                                <option value="Bom">Bom</option>
+                                                <option value="Médio">Médio</option>
+                                                <option value="Ruim">Ruim</option>
+                                            </select>
+                                        </div>
+                                        <div className={styles.verticalFlex}>  
+                                            <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Traseiro Direito:</span>
+                                            <select
+                                            defaultValue={'selecionar'}
+                                            onChange={(val) => setPneus(
+                                                {
+                                                    ...pneus,
+                                                    'td' : val.target.value
+                                                }
+                                            )} 
+                                            className={styles.modalSelectSmall}
+                                            >
+                                                <option disabled value="selecionar">Selecionar</option>
+                                                <option value="Bom">Bom</option>
+                                                <option value="Médio">Médio</option>
+                                                <option value="Ruim">Ruim</option>
+                                            </select>
+                                        </div>     
+                                    </div>
+                                    <div className={styles.verticalFlex}>
+                                            <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Estepe:</span>
+                                            <select
+                                            defaultValue={'selecionar'}
+                                            onChange={(val) => setPneus(
+                                                {
+                                                    ...pneus,
+                                                    'estepe' : val.target.value
+                                                }
+                                            )} 
+                                            className={styles.modalSelectSmall}
+                                            >
+                                                <option disabled value="selecionar">Selecionar</option>
+                                                <option value="Bom">Bom</option>
+                                                <option value="Médio">Médio</option>
+                                                <option value="Ruim">Ruim</option>
+                                            </select>
+                                    </div>
+                                    
+                                    <div className={styles.horizontalFlex} style={{marginTop: '1rem', marginTop: '2rem'}}>
+                                        <AiOutlineSchedule/>
+                    
+                                        <span style={{fontSize: '14px', marginLeft: '1rem', marginRight: '.5rem'}}>Necessita agendamento para uso</span>
+                                        <input type="checkbox" value={agendamento} onChange={() => setAgendamento(!agendamento)}/>
+                                    </div>
+                             </div>                     
+
+                        </div>
+                              
+                        </div>
+                        <div style={{display: 'flex', gap: '.8rem'}}>
+                            <button 
+                            type='submit' 
+                            className={styles.modalBtn} 
+                            >Adicionar</button>
+
+                            <button className={styles.modalBtn} onClick={handleCancelModal}>Cancelar</button>
+                        </div>                       
+                    </form>
+                     
+                </div>      
+
+    );
+
+
+
+}

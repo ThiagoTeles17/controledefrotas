@@ -44,8 +44,10 @@ h2{
 .screenBtn{
     position: relative;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: .4rem;
     color: white;
     background-color: rgb(59, 59, 59);
     width: 9rem;
@@ -77,6 +79,8 @@ h2{
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    gap: .4rem;
     color: white;
     background-color: rgb(43, 43, 43);
     width: 9rem;
