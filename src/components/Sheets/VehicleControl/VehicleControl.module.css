@@ -46,7 +46,7 @@
     height: 2.5rem;
     border: none;
     cursor: pointer;
-    background-color: #374068;
+    background-color: rgb(35, 93, 145);
     color: white;
     font-size: 15px;
     border-radius: .5rem;
@@ -55,5 +55,5 @@
     text-decoration: none;
 }
 .btnContainer:hover{
-    background-color: #303650;
+    background-color: rgb(30, 82, 128);
 }

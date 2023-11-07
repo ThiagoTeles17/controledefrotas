@@ -13,14 +13,29 @@ import {AiFillPlusCircle} from 'react-icons/ai';
 
 import { ApiContext } from "../../context/ApiContext";
 import { ModalAddVehicle } from "./components/ModalAddVehicle/ModalAddVehicle";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 
 
 const ManangeVehicles = () => {
     
-    const {curVehicle, setCurVehicle, dados, setDados, fetchData} = useContext(ApiContext);
+    const {curVehicle, setCurVehicle, db} = useContext(ApiContext);
 
     const [modalVisible, setModalVisible] = useState(false);
     const [modalContent, setModalContent] = useState('add');
+
+    const [vehicles, setVehicles] = useState();
+    const [activities, setActivities] = useState();
+    const [unities, setUnities] = useState();
+
+    const getDatabase = async() => {
+        setVehicles((await getDoc(doc(db, 'assistencia', 'veiculos'))).data());
+        setActivities((await getDoc(doc(db, 'assistencia', 'atividades'))).data());
+        setUnities((await getDoc(doc(db, 'assistencia', 'unidades'))).data());
+    };
+
+    useEffect(() => {
+        getDatabase();
+    }, []);
 
 
     const handleModalContent = () => {
@@ -29,17 +44,13 @@ const ManangeVehicles = () => {
                 <ModalAddVehicle
                 modalVisible={modalVisible}
                 setModalVisible={setModalVisible}
-                dados={dados}
-                fetchData={fetchData}
+                unidades={unities}
+                db={db}
                 />
             );
         }
        
     }
-
-    useEffect(() => {
-        fetchData();
-    }, [])
 
 
     return(
@@ -56,17 +67,37 @@ const ManangeVehicles = () => {
                     <td>Renavam</td>
                     <td></td>
                 </tr>
-                {dados.veiculos && 
-                Object.keys(dados.veiculos).map((item, index) => {
+                {vehicles && 
+                Object.keys(vehicles).map((item, index) => {
+
+                    const carModel = () => {
+                        //return the name of car with informations
+                        if(vehicles[item].marca && vehicles[item].modelo && vehicles[item].ano){
+                            return `${vehicles[item].marca} ${vehicles[item].modelo} ${vehicles[item].ano}`
+                        }
+                    }
 
                     return(
                         <tr>
-                            <td>{dados.veiculos[item].placa}</td>
-                            <td>{dados.veiculos[item].modelo}</td>
-                            <td>{dados.veiculos[item].unidade}</td>
-                            <td>{dados.veiculos[item].despesa}</td>
-                            <td>{dados.atividades[item] && dados.atividades[item]}</td>
-                            <td>{dados.veiculos[item].renavam}</td> 
+                            <td>{vehicles[item].placa ? vehicles[item].placa : ''}</td>
+
+                            <td 
+                            style={{textTransform: 'capitalize'}}
+                            >
+                            {carModel()}
+                            </td>
+                            
+                            <td>{vehicles[item].unidade ? vehicles[item].unidade : ''}</td>
+                            
+                            <td>{vehicles[item].despesa ? vehicles[item].despesa : ''}</td>
+                            
+                            {activities &&
+                            <td>{activities[item] && activities[item]}</td>
+                            
+                            }
+                            
+                            <td>{vehicles[item].renavam ? vehicles[item].renavam : ''}</td> 
+                            
                             <td style={{width: '1.5rem'}}>
                                 <BsFillPencilFill className={styles.editBtn}/>
                             </td> 

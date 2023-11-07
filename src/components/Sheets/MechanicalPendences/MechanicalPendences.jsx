@@ -6,10 +6,26 @@ import {AiFillPlusCircle} from 'react-icons/ai';
 import { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import brasao from '../../../assets/imgs/brasao.png';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
-const MechanicalPendences = ({data, curVehicle, fetchData}) => {
+const MechanicalPendences = ({curVehicle, db, setHistory}) => {
 
-    const pendencesList = data.pendenciasMec ? data.pendenciasMec[curVehicle] : '';
+    const [pendencesList, setPendencesList] = useState([]);
+
+    const pendencesRef = doc(db, 'assistencia', 'pendenciasMec');
+    const mecHistoryRef = doc(db, 'assistencia', 'historicoMec');
+
+    const getPendences = async() => {
+        setPendencesList((await getDoc(pendencesRef)).data());
+        
+    }
+    const getHistory = async() => {
+        setHistory((await getDoc(mecHistoryRef)).data());
+    };
+
+    useEffect(() => {
+        getPendences();
+    }, [])
 
     let date = new Date();
     let curYear = String(date.getFullYear());
@@ -110,65 +126,56 @@ const MechanicalPendences = ({data, curVehicle, fetchData}) => {
     //On confirm pendence
     const handleConfirmPendence = () => {
 
-        let mecHistory = data.historicoMec;
-        let pendencias = data.pendenciasMec;
+        //On confirm a pendence, it becomes a histoy item
 
-        //filter pendeces list to remove the current pendence
-        let filteredArray = data.pendenciasMec[curVehicle].filter((pendenceItem) => {
+        //filter pendences list to remove the current pendence
+        let filteredArray = pendencesList[curVehicle].filter((pendenceItem) => {
             if(pendenceItem != curConfirmPendence){
                 return pendenceItem
             }
         });
+        
+        //generate id to service
+        const serviceId = () => {
+            return Date.now().toString();
+        };
 
         //set new history item structure
         let newHistoryItem = {
-            [serviceDescription]: {
+            ['serv' + serviceId()]: {
+                'desc' : serviceDescription,
                 'date' : serviceDate,
                 'shop' : serviceShop
             }
         };
 
         //concat new history item to previous history
-        let newArray = {'historicoMec' : {
-            ...mecHistory,
+        let newHistory = {
             [curVehicle] : {
-                ...mecHistory[curVehicle],
+                ...mecHistoryRef[curVehicle],
                 ...newHistoryItem
             }
-        },
-        'pendenciasMec' : {
-            ...pendencias,
+        };
+
+        let newPendencesList = {
             [curVehicle] : [
                 ...filteredArray
             ]
-        }
         };
 
-        let toPostArray = {
-            ...data,
-            ...newArray
-        }
+        setDoc(mecHistoryRef, newHistory, {merge: true});
+        setDoc(pendencesRef, newPendencesList, {merge: true});
 
-        fetch('http://localhost:5000/assistencia', {
-            method : 'POST',
-            headers : {
-                'Accept' : 'application/json',
-                'Content-Type' : 'application/json'
-            },
-            body : JSON.stringify(toPostArray)
-
-        })
-        .then (resp => resp.json())
-        .catch (err => console.log(err))
         
-        fetchData();
+        
+        getPendences();
+        getHistory();
 
         setServiceDate(`${curYear}-${curMonth.padStart(2, "0")}-${curDay.padStart(2, "0")}`);
         setServiceDescription('');
         setServiceShop('');
         setModalVisible(!modalVisible);
 
-        
     };
 
     //On click add button
@@ -178,84 +185,43 @@ const MechanicalPendences = ({data, curVehicle, fetchData}) => {
     }
     //On add new pendence
     const handleAddPendence = () =>{
-        let pendencias = data.pendenciasMec;
 
-        //concat pendenceValue without change the previous pendences.
-        let newArray = {'pendenciasMec':{
-            ...pendencias, 
+
+        let newArray = { 
             [curVehicle] : [
-                ...pendencias[curVehicle],
+                ...pendencesList[curVehicle],
                 pendenceValue
             ]
         }
-        };
-        //concat previous data from json with the new pendences.
-        let toPostArray = {
-            ...data,
-            ...newArray
-        };
-        console.log(toPostArray);
 
-        //fetch new data from toPostArray to json
-        fetch('http://localhost:5000/assistencia', {
-            method : 'POST',
-            headers : {
-                'Accept' : 'application/json',
-                'Content-Type' : 'application/json'
-            },
-            body : JSON.stringify(toPostArray)
-        })
-        .then (response => response.json)
-        .catch(err => console.log(err))
-
+        setDoc(pendencesRef, newArray, {merge: true});
+        getPendences();
         setModalVisible(!modalVisible);
-        fetchData();
+
     }
 
     //On click remove pendence
     const handleRemovePendence = (item) => {
 
-        let pendencias = data.pendenciasMec;
-
-        let filteredArray = data.pendenciasMec[curVehicle].filter((pendenceItem) => {
+        let filteredArray = pendencesList[curVehicle].filter((pendenceItem) => {
             if(pendenceItem != item){
                 return pendenceItem
             }
         });
 
-        let newArray = {'pendenciasMec' : {
-            ...pendencias,
+        let newArray = {
             [curVehicle] : [
                 ...filteredArray
             ]
-        }
         };
 
-        let toPostArray = {
-            ...data,
-            ...newArray
-        };
+        setDoc(pendencesRef, newArray, {merge: true});
+        getPendences();
 
-        //fetch new data from toPostArray to json
-       fetch('http://localhost:5000/assistencia', {
-            method : 'POST',
-            headers : {
-                'Accept' : 'application/json',
-                'Content-Type' : 'application/json'
-            },
-            body : JSON.stringify(toPostArray)
-        })
-        .then (response => response.json)
-        .catch(err => console.log(err))
-
-        fetchData();
     }
 
-    //If have no pendences, then return a blank component. Else return the correct component 
-    if(data.pendenciasMec[curVehicle] == "[]"){
-        return
-    }
-    else{
+    //If have no pendences, then return a blank component. Else, return the correct component 
+    
         return(
             <div className={styles.boxContainer}>
             <div className={styles.boxHeader}>
@@ -263,9 +229,12 @@ const MechanicalPendences = ({data, curVehicle, fetchData}) => {
                 Manutenções Pendentes
                 <AiFillPlusCircle onClick={handleOnClickAdd} className={styles.addButton}/>
             </div>
+                {pendencesList[curVehicle] ?
+                <>
                 {
-                pendencesList ?    
-                pendencesList.map((item, index) => {
+                (pendencesList[curVehicle]).length > 0 ?
+                pendencesList[curVehicle].map((item, index) => {
+
                     return(
                         <div key={index} className={styles.itemContainer}>
                             <div className={styles.boxItem}>{item}</div>
@@ -277,8 +246,12 @@ const MechanicalPendences = ({data, curVehicle, fetchData}) => {
                     );
                 })
                 :
-                <div className={styles.doNotHaveMaintanences}>Não há manutenções pendentes.</div>
-                }        
+                <div className={styles.doNotHaveMaintanences}>Não há manutenções pendentes.</div>                
+                }
+            </>  
+            :  
+            <div className={styles.doNotHaveMaintanences}>Não há manutenções pendentes.</div> 
+            }   
             <Modal
             isOpen={modalVisible}
             className={styles.modal}
@@ -288,9 +261,8 @@ const MechanicalPendences = ({data, curVehicle, fetchData}) => {
             </Modal>    
     
             </div>
-    
         );
-    }
+    
     
     
 }

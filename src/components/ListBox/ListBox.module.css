@@ -6,11 +6,7 @@
     border-radius: 5px;
     padding: .3rem;
     padding-left: .8rem;
-    -webkit-appearance: none;
-    /* Remove estilo padrão do Chrome */
-    -moz-appearance: none;
-    /* Remove estilo padrão do FireFox */
-    appearance: none;
+    padding-right: .8rem;
     font-size: 15px;
     text-transform: capitalize;
 }

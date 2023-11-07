@@ -15,25 +15,57 @@ import VehicleControl from "../../components/Sheets/VehicleControl/VehicleContro
 import {VscLoading} from 'react-icons/vsc'
 import {AiFillCar} from 'react-icons/ai';
 
+
+
 import { ApiContext } from "../../context/ApiContext";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import ReactModal from "react-modal";
 
 
 const Dashboard = () => {
 
-    const {curVehicle, setCurVehicle, dados, setDados, fetchData} = useContext(ApiContext);
+    const {curVehicle, db, setCurVehicle} = useContext(ApiContext);
+
+    const [vehicles, setVehicles] = useState([]);
+    const [mechanicalHistory, setMechanicalHistory] = useState([]);
+    const [database, setDatabase] = useState([]);
+
+    const [isLoaded, setIsLoaded] = useState(false);
+
+    const getDatabase = async() => {
+            
+        setDatabase((await getDocs(collection(db, 'assistencia'))));
+
+        let veh = (await getDoc(doc(db, 'assistencia', 'veiculos'))).data();
+        setVehicles(veh);
+
+        setMechanicalHistory((await getDoc(doc(db, 'assistencia', 'historicoMec'))).data());
+
+        if(curVehicle == null){
+            setCurVehicle(Object.keys(veh)[0]);
+        }
+    }
+
 
     useEffect (() => {
-        fetchData();
-    }, [curVehicle]);
+        
+        getDatabase();
 
-    if(JSON.stringify(dados) == '{}' || JSON.stringify(dados) == undefined || JSON.stringify(dados) == '[]'){
+        setTimeout(() => {
+            setIsLoaded(true);
+        }, 200);
+        
+    }, []);
+    
+    
+    if(database == [] || !isLoaded){
         return (
             <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '25rem'}}>
                  <VscLoading className={styles.loading}/>
             </div>
         );
     }
-    else if (JSON.stringify(dados.veiculos) == '{}' || JSON.stringify(dados.veiculos) == undefined){
+    else if (vehicles == []){
         return (
         <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '25rem'}}>
             Nenhum Veículo Encontrado
@@ -41,38 +73,43 @@ const Dashboard = () => {
         );
     }
     else {
-        if(curVehicle == null){
-            setCurVehicle(Object.keys(dados.veiculos)[0]);
-        }else{
             return(
                 <Container>
                     <VerticalContainer>
-                        <ListBox data={dados} items={['uno', 'duos']}/>
-                        <CarImage data={dados} curVehicle={curVehicle}/>
-                        <MechanicalPendences fetchData={fetchData} data={dados} curVehicle={curVehicle}/>  
-                    </VerticalContainer>
+                        <ListBox/>
+                        <CarImage vehicles={vehicles} curVehicle={curVehicle}/>
+                        <MechanicalPendences 
+                        setHistory={setMechanicalHistory} 
+                        db={db} 
+                        curVehicle={curVehicle}
+                        />  
+                   </VerticalContainer>
                     <VerticalContainer>
-                        <CarDescription data={dados}/>
-                        <Tires data={dados} curVehicle={curVehicle}/>
+                        <CarDescription db={db} curVehicle={curVehicle}/>
+                        <Tires db={db} curVehicle={curVehicle}/>
                     </VerticalContainer>
                     <VerticalContainer>
                         <LargeBtn 
                         title='Consulta Detran'
                         link={
-                            dados.veiculos ?
-                            `https://consultas.detrannet.sc.gov.br/servicos/consultaveiculo.asp?placa=${dados.veiculos[curVehicle].placa}&renavam=${dados.veiculos[curVehicle].renavam}`
+                            vehicles[curVehicle] ?
+                            `https://consultas.detrannet.sc.gov.br/servicos/consultaveiculo.asp?placa=${vehicles[curVehicle].placa}&renavam=${vehicles[curVehicle].renavam}`
                             : ''
                         }
                         icon={<AiFillCar/>}
                         />
                         <VehicleControl years={[2021, 2022, 2023]} months={['01', '02', '03', '04', '05', '06']}/>
-                        <MaintenancesHistory data={dados} curVehicle={curVehicle}/>
+                        
+                        <MaintenancesHistory 
+                        history={mechanicalHistory} 
+                        db={db} 
+                        curVehicle={curVehicle}
+                        />
+
                     </VerticalContainer>
+            
                 </Container>
-            );  
-    
-        }
-       
+            );         
     }
     
 

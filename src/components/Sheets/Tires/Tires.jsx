@@ -1,16 +1,22 @@
+import { doc, getDoc } from 'firebase/firestore';
 import styles from './Tires.module.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {GiCarWheel} from 'react-icons/gi';
 
 
-const Tires = ({data, curVehicle}) => {
+const Tires = ({db, curVehicle}) => {
 
-    if(data.pneus[curVehicle] == null){
-        return
-    }
 
-    const tires = data.pneus[curVehicle] ? data.pneus : ''; 
+    const [tires, setTires] = useState([]);
+
+    const getTiresData = async() => {
+        setTires((await getDoc(doc(db, 'assistencia', 'pneus'))).data());
+    };
+
+    useEffect(() => {
+        getTiresData();
+    }, [])
 
     const corEstado = {
             'Bom' : 'rgba(29, 255, 0, 0.67)',
@@ -19,7 +25,12 @@ const Tires = ({data, curVehicle}) => {
             'notSpecified' : 'rgba(158, 158, 158, 0.541)'
     };
 
+    if(tires == null){
+        return
+    }
     return(
+        <>
+        {tires[curVehicle] &&
         <div className={styles.boxContainer}>
             <div className={styles.boxHeader}><GiCarWheel/>Pneus</div>
 
@@ -116,6 +127,8 @@ const Tires = ({data, curVehicle}) => {
 
 
         </div>
+        }
+        </>
     );
 }
 export default Tires;

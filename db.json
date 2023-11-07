@@ -30,9 +30,7 @@
       }
     },
     "pendenciasMec": {
-      "prisma": [
-        "troca de óleo"
-      ],
+      "prisma": [],
       "sprinter": [
         "revisão geral"
       ],

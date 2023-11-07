@@ -6,9 +6,10 @@ import brasao from '../../../../assets/imgs/brasao.png'
 import ReactInputMask from "react-input-mask";
 import {GiCarWheel} from 'react-icons/gi';
 import {AiOutlineSchedule} from 'react-icons/ai';
+import { setDoc, doc } from "firebase/firestore";
 
 
-export const ModalAddVehicle = ({dados, fetchData, modalVisible, setModalVisible}) => {
+export const ModalAddVehicle = ({unidades, db, modalVisible, setModalVisible}) => {
 
     const [marca, setMarca] = useState('');
     const [modelo, setModelo] = useState('');
@@ -18,12 +19,13 @@ export const ModalAddVehicle = ({dados, fetchData, modalVisible, setModalVisible
     const [despesa, setDespesa] = useState('');
     const [ufOrigem, setUfOrigem] = useState('sc');
     const [anoFabricacao, setAnoFabricacao] = useState('');
-    const [unidade, setUnidade] = useState(dados.unidades && dados.unidades[0]);
+    const [unidade, setUnidade] = useState(unidades && Object.keys(unidades)[0]);
     const [imagem, setImagem] = useState('');
     const [seguradora, setSeguradora] = useState('');
     const [vigenciaSeguro, setVigenciaSeguro] = useState('');
     const [pneus, setPneus] = useState([]);
     const [agendamento, setAgendamento] = useState(false);
+
 
     const handleCancelModal = () => {
         setModalVisible(!modalVisible);
@@ -34,7 +36,7 @@ export const ModalAddVehicle = ({dados, fetchData, modalVisible, setModalVisible
         setDespesa('');
         setUfOrigem('sc');
         setAnoFabricacao('');
-        setUnidade(dados.unidades && dados.unidades[0]);
+        setUnidade(unidades && Object.keys(unidades)[0]);
         setImagem('');
         setSeguradora('');
         setVigenciaSeguro('');
@@ -44,11 +46,14 @@ export const ModalAddVehicle = ({dados, fetchData, modalVisible, setModalVisible
     const handleAddCar = (event) => {
         event.preventDefault();
 
-        //concat previous vehicles with new
-        let newVehicle = {'veiculos' : {
-            ...dados.veiculos,
-            [modelo] : {
-                'modelo' : marca + ' ' + modelo + ' ' + anoFabricacao,
+        //generate id for vehicle
+        const newId = 'veh' + Date.now().toString();
+        
+        let newVehicle = {
+            [newId] : {
+                'marca' : marca,
+                'modelo' : modelo,
+                'ano' : anoFabricacao,
                 'placa' : placa,
                 'renavam' : renavam,
                 'imagem' : imagem,
@@ -57,32 +62,48 @@ export const ModalAddVehicle = ({dados, fetchData, modalVisible, setModalVisible
                 'unidade' : unidade,
                 'precisaAgendar' : agendamento
             }
+        }
 
-        }}
 
-        //concat previous insurances with new
-        let newInsurance = {'seguros' : {
-            ...dados.seguros,
-            [modelo] : {
+        let newInsurance = {
+            [newId] : {
                 'seguradora' : seguradora,
                 'vigencia' : vigenciaSeguro
             }
-        }}
+        }
         let newActivity = {
-            'atividades' : {
-                [modelo] : atividade
+            [newId] : atividade
+        }
+
+        let newTires = {
+            [newId] : {
+                ...pneus
             }
         }
 
-        let toPostArray = {
-            ...dados,
-            ...newVehicle,
-            ...newInsurance
-        }
-        console.log(toPostArray)
+        setDoc(doc(db, 'assistencia', 'veiculos'), newVehicle, {merge: true});
+        setDoc(doc(db, 'assistencia', 'seguros'), newInsurance, {merge: true});
+        setDoc(doc(db, 'assistencia', 'atividades'), newActivity, {merge: true});
+        setDoc(doc(db, 'assistencia', 'pneus'), newTires, {merge: true});
+
+
+        setModalVisible(!modalVisible);
+        setMarca('');
+        setModelo('');
+        setPlaca('');
+        setRenavam('');
+        setDespesa('');
+        setUfOrigem('sc');
+        setAnoFabricacao('');
+        setUnidade(unidades && Object.keys(unidades)[0]);
+        setImagem('');
+        setSeguradora('');
+        setVigenciaSeguro('');
+        setPneus('');
+        setAgendamento(false);
+
 
     };
-
     return(
         <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                 <img style={{width: '3rem', marginBottom: '.5rem'}} src={brasao} alt="" />
@@ -177,8 +198,8 @@ export const ModalAddVehicle = ({dados, fetchData, modalVisible, setModalVisible
                                 <div style={{display: 'flex', flexDirection: 'column', alignItems: 'start'}}>
                                     <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Unidade:</span>
                                     <select value={unidade} onChange={(val) => setUnidade(val.target.value)} className={styles.modalInput} type='text'>
-                                        {dados.unidades && 
-                                            dados.unidades.map((item, index) => {
+                                        {unidades && 
+                                            Object.keys(unidades).map((item, index) => {
                                                 return(
                                                     <option key={index} value={item}>{item}</option>
                                                 );
@@ -225,9 +246,9 @@ export const ModalAddVehicle = ({dados, fetchData, modalVisible, setModalVisible
                                 </div>
 
                                 <span style={{marginTop: '1rem'}}>
-                                    <GiCarWheel/> Estado dos pneus:
+                                    <GiCarWheel/> Tipo e Estado dos pneus:
                                 </span> 
-
+                                    
                                     <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '.5rem'}}>
                                             <div className={styles.verticalFlex}>
                                                 <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Dianteiro Esquerdo:</span>
@@ -304,24 +325,41 @@ export const ModalAddVehicle = ({dados, fetchData, modalVisible, setModalVisible
                                                 <option value="Ruim">Ruim</option>
                                             </select>
                                         </div>     
-                                    </div>
-                                    <div className={styles.verticalFlex}>
-                                            <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Estepe:</span>
-                                            <select
-                                            defaultValue={'selecionar'}
+                                    </div> 
+                                    <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '.5rem'}}>
+                                        <div className={styles.verticalFlex}>
+                                                <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Estepe:</span>
+                                                <select
+                                                defaultValue={'selecionar'}
+                                                onChange={(val) => setPneus(
+                                                    {
+                                                        ...pneus,
+                                                        'estepe' : val.target.value
+                                                    }
+                                                )} 
+                                                className={styles.modalSelectSmall}
+                                                >
+                                                    <option disabled value="selecionar">Selecionar</option>
+                                                    <option value="Bom">Bom</option>
+                                                    <option value="Médio">Médio</option>
+                                                    <option value="Ruim">Ruim</option>
+                                                </select>                                           
+                                        </div>
+                                        <div className={styles.verticalFlex}>
+                                        <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Tipo: </span>
+                                            <ReactInputMask
+                                            mask={"999/99 r99"}
+                                            placeholder="___/__ r__"
                                             onChange={(val) => setPneus(
                                                 {
                                                     ...pneus,
-                                                    'estepe' : val.target.value
+                                                    'tipo' : val.target.value
                                                 }
                                             )} 
-                                            className={styles.modalSelectSmall}
-                                            >
-                                                <option disabled value="selecionar">Selecionar</option>
-                                                <option value="Bom">Bom</option>
-                                                <option value="Médio">Médio</option>
-                                                <option value="Ruim">Ruim</option>
-                                            </select>
+                                            className={styles.modalSelectSmall} 
+                                            type='text'
+                                        ></ReactInputMask>
+                                        </div>
                                     </div>
                                     
                                     <div className={styles.horizontalFlex} style={{marginTop: '1rem', marginTop: '2rem'}}>

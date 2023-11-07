@@ -1,65 +1,89 @@
+import { useState, useEffect } from 'react';
 import Box from './Box/Box.jsx';
 import DoubleBox from './DoubleBox/DoubleBox.jsx';
 import styles from './CarDescritpion.module.css'
 import { useContext } from 'react';
 import { ApiContext } from '../../../context/ApiContext.jsx';
 
-const CarDescritpion = ({data}) => {
+import { getDoc, doc } from 'firebase/firestore';
+
+
+const CarDescritpion = ({db, curVehicle}) => {
+
     
-    const {curVehicle, setCurVehicle} = useContext(ApiContext);
+    const [vehicles, setVehicles] = useState();
+    const [activities, setActivities] = useState();
+    const [insurances, setInsurances] = useState();
+
+    const getData = async() => {
+        setVehicles((await getDoc(doc(db, 'assistencia', 'veiculos'))).data());
+        setActivities((await getDoc(doc(db, 'assistencia', 'atividades'))).data());
+        setInsurances((await getDoc(doc(db, 'assistencia', 'seguros'))).data());
+    }
     
+    useEffect(() => {
+        getData();
+    }, []);
+
+
+    if(vehicles == undefined || activities == undefined || insurances == undefined){
+        return
+    }
 
     return(
+        
         <>
             {
-            data.veiculos &&
+            vehicles[curVehicle] &&
             <div className={styles.descContainer}>
-                {data.atividades[curVehicle]  &&
+
+                {activities[curVehicle] &&
                 <Box 
                 title='Atividade:' 
-                content={data.atividades[curVehicle]}
+                content={activities[curVehicle]}
                 />
                 }
 
-                {data.veiculos[curVehicle].modelo &&
+                {vehicles[curVehicle].modelo &&
                 <Box 
                 title='Modelo:' 
-                content={data.veiculos[curVehicle].modelo}
+                content={(vehicles[curVehicle].marca + ' ' + vehicles[curVehicle].modelo  + ' ' + vehicles[curVehicle].ano).toUpperCase()}
                 />
                 }
                 
-                {data.veiculos[curVehicle].placa &&
+                {vehicles[curVehicle].placa &&
                 <Box 
                 title='Placa:' 
-                content={data.veiculos[curVehicle].placa}
+                content={vehicles[curVehicle].placa}
                 />
                 }
 
-                {data.veiculos[curVehicle].renavam &&
+                {vehicles[curVehicle].renavam &&
                 <Box 
                 title='Renavam:' 
-                content={data.veiculos[curVehicle].renavam}
+                content={vehicles[curVehicle].renavam}
                 />
                 }
-                {data.seguros[curVehicle].seguradora &&
+                {insurances[curVehicle] &&
                 <div style={{display: 'flex', flexDirection: 'row', width: '100%'}}>
                     <DoubleBox 
                     border_right={true} 
                     title='Seguradora:'
-                    content={data.seguros[curVehicle] ? data.seguros[curVehicle].seguradora : ''} 
+                    content={insurances[curVehicle].seguradora ? insurances[curVehicle].seguradora : ''} 
                     />
                     <DoubleBox 
                     title='Vigência até:'
-                    content={data.seguros[curVehicle] ? data.seguros[curVehicle].vigencia : ''} 
+                    content={insurances[curVehicle].vigencia ? insurances[curVehicle].vigencia : ''} 
                     />
                 </div>
                 }
             </div>
-            }
-        </>
             
+        }
+        
+        </>   
         
     );
-
+    
 }
 export default CarDescritpion;

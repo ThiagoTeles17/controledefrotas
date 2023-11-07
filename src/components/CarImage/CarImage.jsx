@@ -1,19 +1,22 @@
 import styles from './CarImage.module.css';
 
-const CarImage = ({data, curVehicle}) => {
+const CarImage = ({vehicles, curVehicle}) => {
 
-    if(data.veiculos == null){
+    if(vehicles == null){
         return
     }
-    return(
-    <div className={styles.divContainer}>
-        <img
-            className={styles.imageContainer} 
-            src={data.veiculos[curVehicle] ? `${data.veiculos[curVehicle].imagem}` : ''}
-            alt='Imagem Carro'
-        />
-    </div>
-    );
+    else if (vehicles[curVehicle] && vehicles[curVehicle].imagem){
+        return(
+        <div className={styles.divContainer}>
+            <img
+                className={styles.imageContainer} 
+                src={vehicles[curVehicle] ? `${vehicles[curVehicle].imagem}` : ''}
+                alt='Imagem Carro'
+            />
+        </div>
+        );
+    }
+    
 
 }
 export default CarImage;

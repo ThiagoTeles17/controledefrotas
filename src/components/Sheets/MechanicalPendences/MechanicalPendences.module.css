@@ -53,12 +53,12 @@
 .addButton{
     position: relative;
     left: 3rem;
-    color: rgb(0, 153, 255);
+    color:  rgb(15, 143, 255);
     transition: .1s;
     font-size: 2rem;
 }
 .addButton:hover{
-    color: rgb(49, 144, 207);
+    color: rgb(58, 129, 192);
     cursor: pointer;
 }
 .doNotHaveMaintanences{
