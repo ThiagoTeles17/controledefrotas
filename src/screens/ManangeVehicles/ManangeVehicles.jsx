@@ -14,6 +14,7 @@ import {AiFillPlusCircle} from 'react-icons/ai';
 import { ApiContext } from "../../context/ApiContext";
 import { ModalAddVehicle } from "./components/ModalAddVehicle/ModalAddVehicle";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { ModalEditVehicle } from "./components/ModalEditVehicle/ModalEditVehicle";
 
 
 const ManangeVehicles = () => {
@@ -26,11 +27,15 @@ const ManangeVehicles = () => {
     const [vehicles, setVehicles] = useState();
     const [activities, setActivities] = useState();
     const [unities, setUnities] = useState();
+    const [tires, setTires] = useState();
+
+    const [vehToEditId, setVehToEditId] = useState();
 
     const getDatabase = async() => {
         setVehicles((await getDoc(doc(db, 'assistencia', 'veiculos'))).data());
         setActivities((await getDoc(doc(db, 'assistencia', 'atividades'))).data());
         setUnities((await getDoc(doc(db, 'assistencia', 'unidades'))).data());
+        setTires((await getDoc(doc(db, 'assistencia', 'pneus'))).data());
     };
 
     useEffect(() => {
@@ -49,13 +54,40 @@ const ManangeVehicles = () => {
                 />
             );
         }
+        else if(modalContent == 'edit'){
+            return(
+                <ModalEditVehicle
+                modalVisible={modalVisible}
+                setModalVisible={setModalVisible}
+                unidades={unities}
+                db={db}
+                vehicleId={vehToEditId}
+                vehicles={vehicles}
+                activities={activities}
+                unities={unities}
+                tires={tires}
+                />
+            );
+        }
        
+    }
+
+    const handleAddVehicle = () => {
+        setModalContent('add');
+        setModalVisible(!modalVisible);
+    }
+
+
+    const handleEditVehicle = (id) => {
+        setModalContent("edit");
+        setModalVisible(!modalVisible);
+        setVehToEditId(id);
     }
 
 
     return(
         <Container>
-            <AiFillPlusCircle onClick={() => setModalVisible(!modalVisible)} className={styles.addBtn}/>
+            <AiFillPlusCircle onClick={() => handleAddVehicle()} className={styles.addBtn}/>
            
            <table>
                 <tr className={styles.tableHeader}>
@@ -79,7 +111,9 @@ const ManangeVehicles = () => {
 
                     return(
                         <tr>
-                            <td>{vehicles[item].placa ? vehicles[item].placa : ''}</td>
+                            <td
+                            style={{textTransform: 'uppercase'}}
+                            >{vehicles[item].placa ? vehicles[item].placa : ''}</td>
 
                             <td 
                             style={{textTransform: 'capitalize'}}
@@ -87,19 +121,26 @@ const ManangeVehicles = () => {
                             {carModel()}
                             </td>
                             
-                            <td>{vehicles[item].unidade ? vehicles[item].unidade : ''}</td>
+                            <td
+                            style={{textTransform: 'capitalize'}}
+                            >{vehicles[item].unidade ? vehicles[item].unidade : ''}</td>
                             
                             <td>{vehicles[item].despesa ? vehicles[item].despesa : ''}</td>
                             
                             {activities &&
-                            <td>{activities[item] && activities[item]}</td>
+                            <td
+                            style={{textTransform: 'capitalize'}}
+                            >{activities[item] && activities[item]}</td>
                             
                             }
                             
                             <td>{vehicles[item].renavam ? vehicles[item].renavam : ''}</td> 
                             
                             <td style={{width: '1.5rem'}}>
-                                <BsFillPencilFill className={styles.editBtn}/>
+                                <BsFillPencilFill
+                                onClick={() => handleEditVehicle(item)}
+                                className={styles.editBtn}
+                            />
                             </td> 
                         </tr>
                     );
