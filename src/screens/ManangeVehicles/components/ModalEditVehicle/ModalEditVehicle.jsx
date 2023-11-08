@@ -17,7 +17,8 @@ export const ModalEditVehicle = ({
     vehicleId,
     vehicles,
     activities,
-    tires
+    tires,
+    insurances
 }) => {
 
     const [marca, setMarca] = useState(vehicles[vehicleId].marca);
@@ -30,12 +31,12 @@ export const ModalEditVehicle = ({
     const [anoFabricacao, setAnoFabricacao] = useState(vehicles[vehicleId].ano);
     const [unidade, setUnidade] = useState(vehicles[vehicleId].unidade);
     const [imagem, setImagem] = useState(vehicles[vehicleId].image);
-    const [seguradora, setSeguradora] = useState('');
-    const [vigenciaSeguro, setVigenciaSeguro] = useState('');
+    const [seguradora, setSeguradora] = useState(insurances[vehicleId].seguradora);
+    const [vigenciaSeguro, setVigenciaSeguro] = useState(insurances[vehicleId].vigencia);
     const [pneus, setPneus] = useState(tires[vehicleId]);
     const [agendamento, setAgendamento] = useState();
 
-
+    console.log('uf: ' + ufOrigem);
     const handleCancelModal = () => {
         setModalVisible(!modalVisible);
         setMarca('');
@@ -260,7 +261,7 @@ export const ModalEditVehicle = ({
                                             <div className={styles.verticalFlex}>
                                                 <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Dianteiro Esquerdo:</span>
                                                 <select
-                                                defaultValue={'selecionar'}
+                                                defaultValue={tires[vehicleId].de}
                                                 onChange={(val) => setPneus(
                                                     {
                                                         ...pneus,
@@ -278,7 +279,7 @@ export const ModalEditVehicle = ({
                                             <div className={styles.verticalFlex}>
                                                 <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Dianteiro Direito:</span>
                                                 <select
-                                                defaultValue={'selecionar'}
+                                                defaultValue={tires[vehicleId].dd}
                                                 onChange={(val) => setPneus(
                                                     {
                                                         ...pneus,
@@ -299,7 +300,7 @@ export const ModalEditVehicle = ({
                                         <div className={styles.verticalFlex}>
                                             <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Traseiro Esquerdo:</span>
                                             <select
-                                            defaultValue={'selecionar'}
+                                            defaultValue={tires[vehicleId].te}
                                             onChange={(val) => setPneus(
                                                 {
                                                     ...pneus,
@@ -317,7 +318,7 @@ export const ModalEditVehicle = ({
                                         <div className={styles.verticalFlex}>  
                                             <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Traseiro Direito:</span>
                                             <select
-                                            defaultValue={'selecionar'}
+                                            defaultValue={tires[vehicleId].td}
                                             onChange={(val) => setPneus(
                                                 {
                                                     ...pneus,
@@ -337,7 +338,7 @@ export const ModalEditVehicle = ({
                                         <div className={styles.verticalFlex}>
                                                 <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Estepe:</span>
                                                 <select
-                                                defaultValue={'selecionar'}
+                                                defaultValue={tires[vehicleId].estepe}
                                                 onChange={(val) => setPneus(
                                                     {
                                                         ...pneus,
@@ -355,6 +356,7 @@ export const ModalEditVehicle = ({
                                         <div className={styles.verticalFlex}>
                                         <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Tipo: </span>
                                             <ReactInputMask
+                                            value={tires[vehicleId].tipo}
                                             mask={"999/99 r99"}
                                             placeholder="___/__ r__"
                                             onChange={(val) => setPneus(

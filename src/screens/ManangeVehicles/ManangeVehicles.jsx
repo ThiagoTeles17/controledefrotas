@@ -28,6 +28,7 @@ const ManangeVehicles = () => {
     const [activities, setActivities] = useState();
     const [unities, setUnities] = useState();
     const [tires, setTires] = useState();
+    const [insurances, setInsurances] = useState();
 
     const [vehToEditId, setVehToEditId] = useState();
 
@@ -36,6 +37,7 @@ const ManangeVehicles = () => {
         setActivities((await getDoc(doc(db, 'assistencia', 'atividades'))).data());
         setUnities((await getDoc(doc(db, 'assistencia', 'unidades'))).data());
         setTires((await getDoc(doc(db, 'assistencia', 'pneus'))).data());
+        setInsurances((await getDoc(doc(db, 'assistencia', 'seguros'))).data());
     };
 
     useEffect(() => {
@@ -66,6 +68,7 @@ const ManangeVehicles = () => {
                 activities={activities}
                 unities={unities}
                 tires={tires}
+                insurances={insurances}
                 />
             );
         }
