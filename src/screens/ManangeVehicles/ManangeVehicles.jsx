@@ -15,6 +15,7 @@ import { ApiContext } from "../../context/ApiContext";
 import { ModalAddVehicle } from "./components/ModalAddVehicle/ModalAddVehicle";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { ModalEditVehicle } from "./components/ModalEditVehicle/ModalEditVehicle";
+import Box from "../../components/Sheets/CarDescription/Box/Box";
 
 
 const ManangeVehicles = () => {
@@ -92,6 +93,12 @@ const ManangeVehicles = () => {
         <Container>
             <AiFillPlusCircle onClick={() => handleAddVehicle()} className={styles.addBtn}/>
            
+            {/* TODO painel
+            <Box
+            title='Veículos Cadastrados'
+            content={vehicles && Object.keys(vehicles).length}
+            ></Box>*/}
+
            <table>
                 <tr className={styles.tableHeader}>
                     <td>Placa</td>

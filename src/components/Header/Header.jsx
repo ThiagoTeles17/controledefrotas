@@ -6,7 +6,8 @@ import { ScreenContext } from "../../context/ScreenContext";
 
 import { AiFillCar } from 'react-icons/ai';
 import { FiTool } from 'react-icons/fi';
-import {BsPersonVcard} from 'react-icons/bs'
+import { BsPersonVcard } from 'react-icons/bs';
+import { HiOutlineDocumentText } from 'react-icons/hi';
 
 const Header = ({screens, handleOnClick}) => {
 
@@ -20,7 +21,8 @@ const Header = ({screens, handleOnClick}) => {
     const headerIcons = {
         'Visão Geral' : <AiFillCar size={20}/>,
         'Gerenciar Veículos' : <FiTool size={25}/>,
-        'Condutores' : <BsPersonVcard/>
+        'Condutores' : <BsPersonVcard/>,
+        'Relatórios' : <HiOutlineDocumentText size={20}/>
     };
 
     return(

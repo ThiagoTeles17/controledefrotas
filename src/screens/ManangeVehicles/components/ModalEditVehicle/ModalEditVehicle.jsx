@@ -21,22 +21,49 @@ export const ModalEditVehicle = ({
     insurances
 }) => {
 
-    const [marca, setMarca] = useState(vehicles[vehicleId].marca);
-    const [modelo, setModelo] = useState(vehicles[vehicleId].modelo);
-    const [placa, setPlaca] = useState(vehicles[vehicleId].placa);
-    const [renavam, setRenavam] = useState(vehicles[vehicleId].renavam);
-    const [atividade, setAtividade] = useState(activities[vehicleId]);
-    const [despesa, setDespesa] = useState(vehicles[vehicleId].despesa);
-    const [ufOrigem, setUfOrigem] = useState(vehicles[vehicleId].ufOrigem);
-    const [anoFabricacao, setAnoFabricacao] = useState(vehicles[vehicleId].ano);
-    const [unidade, setUnidade] = useState(vehicles[vehicleId].unidade);
-    const [imagem, setImagem] = useState(vehicles[vehicleId].image);
-    const [seguradora, setSeguradora] = useState(insurances[vehicleId].seguradora);
-    const [vigenciaSeguro, setVigenciaSeguro] = useState(insurances[vehicleId].vigencia);
-    const [pneus, setPneus] = useState(tires[vehicleId]);
+    const [marca, setMarca] = useState();
+    const [modelo, setModelo] = useState();
+    const [placa, setPlaca] = useState();
+    const [renavam, setRenavam] = useState();
+    const [atividade, setAtividade] = useState();
+    const [despesa, setDespesa] = useState();
+    const [ufOrigem, setUfOrigem] = useState();
+    const [anoFabricacao, setAnoFabricacao] = useState();
+    const [unidade, setUnidade] = useState();
+    const [imagem, setImagem] = useState();
+    const [seguradora, setSeguradora] = useState();
+    const [vigenciaSeguro, setVigenciaSeguro] = useState();
+    const [pneus, setPneus] = useState();
     const [agendamento, setAgendamento] = useState();
 
-    console.log('uf: ' + ufOrigem);
+
+    const setData = () => {
+
+        if(vehicles[vehicleId])
+        {
+            setMarca(vehicles[vehicleId].marca && vehicles[vehicleId].marca);
+            setModelo(vehicles[vehicleId].modelo && vehicles[vehicleId].modelo);
+            setPlaca(vehicles[vehicleId].placa && vehicles[vehicleId].placa);
+            setRenavam(vehicles[vehicleId].renavam && vehicles[vehicleId].renavam);
+            setDespesa(vehicles[vehicleId].despesa && vehicles[vehicleId].despesa);
+            setUfOrigem(vehicles[vehicleId].ufOrigem && vehicles[vehicleId].ufOrigem);
+            setAnoFabricacao(vehicles[vehicleId].ano && vehicles[vehicleId].ano);
+            setImagem(vehicles[vehicleId].image && vehicles[vehicleId].image);
+        }
+        setAtividade(activities[vehicleId] && activities[vehicleId]);
+        
+        if(insurances[vehicleId]){
+            setSeguradora(insurances[vehicleId].seguradora && insurances[vehicleId].seguradora);
+            setSeguradora(insurances[vehicleId].vigencia && insurances[vehicleId].vigencia);
+        }
+
+        setPneus(tires[vehicleId] && tires[vehicleId]);
+    }
+
+    useEffect(() => {
+        setData();
+    }, []);
+
     const handleCancelModal = () => {
         setModalVisible(!modalVisible);
         setMarca('');
@@ -385,7 +412,7 @@ export const ModalEditVehicle = ({
                             <button 
                             type='submit' 
                             className={styles.modalBtn} 
-                            >Adicionar</button>
+                            >Salvar</button>
 
                             <button className={styles.modalBtn} onClick={handleCancelModal}>Cancelar</button>
                         </div>                       

@@ -18,7 +18,7 @@ function App() {
     setSelectedScreen(screen);
   }
 
-  const screens = ['Visão Geral', 'Gerenciar Veículos', 'Condutores']
+  const screens = ['Visão Geral', 'Gerenciar Veículos', 'Condutores', 'Relatórios']
 
   return (
 

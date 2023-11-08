@@ -17,7 +17,6 @@ const MechanicalPendences = ({curVehicle, db, setHistory}) => {
 
     const getPendences = async() => {
         setPendencesList((await getDoc(pendencesRef)).data());
-        
     }
     const getHistory = async() => {
         setHistory((await getDoc(mecHistoryRef)).data());
@@ -35,7 +34,6 @@ const MechanicalPendences = ({curVehicle, db, setHistory}) => {
 
     const [modalVisible, setModalVisible] = useState(false);
     const [modalContent, setModalContent] = useState('');
-
     const [pendenceValue, setPendenceValue] = useState('');
 
     //Confirm pendence states declaration
@@ -149,10 +147,17 @@ const MechanicalPendences = ({curVehicle, db, setHistory}) => {
             }
         };
 
+
+
+
         //concat new history item to previous history
-        let newHistory = {
+        let newHistory = mecHistoryRef[curVehicle] ? {
             [curVehicle] : {
                 ...mecHistoryRef[curVehicle],
+                ...newHistoryItem
+            }
+        } : {
+            [curVehicle] : {
                 ...newHistoryItem
             }
         };
@@ -163,8 +168,8 @@ const MechanicalPendences = ({curVehicle, db, setHistory}) => {
             ]
         };
 
-        setDoc(mecHistoryRef, newHistory, {merge: true});
-        setDoc(pendencesRef, newPendencesList, {merge: true});
+        setDoc(mecHistoryRef, newHistory);
+        setDoc(pendencesRef, newPendencesList);
 
         
         
@@ -187,14 +192,18 @@ const MechanicalPendences = ({curVehicle, db, setHistory}) => {
     const handleAddPendence = () =>{
 
 
-        let newArray = { 
+        let newArray = pendencesList[curVehicle] ? { 
             [curVehicle] : [
                 ...pendencesList[curVehicle],
                 pendenceValue
             ]
-        }
+        } : { 
+            [curVehicle] : [
+                pendenceValue
+            ]
+        };
 
-        setDoc(pendencesRef, newArray, {merge: true});
+        setDoc(pendencesRef, newArray);
         getPendences();
         setModalVisible(!modalVisible);
 
