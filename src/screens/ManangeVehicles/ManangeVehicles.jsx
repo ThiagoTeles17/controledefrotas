@@ -94,6 +94,7 @@ const ManangeVehicles = () => {
     return(
         <div className={styles.VerticalContainer}>
 
+            {/*
             <Container>
                     <Pannel
                     title="Veiculos Cadastrados:"
@@ -104,7 +105,7 @@ const ManangeVehicles = () => {
                     content={vehicles && Object.keys(vehicles).length}
                     />
             </Container>
-           
+           */}
 
             <Container>
             <AiFillPlusCircle onClick={() => handleAddVehicle()} className={styles.addBtn}/>

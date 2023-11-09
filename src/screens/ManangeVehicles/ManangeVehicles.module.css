@@ -1,7 +1,7 @@
 .VerticalContainer{
     display: flex;
     flex-direction: column;
-    gap: 2.2rem;
+    gap: .1rem;
     padding: 2%;
     align-items: center;
 }

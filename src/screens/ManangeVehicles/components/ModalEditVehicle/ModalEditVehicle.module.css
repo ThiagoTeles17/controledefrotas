@@ -8,6 +8,10 @@
     flex-direction: row;
 }
 
+.modal__overlay--after-open{
+    z-index: 999;
+}
+
 .modal{
     width: 55rem;
     min-height: 12rem;
@@ -26,7 +30,7 @@
     gap: 1rem;
     transition: 2s;
     padding: 2rem;    
-    
+        
 }
 
 .modalInput{
