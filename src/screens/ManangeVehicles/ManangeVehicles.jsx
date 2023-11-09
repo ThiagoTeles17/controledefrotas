@@ -9,6 +9,7 @@ import {CiCircleRemove} from 'react-icons/ci';
 import {BsFillPencilFill, BsPencilFill} from 'react-icons/bs';
 import {AiOutlinePlus} from 'react-icons/ai';
 import {AiFillPlusCircle} from 'react-icons/ai';
+import { Pannel } from "./components/Pannel/Pannel";
 
 
 import { ApiContext } from "../../context/ApiContext";
@@ -16,6 +17,7 @@ import { ModalAddVehicle } from "./components/ModalAddVehicle/ModalAddVehicle";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { ModalEditVehicle } from "./components/ModalEditVehicle/ModalEditVehicle";
 import Box from "../../components/Sheets/CarDescription/Box/Box";
+import VerticalContainer from "../../components/VerticalContainer/VerticalContainer";
 
 
 const ManangeVehicles = () => {
@@ -90,7 +92,21 @@ const ManangeVehicles = () => {
 
 
     return(
-        <Container>
+        <div className={styles.VerticalContainer}>
+
+            <Container>
+                    <Pannel
+                    title="Veiculos Cadastrados:"
+                    content={vehicles && Object.keys(vehicles).length}
+                    />
+                    <Pannel
+                    title="Veiculos Ativos:"
+                    content={vehicles && Object.keys(vehicles).length}
+                    />
+            </Container>
+           
+
+            <Container>
             <AiFillPlusCircle onClick={() => handleAddVehicle()} className={styles.addBtn}/>
            
             {/* TODO painel
@@ -164,8 +180,8 @@ const ManangeVehicles = () => {
             >   
             {handleModalContent()}
             </Modal> 
-
-        </Container>
+            </Container>
+        </div>
     );  
 
 }

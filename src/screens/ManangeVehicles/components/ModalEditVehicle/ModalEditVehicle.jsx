@@ -36,7 +36,7 @@ export const ModalEditVehicle = ({
     const [pneus, setPneus] = useState();
     const [agendamento, setAgendamento] = useState();
 
-
+    //set values to inputs
     const setData = () => {
 
         if(vehicles[vehicleId])
@@ -49,12 +49,13 @@ export const ModalEditVehicle = ({
             setUfOrigem(vehicles[vehicleId].ufOrigem && vehicles[vehicleId].ufOrigem);
             setAnoFabricacao(vehicles[vehicleId].ano && vehicles[vehicleId].ano);
             setImagem(vehicles[vehicleId].image && vehicles[vehicleId].image);
+            setAgendamento(vehicles[vehicleId].precisaAgendar && vehicles[vehicleId].precisaAgendar);
         }
         setAtividade(activities[vehicleId] && activities[vehicleId]);
         
         if(insurances[vehicleId]){
             setSeguradora(insurances[vehicleId].seguradora && insurances[vehicleId].seguradora);
-            setSeguradora(insurances[vehicleId].vigencia && insurances[vehicleId].vigencia);
+            setVigenciaSeguro(insurances[vehicleId].vigencia && insurances[vehicleId].vigencia);
         }
 
         setPneus(tires[vehicleId] && tires[vehicleId]);
@@ -401,7 +402,12 @@ export const ModalEditVehicle = ({
                                     <div className={styles.horizontalFlex} style={{marginTop: '1rem', marginTop: '2rem'}}>
                                         <AiOutlineSchedule/>
                                         <span style={{fontSize: '14px', marginLeft: '1rem', marginRight: '.5rem'}}>Necessita agendamento para uso</span>
-                                        <input type="checkbox" value={vehicles[vehicleId].precisaAgendar == true ? true : false} onChange={() => setAgendamento(!agendamento)}/>
+                                        <input 
+                                        type="checkbox" 
+                                        defaultChecked={vehicles[vehicleId].precisaAgendar == true ? true : false} 
+                                        
+                                        onChange={() => setAgendamento(!agendamento)}
+                                        />
                                     </div>
                              </div>                     
 
