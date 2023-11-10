@@ -18,14 +18,20 @@ import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { ModalEditVehicle } from "./components/ModalEditVehicle/ModalEditVehicle";
 import Box from "../../components/Sheets/CarDescription/Box/Box";
 import VerticalContainer from "../../components/VerticalContainer/VerticalContainer";
+import {GrCheckmark} from 'react-icons/gr';
 
 
 const ManangeVehicles = () => {
-    
+
+        
     const {curVehicle, setCurVehicle, db} = useContext(ApiContext);
 
     const [modalVisible, setModalVisible] = useState(false);
     const [modalContent, setModalContent] = useState('add');
+
+    //sucess message on save changes
+    const [success, setSuccess] = useState(false);
+    const [successMessage, setSuccesMessage] = useState('');
 
     const [vehicles, setVehicles] = useState();
     const [activities, setActivities] = useState();
@@ -41,12 +47,12 @@ const ManangeVehicles = () => {
         setUnities((await getDoc(doc(db, 'assistencia', 'unidades'))).data());
         setTires((await getDoc(doc(db, 'assistencia', 'pneus'))).data());
         setInsurances((await getDoc(doc(db, 'assistencia', 'seguros'))).data());
+        console.log(vehicles);
     };
 
     useEffect(() => {
         getDatabase();
     }, []);
-
 
     const handleModalContent = () => {
         if(modalContent === 'add'){
@@ -56,6 +62,9 @@ const ManangeVehicles = () => {
                 setModalVisible={setModalVisible}
                 unidades={unities}
                 db={db}
+                getDatabase={() => getDatabase()}
+                setSuccessMessage={setSuccesMessage}
+                setSuccess={setSuccess}
                 />
             );
         }
@@ -72,6 +81,9 @@ const ManangeVehicles = () => {
                 unities={unities}
                 tires={tires}
                 insurances={insurances}
+                getDatabase={() => getDatabase()}
+                setSuccessMessage={setSuccesMessage}
+                setSuccess={setSuccess}
                 />
             );
         }
@@ -83,7 +95,6 @@ const ManangeVehicles = () => {
         setModalVisible(!modalVisible);
     }
 
-
     const handleEditVehicle = (id) => {
         setModalContent("edit");
         setModalVisible(!modalVisible);
@@ -94,7 +105,7 @@ const ManangeVehicles = () => {
     return(
         <div className={styles.VerticalContainer}>
 
-            {/*
+            {/* TODO
             <Container>
                     <Pannel
                     title="Veiculos Cadastrados:"
@@ -107,7 +118,18 @@ const ManangeVehicles = () => {
             </Container>
            */}
 
-            <Container>
+            {/*Displays sucess message if succes is true*/}
+            {success && <div className={styles.successMessage}>
+            <GrCheckmark 
+            style={{
+                filter: 'invert(51%) sepia(97%) saturate(414%) hue-rotate(71deg) brightness(103%) contrast(92%)'
+            }}
+            />
+            {successMessage}
+            </div>}
+
+            <Container>           
+
             <AiFillPlusCircle onClick={() => handleAddVehicle()} className={styles.addBtn}/>
            
             {/* TODO painel
@@ -164,7 +186,7 @@ const ManangeVehicles = () => {
                             
                             <td>{vehicles[item].renavam ? vehicles[item].renavam : ''}</td> 
                             
-                            <td>{vehicles[item].ativo ? 'Ativo' : 'Inativo'}</td> 
+                            <td>{vehicles[item].ativo && vehicles[item].ativo == true ? 'Ativo' : 'Inativo'}</td> 
 
                             <td style={{width: '1.5rem'}}>
                                 <BsFillPencilFill

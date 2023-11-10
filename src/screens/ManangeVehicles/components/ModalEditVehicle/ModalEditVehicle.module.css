@@ -1,38 +1,12 @@
 .verticalFlex{
     display: flex;
     flex-direction: column;
-}
 
+}
 .horizontalFlex{
     display: flex;
     flex-direction: row;
 }
-
-.modal__overlay--after-open{
-    z-index: 999;
-}
-
-.modal{
-    width: 55rem;
-    min-height: 12rem;
-    height: 38rem;
-    border-radius: .2rem;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgb(54, 54, 54);
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 1rem;
-    transition: 2s;
-    padding: 2rem;    
-        
-}
-
 .modalInput{
     width: 22rem;
     height: 2rem;
@@ -108,11 +82,16 @@
 }
 
 .modalTitle{
+  
     color: white;
     margin-bottom: 2rem;
 }
 
 .modalBtn{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: .5rem;
     padding: .5rem;
     padding-left: 1rem;
     padding-right: 1rem;

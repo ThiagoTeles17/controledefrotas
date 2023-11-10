@@ -40,7 +40,7 @@ const CarDescritpion = ({db, curVehicle}) => {
                 {activities[curVehicle] &&
                 <Box 
                 title='Atividade:' 
-                content={activities[curVehicle]}
+                content={(activities[curVehicle]).toUpperCase()}
                 />
                 }
 
@@ -54,7 +54,7 @@ const CarDescritpion = ({db, curVehicle}) => {
                 {vehicles[curVehicle].placa &&
                 <Box 
                 title='Placa:' 
-                content={vehicles[curVehicle].placa}
+                content={(vehicles[curVehicle].placa).toUpperCase()}
                 />
                 }
 

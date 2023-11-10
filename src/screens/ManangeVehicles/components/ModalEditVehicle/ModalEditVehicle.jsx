@@ -6,22 +6,28 @@ import brasao from '../../../../assets/imgs/brasao.png'
 import ReactInputMask from "react-input-mask";
 import {GiCarWheel} from 'react-icons/gi';
 import {AiOutlineSchedule} from 'react-icons/ai';
-import { setDoc, doc, getDoc } from "firebase/firestore";
+import {AiOutlineSave} from 'react-icons/ai';
+import {ImCancelCircle} from 'react-icons/im';
+import { TiCancelOutline } from 'react-icons/ti';
+import { setDoc, doc, getDoc, deleteDoc, updateDoc, deleteField } from "firebase/firestore";
 
 
-export const ModalEditVehicle = ({
-    unidades, 
-    db, 
-    modalVisible, 
-    setModalVisible, 
-    vehicleId,
-    vehicles,
-    activities,
-    tires,
-    insurances
-}) => {
+    export const ModalEditVehicle = ({
+        unidades, 
+        db, 
+        modalVisible, 
+        setModalVisible, 
+        vehicleId,
+        vehicles,
+        activities,
+        tires,
+        insurances,
+        getDatabase,
+        setSuccess,
+        setSuccessMessage
+    }) => {
 
-    const [ativo, setAtivo] = useState('');
+    const [ativo, setAtivo] = useState(false);
     const [marca, setMarca] = useState('');
     const [modelo, setModelo] = useState('');
     const [placa, setPlaca] = useState('');
@@ -42,7 +48,7 @@ export const ModalEditVehicle = ({
 
         if(vehicles[vehicleId])
         {
-            setAtivo(vehicles[vehicleId].ativo && vehicles[vehicleId].ativo);
+            setAtivo(vehicles[vehicleId].ativo && vehicles[vehicleId].ativo == true ? true : false);
             setMarca(vehicles[vehicleId].marca && vehicles[vehicleId].marca);
             setModelo(vehicles[vehicleId].modelo && vehicles[vehicleId].modelo);
             setPlaca(vehicles[vehicleId].placa && vehicles[vehicleId].placa);
@@ -85,8 +91,14 @@ export const ModalEditVehicle = ({
         setPneus('');
         setAgendamento(false);
     };
+
+
     const handleEditCar = (event) => {
         event.preventDefault();
+
+        if(window.confirm('Salvar alterações?') == false){
+            return
+        }
           
         let newVehicle = {
             [vehicleId] : {
@@ -142,31 +154,67 @@ export const ModalEditVehicle = ({
         setAgendamento(false);
 
 
+        setSuccessMessage("Alterações realizadas com sucesso!");
+        setSuccess(true);
+        setTimeout(() => {
+            setSuccess(false);
+            getDatabase();
+        }, 2000);
+        
     };
+
+    const handleRemoveCar = () => {
+
+        if(window.confirm('Excluir veículo?') == false){
+            return
+        }
+
+        updateDoc(doc(db, 'assistencia', 'veiculos'), {
+                [vehicleId] : deleteField()
+        });
+        updateDoc(doc(db, 'assistencia', 'seguros'), {
+            [vehicleId] : deleteField()
+        });
+        updateDoc(doc(db, 'assistencia', 'atividades'), {
+            [vehicleId] : deleteField()
+        });
+        updateDoc(doc(db, 'assistencia', 'pneus'), {
+            [vehicleId] : deleteField()
+        });
+
+        setModalVisible(!modalVisible);
+
+        setSuccessMessage("Veículo removido com sucesso!");
+        setSuccess(true);
+        setTimeout(() => {
+            setSuccess(false);
+            getDatabase();
+        }, 2000);
+
+
+    };
+
     return(
         <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                 <img style={{width: '3rem', marginBottom: '.5rem'}} src={brasao} alt="" />
                 <span className={styles.modalTitle}>Editar Veículo</span>
 
-               
-                
-                
                 <form onSubmit={(e) => handleEditCar(e)} style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', rowGap: '1rem'}}> 
                     
-                    <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '1rem'}}>
+                    <div style={{display: 'flex', flexDirection: 'row', alignItems: 'flex-start', gap: '1rem'}}>
                     
-                    {/* TODO <div className={styles.verticalFlex}>
-                    <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Situação:</span>
-                    <select
-                    defaultValue={ativo}
-                    value={ativo}
-                    onChange={(val) => setAtivo(val)}
-                    className={styles.modalSelectSmall}
-                    >
-                        <option value={true}>Ativo</option>
-                        <option value={false}>Inativo</option>
-                    </select>
-                </div>*/}
+                    <div className={styles.verticalFlex}>
+                        <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Situação:</span>
+                        <select
+                        defaultValue={ativo}
+                        value={ativo}
+                        onChange={(val) => setAtivo(val.target.value == 'true' ? true : false)}
+                        className={styles.modalSelectSmall}
+                        >
+                            <option value={true}>Ativo</option>
+                            <option value={false}>Inativo</option>
+                        </select>
+                    </div>
 
                     <div style={{display: 'flex', flexDirection: 'row', gap: '1rem'}}>
                         <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem'}}>
@@ -440,10 +488,15 @@ export const ModalEditVehicle = ({
                             <button 
                             type='submit' 
                             className={styles.modalBtn} 
-                            >Salvar</button>
+                            ><AiOutlineSave/>Salvar</button>
 
-                            <button className={styles.modalBtn} onClick={handleCancelModal}>Cancelar</button>
-                        </div>                       
+                            <button className={styles.modalBtn} onClick={handleCancelModal}><TiCancelOutline size={15}/>Cancelar</button>
+
+                            <button type="button" className={styles.modalBtn}
+                             style={{position: 'absolute', right: '5.5rem'}}
+                             onClick={handleRemoveCar}><ImCancelCircle/>Remover Veículo</button>
+                        </div>               
+                                
                     </form>
                      
                 </div>      

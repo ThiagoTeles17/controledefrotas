@@ -9,8 +9,9 @@ import {AiOutlineSchedule} from 'react-icons/ai';
 import { setDoc, doc } from "firebase/firestore";
 
 
-export const ModalAddVehicle = ({unidades, db, modalVisible, setModalVisible}) => {
+export const ModalAddVehicle = ({unidades, db, modalVisible, setModalVisible, getDatabase, setSuccess, setSuccessMessage}) => {
 
+    
     const [marca, setMarca] = useState('');
     const [modelo, setModelo] = useState('');
     const [placa, setPlaca] = useState('');
@@ -36,7 +37,7 @@ export const ModalAddVehicle = ({unidades, db, modalVisible, setModalVisible}) =
         setDespesa('');
         setUfOrigem('sc');
         setAnoFabricacao('');
-        setUnidade(unidades && Object.keys(unidades)[0]);
+        setUnidade(unidades && unidades.assistencia[0]);
         setImagem('');
         setSeguradora('');
         setVigenciaSeguro('');
@@ -103,6 +104,13 @@ export const ModalAddVehicle = ({unidades, db, modalVisible, setModalVisible}) =
         setPneus('');
         setAgendamento(false);
 
+        setSuccessMessage("Veículo adicionado com sucesso!");
+        setSuccess(true);
+        setTimeout(() => {
+            setSuccess(false);
+            getDatabase();
+        }, 2000);
+        
 
     };
     return(
