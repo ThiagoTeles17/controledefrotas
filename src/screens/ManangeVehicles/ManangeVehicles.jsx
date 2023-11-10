@@ -124,6 +124,7 @@ const ManangeVehicles = () => {
                     <td>Despesa</td>
                     <td>Atividade</td>           
                     <td>Renavam</td>
+                    <td>Situação</td>
                     <td></td>
                 </tr>
                 {vehicles && 
@@ -163,6 +164,8 @@ const ManangeVehicles = () => {
                             
                             <td>{vehicles[item].renavam ? vehicles[item].renavam : ''}</td> 
                             
+                            <td>{vehicles[item].ativo ? 'Ativo' : 'Inativo'}</td> 
+
                             <td style={{width: '1.5rem'}}>
                                 <BsFillPencilFill
                                 onClick={() => handleEditVehicle(item)}
@@ -177,7 +180,7 @@ const ManangeVehicles = () => {
            <Modal
             isOpen={modalVisible}
             className={styles.modal}
-            style={{overlay: {backgroundColor: 'rgba(214, 214, 214, 0.5)'}}}
+            style={{overlay: {backgroundColor: 'rgba(214, 214, 214, 0.5)', zIndex: '10'}}}
             >   
             {handleModalContent()}
             </Modal> 

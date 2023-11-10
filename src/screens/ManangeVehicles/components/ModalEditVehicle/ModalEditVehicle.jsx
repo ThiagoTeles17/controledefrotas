@@ -21,37 +21,41 @@ export const ModalEditVehicle = ({
     insurances
 }) => {
 
-    const [marca, setMarca] = useState();
-    const [modelo, setModelo] = useState();
-    const [placa, setPlaca] = useState();
-    const [renavam, setRenavam] = useState();
-    const [atividade, setAtividade] = useState();
-    const [despesa, setDespesa] = useState();
-    const [ufOrigem, setUfOrigem] = useState();
-    const [anoFabricacao, setAnoFabricacao] = useState();
-    const [unidade, setUnidade] = useState();
-    const [imagem, setImagem] = useState();
-    const [seguradora, setSeguradora] = useState();
-    const [vigenciaSeguro, setVigenciaSeguro] = useState();
-    const [pneus, setPneus] = useState();
-    const [agendamento, setAgendamento] = useState();
+    const [ativo, setAtivo] = useState('');
+    const [marca, setMarca] = useState('');
+    const [modelo, setModelo] = useState('');
+    const [placa, setPlaca] = useState('');
+    const [renavam, setRenavam] = useState('');
+    const [atividade, setAtividade] = useState('');
+    const [despesa, setDespesa] = useState('');
+    const [ufOrigem, setUfOrigem] = useState('');
+    const [anoFabricacao, setAnoFabricacao] = useState('');
+    const [unidade, setUnidade] = useState('');
+    const [imagem, setImagem] = useState('');
+    const [seguradora, setSeguradora] = useState('');
+    const [vigenciaSeguro, setVigenciaSeguro] = useState('');
+    const [pneus, setPneus] = useState('');
+    const [agendamento, setAgendamento] = useState('');
 
     //set values to inputs
     const setData = () => {
 
         if(vehicles[vehicleId])
         {
+            setAtivo(vehicles[vehicleId].ativo && vehicles[vehicleId].ativo);
             setMarca(vehicles[vehicleId].marca && vehicles[vehicleId].marca);
             setModelo(vehicles[vehicleId].modelo && vehicles[vehicleId].modelo);
             setPlaca(vehicles[vehicleId].placa && vehicles[vehicleId].placa);
             setRenavam(vehicles[vehicleId].renavam && vehicles[vehicleId].renavam);
+            setUnidade(vehicles[vehicleId].unidade && vehicles[vehicleId].unidade);
             setDespesa(vehicles[vehicleId].despesa && vehicles[vehicleId].despesa);
             setUfOrigem(vehicles[vehicleId].ufOrigem && vehicles[vehicleId].ufOrigem);
             setAnoFabricacao(vehicles[vehicleId].ano && vehicles[vehicleId].ano);
-            setImagem(vehicles[vehicleId].image && vehicles[vehicleId].image);
+            setImagem(vehicles[vehicleId].imagem && vehicles[vehicleId].imagem);
             setAgendamento(vehicles[vehicleId].precisaAgendar && vehicles[vehicleId].precisaAgendar);
         }
         setAtividade(activities[vehicleId] && activities[vehicleId]);
+
         
         if(insurances[vehicleId]){
             setSeguradora(insurances[vehicleId].seguradora && insurances[vehicleId].seguradora);
@@ -81,12 +85,12 @@ export const ModalEditVehicle = ({
         setPneus('');
         setAgendamento(false);
     };
-    const handleAddCar = (event) => {
+    const handleEditCar = (event) => {
         event.preventDefault();
-
-        
+          
         let newVehicle = {
             [vehicleId] : {
+                'ativo' : ativo,
                 'marca' : marca,
                 'modelo' : modelo,
                 'ano' : anoFabricacao,
@@ -116,7 +120,6 @@ export const ModalEditVehicle = ({
                 ...pneus
             }
         }
-
         setDoc(doc(db, 'assistencia', 'veiculos'), newVehicle, {merge: true});
         setDoc(doc(db, 'assistencia', 'seguros'), newInsurance, {merge: true});
         setDoc(doc(db, 'assistencia', 'atividades'), newActivity, {merge: true});
@@ -143,11 +146,28 @@ export const ModalEditVehicle = ({
     return(
         <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                 <img style={{width: '3rem', marginBottom: '.5rem'}} src={brasao} alt="" />
-
                 <span className={styles.modalTitle}>Editar Veículo</span>
 
-                <form onSubmit={(e) => handleAddCar(e)} style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', rowGap: '1rem'}}> 
+               
+                
+                
+                <form onSubmit={(e) => handleEditCar(e)} style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', rowGap: '1rem'}}> 
+                    
                     <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '1rem'}}>
+                    
+                    {/* TODO <div className={styles.verticalFlex}>
+                    <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Situação:</span>
+                    <select
+                    defaultValue={ativo}
+                    value={ativo}
+                    onChange={(val) => setAtivo(val)}
+                    className={styles.modalSelectSmall}
+                    >
+                        <option value={true}>Ativo</option>
+                        <option value={false}>Inativo</option>
+                    </select>
+                </div>*/}
+
                     <div style={{display: 'flex', flexDirection: 'row', gap: '1rem'}}>
                         <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem'}}>
                                     <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '1rem'}}>
@@ -235,7 +255,9 @@ export const ModalEditVehicle = ({
                                     <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Unidade:</span>
                                     <select value={unidade} onChange={(val) => setUnidade(val.target.value)} className={styles.modalInput} type='text'>
                                         {unidades && 
-                                            Object.keys(unidades).map((item, index) => {
+                                            (unidades.assistencia).map((item, index) => {
+
+                
                                                 return(
                                                     <option key={index} value={item}>{item}</option>
                                                 );

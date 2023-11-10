@@ -51,6 +51,7 @@ export const ModalAddVehicle = ({unidades, db, modalVisible, setModalVisible}) =
         
         let newVehicle = {
             [newId] : {
+                'ativo' : true,
                 'marca' : marca,
                 'modelo' : modelo,
                 'ano' : anoFabricacao,
@@ -199,7 +200,9 @@ export const ModalAddVehicle = ({unidades, db, modalVisible, setModalVisible}) =
                                     <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Unidade:</span>
                                     <select value={unidade} onChange={(val) => setUnidade(val.target.value)} className={styles.modalInput} type='text'>
                                         {unidades && 
-                                            Object.keys(unidades).map((item, index) => {
+                                            (unidades.assistencia).map((item, index) => {
+
+                
                                                 return(
                                                     <option key={index} value={item}>{item}</option>
                                                 );
