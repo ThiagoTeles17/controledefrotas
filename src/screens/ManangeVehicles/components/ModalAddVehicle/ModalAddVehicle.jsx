@@ -20,7 +20,7 @@ export const ModalAddVehicle = ({unidades, db, modalVisible, setModalVisible, ge
     const [despesa, setDespesa] = useState('');
     const [ufOrigem, setUfOrigem] = useState('sc');
     const [anoFabricacao, setAnoFabricacao] = useState('');
-    const [unidade, setUnidade] = useState(unidades && Object.keys(unidades)[0]);
+    const [unidade, setUnidade] = useState(unidades && unidades.assistencia[0]);
     const [imagem, setImagem] = useState('');
     const [seguradora, setSeguradora] = useState('');
     const [vigenciaSeguro, setVigenciaSeguro] = useState('');
@@ -210,7 +210,6 @@ export const ModalAddVehicle = ({unidades, db, modalVisible, setModalVisible, ge
                                         {unidades && 
                                             (unidades.assistencia).map((item, index) => {
 
-                
                                                 return(
                                                     <option key={index} value={item}>{item}</option>
                                                 );

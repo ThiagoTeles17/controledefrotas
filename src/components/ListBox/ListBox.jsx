@@ -35,9 +35,7 @@ const ListBox = () => {
             {vehicles &&
                 Object.keys(vehicles).map((veiculo, index) => {
                     
-                    console.log('id do veiculo: ' + veiculo);
-
-                    let vehDisplay = vehicles[veiculo].modelo + ' - ' + vehicles[veiculo].placa; 
+                    let vehDisplay = vehicles[veiculo].modelo + ' - ' + (vehicles[veiculo].placa).toUpperCase(); 
                     return(
                         <option value={veiculo} key={index}>     
                             {vehDisplay}

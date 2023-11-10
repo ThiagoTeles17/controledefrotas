@@ -92,7 +92,6 @@ import { setDoc, doc, getDoc, deleteDoc, updateDoc, deleteField } from "firebase
         setAgendamento(false);
     };
 
-
     const handleEditCar = (event) => {
         event.preventDefault();
 
