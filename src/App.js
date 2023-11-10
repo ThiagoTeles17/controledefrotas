@@ -7,6 +7,7 @@ import { ScreenProvider, ScreenContext } from "./context/ScreenContext.jsx";
 
 import { useContext, useEffect, useState } from "react";
 import ManangeVehicles from "./screens/ManangeVehicles/ManangeVehicles.jsx";
+import Drivers from "./screens/Drivers/Drivers.jsx";
 
 function App() {
   
@@ -18,7 +19,7 @@ function App() {
     setSelectedScreen(screen);
   }
 
-  const screens = ['Visão Geral', 'Gerenciar Veículos', 'Condutores', 'Relatórios']
+  const screens = ['Visão Geral', 'Gerenciar Veículos', 'Condutores', 'Relatórios'];
 
   return (
 
@@ -28,6 +29,7 @@ function App() {
           <Header handleOnClick={(screen) => handleOnClick(screen)} screens={screens}/>
           {selectedScreen == 'Visão Geral' && <Dashboard/>}
           {selectedScreen == 'Gerenciar Veículos' && <ManangeVehicles/>}
+          {selectedScreen == 'Condutores' && <Drivers/>}
         </ApiProvider>
       </ScreenProvider>
     </div>
