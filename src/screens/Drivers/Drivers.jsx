@@ -12,16 +12,16 @@ import {AiFillPlusCircle} from 'react-icons/ai';
 
 
 import { ApiContext } from "../../context/ApiContext";
-import { ModalAddVehicle } from "../ManangeVehicles/components/ModalAddVehicle/ModalAddVehicle";
+import { ModalAddDriver } from "./components/ModalAddDriver/ModalAddDriver";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
-import { ModalEditVehicle } from "../ManangeVehicles/components/ModalEditVehicle/ModalEditVehicle";
+import { ModalEditDriver } from "./components/ModalEditDriver/ModalEditDriver";
 import {GrCheckmark} from 'react-icons/gr';
 
 
 const Drivers = () => {
 
         
-    const {curVehicle, setCurVehicle, db} = useContext(ApiContext);
+    const {db} = useContext(ApiContext);
 
     const [modalVisible, setModalVisible] = useState(false);
     const [modalContent, setModalContent] = useState('add');
@@ -30,21 +30,16 @@ const Drivers = () => {
     const [success, setSuccess] = useState(false);
     const [successMessage, setSuccesMessage] = useState('');
 
-    const [vehicles, setVehicles] = useState();
-    const [activities, setActivities] = useState();
-    const [unities, setUnities] = useState();
-    const [tires, setTires] = useState();
-    const [insurances, setInsurances] = useState();
+    const [drivers, setDrivers] = useState();
 
-    const [vehToEditId, setVehToEditId] = useState();
+
+
+    const [driverToEditId, setDriverToEditId] = useState();
 
     const getDatabase = async() => {
-        setVehicles((await getDoc(doc(db, 'assistencia', 'veiculos'))).data());
-        setActivities((await getDoc(doc(db, 'assistencia', 'atividades'))).data());
-        setUnities((await getDoc(doc(db, 'assistencia', 'unidades'))).data());
-        setTires((await getDoc(doc(db, 'assistencia', 'pneus'))).data());
-        setInsurances((await getDoc(doc(db, 'assistencia', 'seguros'))).data());
-        console.log(vehicles);
+
+        setDrivers((await getDoc(doc(db, 'assistencia', 'condutores'))).data());
+
     };
 
     useEffect(() => {
@@ -54,10 +49,9 @@ const Drivers = () => {
     const handleModalContent = () => {
         if(modalContent === 'add'){
             return(
-                <ModalAddVehicle
+                <ModalAddDriver
                 modalVisible={modalVisible}
                 setModalVisible={setModalVisible}
-                unidades={unities}
                 db={db}
                 getDatabase={() => getDatabase()}
                 setSuccessMessage={setSuccesMessage}
@@ -67,17 +61,12 @@ const Drivers = () => {
         }
         else if(modalContent == 'edit'){
             return(
-                <ModalEditVehicle
+                <ModalEditDriver
                 modalVisible={modalVisible}
                 setModalVisible={setModalVisible}
-                unidades={unities}
+                driverId={driverToEditId}
                 db={db}
-                vehicleId={vehToEditId}
-                vehicles={vehicles}
-                activities={activities}
-                unities={unities}
-                tires={tires}
-                insurances={insurances}
+                drivers={drivers}
                 getDatabase={() => getDatabase()}
                 setSuccessMessage={setSuccesMessage}
                 setSuccess={setSuccess}
@@ -95,25 +84,14 @@ const Drivers = () => {
     const handleEditVehicle = (id) => {
         setModalContent("edit");
         setModalVisible(!modalVisible);
-        setVehToEditId(id);
+        setDriverToEditId(id);
     }
 
 
     return(
         <div className={styles.VerticalContainer}>
 
-            {/* TODO
-            <Container>
-                    <Pannel
-                    title="Veiculos Cadastrados:"
-                    content={vehicles && Object.keys(vehicles).length}
-                    />
-                    <Pannel
-                    title="Veiculos Ativos:"
-                    content={vehicles && Object.keys(vehicles).length}
-                    />
-            </Container>
-           */}
+           
 
             {/*Displays sucess message if succes is true*/}
             {success && <div className={styles.successMessage}>
@@ -128,55 +106,52 @@ const Drivers = () => {
             <Container>           
 
             <AiFillPlusCircle onClick={() => handleAddVehicle()} className={styles.addBtn}/>
-           
-            {/* TODO painel
-            <Box
-            title='Veículos Cadastrados'
-            content={vehicles && Object.keys(vehicles).length}
-            ></Box>*/}
+          
 
            <table>
                 <tr className={styles.tableHeader}>
                     <td>Nome do Condutor</td>
-                    <td style={{width: '25rem'}}>CNH</td>
-                    <td>Categoria</td>
-                    <td>Validade</td>
-                    <td>Situação</td>           
+                    <td style={{width: '10rem'}}>CNH</td>
+                    <td style={{width: '5rem'}}>Categoria</td>
+                    <td style={{width: '5rem'}}>Validade</td>
+                    <td style={{width: '10rem'}}>Situação</td>          
+                    <td style={{width: '5rem'}}>Status</td>  
                     <td></td>
                 </tr>
-                {vehicles && 
-                Object.keys(vehicles).map((item, index) => {
-
-                    const carModel = () => {
-                        //return the name of car with informations
-                        if(vehicles[item].marca && vehicles[item].modelo && vehicles[item].ano){
-                            return `${vehicles[item].marca} ${vehicles[item].modelo} ${vehicles[item].ano}`
-                        }
-                    }
+                {drivers && 
+                Object.keys(drivers).map((item, index) => {
+                    
+                    //convert date string to javascript Date
+                    let [day, month, year] = drivers[item].validade && (drivers[item].validade).split("/");
+                    let dataVenc = new Date(year, month - 1, day);
 
                     return(
                         <tr>
                             <td
                             style={{textTransform: 'uppercase'}}
-                            >{vehicles[item].placa ? vehicles[item].placa : ''}</td>
+                            >{drivers[item].nome ? drivers[item].nome : ''}</td>
 
                             <td 
                             style={{textTransform: 'capitalize'}}
                             >
-                            {carModel()}
+                             {drivers[item].cnh && drivers[item].cnh}   
                             </td>
                             
                             <td
-                            style={{textTransform: 'capitalize'}}
-                            >{vehicles[item].unidade ? vehicles[item].unidade : ''}</td>
+                            style={{textTransform: 'uppercase', textAlign: 'center'}}
+                            >{drivers[item].categoria ? drivers[item].categoria : ''}</td>
                             
-                            <td>{vehicles[item].despesa ? vehicles[item].despesa : ''}</td>
+                            <td style={dataVenc.getTime() <= Date.now() ? {backgroundColor: 'rgba(250, 5, 5, 1)'} : {backgroundColor: 'transparent'}}
+                            >
+                            {drivers[item].validade ? drivers[item].validade : ''}
+                            </td>
+        
+                            <td>{dataVenc.getTime() <= Date.now() ? 'CNH Vencida' : 'CNH Vigente'}</td>
+
                             
-                            {activities &&
-                            <td
-                            style={{textTransform: 'capitalize'}}
-                            >{activities[item] && activities[item]}</td>
-                            }
+                            <td style={{textAlign: 'center'}}>
+                            {drivers[item].ativo && drivers[item].ativo == true ? 'Ativo' : 'Inativo'}
+                            </td>
 
                             <td style={{width: '1.5rem'}}>
                                 <BsFillPencilFill

@@ -29,7 +29,7 @@ const CarDescritpion = ({db, curVehicle}) => {
     if(vehicles == undefined || activities == undefined || insurances == undefined){
         return
     }
-
+    
     return(
         
         <>
@@ -66,15 +66,20 @@ const CarDescritpion = ({db, curVehicle}) => {
                 }
                 {insurances[curVehicle] &&
                 <div style={{display: 'flex', flexDirection: 'row', width: '100%'}}>
-                    <DoubleBox 
-                    border_right={true} 
-                    title='Seguradora:'
-                    content={insurances[curVehicle].seguradora ? insurances[curVehicle].seguradora : ''} 
-                    />
+                    {insurances[curVehicle].seguradora &&
+                      <DoubleBox 
+                        border_right={true} 
+                        title='Seguradora:'
+                        content={insurances[curVehicle].seguradora ? insurances[curVehicle].seguradora : ''} 
+                    />  
+                    }
+                    
+                    {insurances[curVehicle].vigencia &&
                     <DoubleBox 
                     title='Vigência até:'
                     content={insurances[curVehicle].vigencia ? insurances[curVehicle].vigencia : ''} 
                     />
+                    }
                 </div>
                 }
             </div>

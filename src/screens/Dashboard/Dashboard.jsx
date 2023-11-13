@@ -98,7 +98,7 @@ const Dashboard = () => {
                         }
                         icon={<AiFillCar/>}
                         />
-                        <VehicleControl years={[2021, 2022, 2023]} months={['01', '02', '03', '04', '05', '06']}/>
+                        <VehicleControl curVehicle={curVehicle} vehicles={vehicles}/>
                         
                         <MaintenancesHistory 
                         history={mechanicalHistory} 

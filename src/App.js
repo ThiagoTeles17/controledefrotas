@@ -8,6 +8,7 @@ import { ScreenProvider, ScreenContext } from "./context/ScreenContext.jsx";
 import { useContext, useEffect, useState } from "react";
 import ManangeVehicles from "./screens/ManangeVehicles/ManangeVehicles.jsx";
 import Drivers from "./screens/Drivers/Drivers.jsx";
+import { Reports } from "./screens/Reports/Reports.jsx";
 
 function App() {
   
@@ -30,6 +31,7 @@ function App() {
           {selectedScreen == 'Visão Geral' && <Dashboard/>}
           {selectedScreen == 'Gerenciar Veículos' && <ManangeVehicles/>}
           {selectedScreen == 'Condutores' && <Drivers/>}
+          {selectedScreen == 'Relatórios' && <Reports/>}
         </ApiProvider>
       </ScreenProvider>
     </div>

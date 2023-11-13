@@ -203,7 +203,7 @@ import { setDoc, doc, getDoc, deleteDoc, updateDoc, deleteField } from "firebase
                     <div style={{display: 'flex', flexDirection: 'row', alignItems: 'flex-start', gap: '1rem'}}>
                     
                     <div className={styles.verticalFlex}>
-                        <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Situação:</span>
+                        <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Status:</span>
                         <select
                         defaultValue={ativo}
                         value={ativo}

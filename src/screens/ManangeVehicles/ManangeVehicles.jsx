@@ -146,7 +146,7 @@ const ManangeVehicles = () => {
                     <td>Despesa</td>
                     <td>Atividade</td>           
                     <td>Renavam</td>
-                    <td>Situação</td>
+                    <td>Status</td>
                     <td></td>
                 </tr>
                 {vehicles && 
@@ -196,7 +196,7 @@ const ManangeVehicles = () => {
                             </td> 
                         </tr>
                     );
-                })}
+                })/*TODO Sort Map*/}
            </table>
 
            <Modal
