@@ -1,9 +1,9 @@
 import styles from './ReportBox.module.css';
 
-export const ReportBox = ({icon, title}) => {
+export const ReportBox = ({icon, title, handleOnClick}) => {
 
     return(
-    <div className={styles.container}>
+    <div onClick={handleOnClick} className={styles.container}>
         <div className={styles.icon}>
            {icon} 
         </div>

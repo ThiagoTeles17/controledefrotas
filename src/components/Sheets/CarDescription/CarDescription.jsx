@@ -70,7 +70,7 @@ const CarDescritpion = ({db, curVehicle}) => {
                       <DoubleBox 
                         border_right={true} 
                         title='Seguradora:'
-                        content={insurances[curVehicle].seguradora ? insurances[curVehicle].seguradora : ''} 
+                        content={insurances[curVehicle].seguradora ? (insurances[curVehicle].seguradora).toUpperCase() : ''} 
                     />  
                     }
                     
