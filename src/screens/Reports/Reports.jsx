@@ -11,7 +11,7 @@ export const Reports = () => {
 
     const [modalVisible, setModalVisible] = useState(false);
 
-    const [modalContent, setModalContent] = useState('');
+    const [modalContent, setModalContent] = useState(<></>);
 
     return(
         <Container>
