@@ -1,19 +1,26 @@
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 
-export const reportDrivers = (drivers) => {
+export const reportVehicles = (vehicles, atividades) => {
 
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-    const driversData = Object.keys(drivers).map((driver) => {
+    
+    const vehiclesData = Object.keys(vehicles).map((vehicle) => {
+
+            const vehicleName = () => {
+                return (vehicles[vehicle].marca).toUpperCase() + ' ' + (vehicles[vehicle].modelo).toUpperCase();
+            };   
+
            return [
-            {text: (drivers[driver].nome).toUpperCase(), fontSize: 11, margin: [0,2,0,2] },
-            {text: drivers[driver].cnh, fontSize: 11, margin: [0,2,0,2]},
-            {text: (drivers[driver].categoria).toUpperCase(), fontSize: 11, alignment: 'center', margin: [0,2,0,2]},
-            {text: drivers[driver].validade, fontSize: 11, margin: [0,2,0,2]},
-            {text: drivers[driver].rg, fontSize: 11, margin: [0,2,0,2]},
-            {text: drivers[driver].cpf, fontSize: 11, margin: [0,2,0,2]},
-            {text: drivers[driver].ativo == true ? 'Ativo' : 'Inativo', fontSize: 11, margin: [0,2,0,2]} 
+            {text: (vehicles[vehicle].placa).toUpperCase(), fontSize: 11},
+            {text: vehicleName(), fontSize: 11},
+            {text: vehicles[vehicle].ano, fontSize: 11},
+            {text: (vehicles[vehicle].unidade).toUpperCase(), fontSize: 11},
+            {text: vehicles[vehicle].despesa, fontSize: 11, alignment: 'center'},
+            {text: (atividades[vehicle]).toUpperCase(), fontSize: 11},
+            {text: vehicles[vehicle].renavam, fontSize: 11},
+            {text: vehicles[vehicle].ativo == true ? 'Ativo' : 'Inativo', fontSize: 11} 
            ] 
     });
 
@@ -40,29 +47,30 @@ export const reportDrivers = (drivers) => {
 
         },
         table: {
-        widths: ['*', 'auto', 50, 60, 70, 'auto', 'auto'],
+        widths: [52, 'auto', 55, '*', 45, 120, 70, 40],
         headerRows: 2,
-        heights: 15,
         body : [
             [
-                {text: 'Relatório de Condutores', fontSize: 15, colSpan: 7, style: 'tableHeader', alignment: 'center', bold: true, fillColor: '#474747', hLineWidth: .5, color: 'white', margin: [0,2,0,2]},
+                {text: 'Relatório de Veículos', fontSize: 15, colSpan: 8, style: 'tableHeader', alignment: 'center', bold: true, fillColor: '#474747', hLineWidth: .5, color: 'white'},
                 {},
                 {},
                 {},
                 {},
                 {},
                 {},
+                {}
             ],
             [
-                {text: 'Nome do Condutor', fontSize: 11, bold: true, fillColor: '#474747', color: 'white', margin: [0,2,0,2]},
-                {text: 'CNH', fontSize: 11, bold: true, fillColor: '#474747', color: 'white', margin: [0,2,0,2]},
-                {text: 'Categoria', fontSize: 11, bold: true, fillColor: '#474747', color: 'white', margin: [0,2,0,2]},
-                {text: 'Validade', fontSize: 11, bold: true, fillColor: '#474747', color: 'white', margin: [0,2,0,2]},
-                {text: 'RG', fontSize: 11, bold: true, fillColor: '#474747', color: 'white', margin: [0,2,0,2]},
-                {text: 'CPF', fontSize: 11, bold: true, fillColor: '#474747', color: 'white', margin: [0,2,0,2]},
-                {text: 'Status', fontSize: 11, bold: true, fillColor: '#474747', color: 'white', margin: [0,2,0,2]}
+                {text: 'Placa', fontSize: 11, bold: true, fillColor: '#474747', color: 'white'},
+                {text: 'Marca/Modelo', fontSize: 11, bold: true, fillColor: '#474747', color: 'white'},
+                {text: 'Ano', fontSize: 11, bold: true, fillColor: '#474747', color: 'white'},
+                {text: 'Unidade', fontSize: 11, bold: true, fillColor: '#474747', color: 'white'},
+                {text: 'Despesa', fontSize: 11, bold: true, fillColor: '#474747', color: 'white', alignment: 'center'},
+                {text: 'Atividade', fontSize: 11, bold: true, fillColor: '#474747', color: 'white'},
+                {text: 'Renavam', fontSize: 11, bold: true, fillColor: '#474747', color: 'white'},
+                {text: 'Status', fontSize: 11, bold: true, fillColor: '#474747', color: 'white'}
             ],
-            ...driversData
+            ...vehiclesData
         ]    
         }
         
@@ -74,7 +82,7 @@ export const reportDrivers = (drivers) => {
     const docDefinitions = {
         pageSize : 'A4',
         pageOrientation: 'landscape',
-        pageMargins: [35, 20, 35, 35],
+        pageMargins: [10, 20, 10, 35],
         alignment: 'center',
 
         header: [cabecalho],

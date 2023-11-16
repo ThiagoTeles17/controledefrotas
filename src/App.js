@@ -10,6 +10,7 @@ import ManangeVehicles from "./screens/ManangeVehicles/ManangeVehicles.jsx";
 import Drivers from "./screens/Drivers/Drivers.jsx";
 import { Reports } from "./screens/Reports/Reports.jsx";
 
+
 function App() {
   
   const {curScreen} = useContext(ScreenContext);
@@ -19,6 +20,7 @@ function App() {
   const handleOnClick = (screen) => {
     setSelectedScreen(screen);
   }
+
 
   const screens = ['Visão Geral', 'Gerenciar Veículos', 'Condutores', 'Relatórios'];
 
