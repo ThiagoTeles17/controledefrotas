@@ -111,3 +111,26 @@
 .modalBtn:active{
     background-color: rgb(2, 119, 197);
 }
+.changeImgButton{
+    background-color: white;
+    display: flex;
+    gap: .5rem;
+    justify-content: center;
+    align-items: center;
+    height: 2rem;
+    font-size: 14px;
+    border-radius: .3rem;
+    border: none;
+    cursor: pointer;
+    transition: .3s;
+}
+.changeImgButton:hover{
+    background-color: rgb(218, 218, 218);
+}
+.removeImgButton{
+    cursor: pointer;
+    transition: .3s;
+}
+.removeImgButton:hover{
+    color: rgb(194, 194, 194);
+}

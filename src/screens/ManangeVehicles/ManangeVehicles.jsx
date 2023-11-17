@@ -38,6 +38,7 @@ const ManangeVehicles = () => {
     const [unities, setUnities] = useState();
     const [tires, setTires] = useState();
     const [insurances, setInsurances] = useState();
+    const [images, setImages] = useState();
 
     const [vehToEditId, setVehToEditId] = useState();
 
@@ -47,12 +48,29 @@ const ManangeVehicles = () => {
         setUnities((await getDoc(doc(db, 'assistencia', 'unidades'))).data());
         setTires((await getDoc(doc(db, 'assistencia', 'pneus'))).data());
         setInsurances((await getDoc(doc(db, 'assistencia', 'seguros'))).data());
-        console.log(vehicles);
+        setImages((await getDoc(doc(db, 'imgs', 'vehicles'))).data());
     };
 
+    const [vehiclesSorted, setVehiclesSorted] = useState([]);
+    const sortData = () => {
+        if(vehicles){    
+            const sorted = Object.keys(vehicles).sort((a, b) => {
+                setVehiclesSorted((vehicles[a].modelo).toLowerCase() < (vehicles[b].modelo).toLowerCase() ? 1 : -1);
+            })
+            setVehiclesSorted(sorted);
+            
+            console.log(sorted.map((i) => {return vehicles[i].modelo}))
+        }
+    }
+    
     useEffect(() => {
         getDatabase();
+
     }, []);
+    
+    useEffect(() => {
+        sortData();
+    }, [vehicles]);
 
     const handleModalContent = () => {
         if(modalContent === 'add'){
@@ -84,6 +102,7 @@ const ManangeVehicles = () => {
                 getDatabase={() => getDatabase()}
                 setSuccessMessage={setSuccesMessage}
                 setSuccess={setSuccess}
+                images={images}
                 />
             );
         }
@@ -150,7 +169,7 @@ const ManangeVehicles = () => {
                     <td></td>
                 </tr>
                 {vehicles && 
-                Object.keys(vehicles).map((item, index) => {
+                vehiclesSorted.map((item, index) => {
 
                     const carModel = () => {
                         //return the name of car with informations

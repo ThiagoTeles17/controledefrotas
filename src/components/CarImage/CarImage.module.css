@@ -1,7 +1,6 @@
 .divContainer{
     width: 25rem;
     overflow-y: hidden;
-    max-height: calc(25rem / 2);
     display: flex;
     justify-content: center;
     align-items: end;

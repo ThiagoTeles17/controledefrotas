@@ -64,7 +64,7 @@ export const ModalAddDriver = ({db, modalVisible, setModalVisible, getDatabase, 
     return(
         <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
         <img style={{width: '3rem', marginBottom: '.5rem'}} src={brasao} alt="" />
-        <span className={styles.modalTitle}>Editar Condutor</span>
+        <span className={styles.modalTitle}>Adicionar Condutor</span>
 
         <form onSubmit={(e) => handleAddDriver(e)} style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', rowGap: '1rem'}}> 
             

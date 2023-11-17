@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import styles from './ModalEditVehicle.module.css';
 
 import brasao from '../../../../assets/imgs/brasao.png'
@@ -8,8 +8,12 @@ import {GiCarWheel} from 'react-icons/gi';
 import {AiOutlineSchedule} from 'react-icons/ai';
 import {AiOutlineSave} from 'react-icons/ai';
 import {ImCancelCircle} from 'react-icons/im';
+import { CiTrash } from "react-icons/ci";
+import { CiImageOn } from "react-icons/ci";
+import { GoPencil } from "react-icons/go";
 import { TiCancelOutline } from 'react-icons/ti';
 import { setDoc, doc, getDoc, deleteDoc, updateDoc, deleteField } from "firebase/firestore";
+import { FaPlus } from "react-icons/fa6";
 
 
     export const ModalEditVehicle = ({
@@ -24,7 +28,8 @@ import { setDoc, doc, getDoc, deleteDoc, updateDoc, deleteField } from "firebase
         insurances,
         getDatabase,
         setSuccess,
-        setSuccessMessage
+        setSuccessMessage,
+        images
     }) => {
 
     const [ativo, setAtivo] = useState(false);
@@ -42,6 +47,19 @@ import { setDoc, doc, getDoc, deleteDoc, updateDoc, deleteField } from "firebase
     const [vigenciaSeguro, setVigenciaSeguro] = useState('');
     const [pneus, setPneus] = useState('');
     const [agendamento, setAgendamento] = useState('');
+
+    
+    const hiddenInputFile = useRef(null);
+
+    const handleOnChangeInputImage = (e) => {
+        const data = new FileReader();
+        data.addEventListener('load', () => {
+            setImagem(data.result);
+        });
+        data.readAsDataURL(e.target.files[0])
+    };  
+
+
 
     //set values to inputs
     const setData = () => {
@@ -66,6 +84,10 @@ import { setDoc, doc, getDoc, deleteDoc, updateDoc, deleteField } from "firebase
         if(insurances[vehicleId]){
             setSeguradora(insurances[vehicleId].seguradora && insurances[vehicleId].seguradora);
             setVigenciaSeguro(insurances[vehicleId].vigencia && insurances[vehicleId].vigencia);
+        }
+
+        if(images && images[vehicleId]){
+            setImagem(images[vehicleId] && images[vehicleId]);
         }
 
         setPneus(tires[vehicleId] && tires[vehicleId]);
@@ -115,7 +137,6 @@ import { setDoc, doc, getDoc, deleteDoc, updateDoc, deleteField } from "firebase
             }
         }
 
-
         let newInsurance = {
             [vehicleId] : {
                 'seguradora' : seguradora,
@@ -131,11 +152,16 @@ import { setDoc, doc, getDoc, deleteDoc, updateDoc, deleteField } from "firebase
                 ...pneus
             }
         }
+
+        let newImage = {
+            [vehicleId] : imagem
+        }
+
         setDoc(doc(db, 'assistencia', 'veiculos'), newVehicle, {merge: true});
         setDoc(doc(db, 'assistencia', 'seguros'), newInsurance, {merge: true});
         setDoc(doc(db, 'assistencia', 'atividades'), newActivity, {merge: true});
         setDoc(doc(db, 'assistencia', 'pneus'), newTires, {merge: true});
-
+        setDoc(doc(db, 'imgs', 'vehicles'), newImage, {merge: true});
 
         setModalVisible(!modalVisible);
         setMarca('');
@@ -180,6 +206,9 @@ import { setDoc, doc, getDoc, deleteDoc, updateDoc, deleteField } from "firebase
         updateDoc(doc(db, 'assistencia', 'pneus'), {
             [vehicleId] : deleteField()
         });
+        updateDoc(doc(db, 'imgs', 'vehicles'), {
+            [vehicleId] : deleteField()
+        });
 
         setModalVisible(!modalVisible);
 
@@ -189,8 +218,6 @@ import { setDoc, doc, getDoc, deleteDoc, updateDoc, deleteField } from "firebase
             setSuccess(false);
             getDatabase();
         }, 2000);
-
-
     };
 
     return(
@@ -202,17 +229,26 @@ import { setDoc, doc, getDoc, deleteDoc, updateDoc, deleteField } from "firebase
                     
                     <div style={{display: 'flex', flexDirection: 'row', alignItems: 'flex-start', gap: '1rem'}}>
                     
-                    <div className={styles.verticalFlex}>
-                        <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Status:</span>
-                        <select
-                        defaultValue={ativo}
-                        value={ativo}
-                        onChange={(val) => setAtivo(val.target.value == 'true' ? true : false)}
-                        className={styles.modalSelectSmall}
-                        >
-                            <option value={true}>Ativo</option>
-                            <option value={false}>Inativo</option>
-                        </select>
+                    <div style={{rowGap: '2.2rem'}} className={styles.verticalFlex}>
+                        <div className={styles.verticalFlex}>
+                            <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Status:</span>
+                            <select
+                            defaultValue={ativo}
+                            value={ativo}
+                            onChange={(val) => setAtivo(val.target.value == 'true' ? true : false)}
+                            className={styles.modalSelectSmall}
+                            >
+                                <option value={true}>Ativo</option>
+                                <option value={false}>Inativo</option>
+                            </select>
+                        </div>
+
+                        <div style={{display: 'flex', flexDirection: 'row', alignItems: 'flex-start', gap: '.2rem', alignItems: 'center'}}>
+                            <button style={imagem ? {width: '7rem'} : {width: '8rem'}} type="button" className={styles.changeImgButton} onClick={(e) => hiddenInputFile.current.click()}><CiImageOn/>Imagem{imagem ? <GoPencil size={10}/> : <FaPlus size={10}/>}</button>
+                            <input type="file" style={{display: 'none'}} ref={hiddenInputFile} onChange={(e) => handleOnChangeInputImage(e)}/>
+                            {imagem && <CiTrash size={20} className={styles.removeImgButton} onClick={() => window.confirm("Remover a imagem?") && setImagem('')}/>}
+                        </div>
+
                     </div>
 
                     <div style={{display: 'flex', flexDirection: 'row', gap: '1rem'}}>

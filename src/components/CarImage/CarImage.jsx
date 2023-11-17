@@ -17,17 +17,15 @@ const CarImage = ({vehicles, curVehicle}) => {
         getImage();
     }, []);
 
-    console.log(images[curVehicle] && images[curVehicle]);
-
-    if(vehicles == null){
+    if(images == null){
         return
     }
-    else if (vehicles[curVehicle] && vehicles[curVehicle].imagem){
+    else if (images[curVehicle]){
         return(
         <div className={styles.divContainer}>
             <img
                 className={styles.imageContainer} 
-                src={images[curVehicle] ? `${images[curVehicle]}` : ''}
+                src={images[curVehicle]}
                 alt='Imagem Carro'
             />
         </div>
