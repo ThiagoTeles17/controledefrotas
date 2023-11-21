@@ -102,3 +102,36 @@ h2{
     left: 0;
     background-color: #00aaff;
 }
+.userContainer{
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: .3rem;
+    text-align: center;
+    font-size: 8px;
+    margin-left: 9rem;
+    cursor: pointer;
+}
+.userOptions{
+    position: absolute;
+    top: 6rem;
+    right: .5rem;
+    box-shadow: 1px 1px 19px 1px rgba(0,0,0,0.75);
+-webkit-box-shadow: 1px 1px 19px 1px rgba(0,0,0,0.75);
+-moz-box-shadow: 1px 1px 19px 1px rgba(0,0,0,0.75);
+}
+.userOptions > div {
+
+    background-color: white;
+    color: black;
+    font-size: 15px;
+    padding: .5rem 1.5rem .5rem 1.5rem;
+    text-align: center;   
+    cursor: pointer;
+    border-bottom: .5px solid black;
+}
+.userOptions > div:hover{
+    text-decoration: underline;
+    
+}

@@ -8,10 +8,13 @@ import { AiFillCar } from 'react-icons/ai';
 import { FiTool } from 'react-icons/fi';
 import { BsPersonVcard } from 'react-icons/bs';
 import { HiOutlineDocumentText } from 'react-icons/hi';
+import { FaRegCircleUser } from "react-icons/fa6";
 
 const Header = ({screens, handleOnClick}) => {
 
     const {curScreen, setCurScreen} = useContext(ScreenContext);
+
+    const [isUserOptionsOpened, setIsUserOptionsOpened] = useState(false);
 
     const handleOnClickScreen = (screen) => {
         setCurScreen(screen);
@@ -51,7 +54,19 @@ const Header = ({screens, handleOnClick}) => {
                 }
             </div>
             
+            <div onClick={() => setIsUserOptionsOpened(!isUserOptionsOpened)} className={styles.userContainer}>
+                <FaRegCircleUser color="white" size={20}/>
+                <div>Thiago Everton Teles</div>
+                <div>Admin</div>
+            </div>
+            {isUserOptionsOpened &&
+            <div className={styles.userOptions}>
+                <div>Alterar Senha</div>
+                <div>Logout</div>
+            </div>
+            }
             
+
         </div>
     );
 
