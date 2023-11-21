@@ -19,6 +19,8 @@ export const ModalAddDriver = ({db, modalVisible, setModalVisible, getDatabase, 
     const [cpf, setCpf] = useState('');
     const [categoria, setCategoria] = useState('');
     const [validade, setValidade] = useState('');
+    const [dataNascimento, setDataNascimento] = useState('');
+    const [contato, setContato] = useState('');
 
 
     const handleCancelModal = () => {
@@ -27,6 +29,8 @@ export const ModalAddDriver = ({db, modalVisible, setModalVisible, getDatabase, 
         setCnh('');
         setCategoria('');
         setValidade('');
+        setDataNascimento('');
+        setContato('');
     };
     const handleAddDriver = (event) => {
         event.preventDefault();
@@ -42,7 +46,9 @@ export const ModalAddDriver = ({db, modalVisible, setModalVisible, getDatabase, 
                 'cpf' : cpf,
                 'nome' : nome,
                 'rg' : rg,
-                'validade' : validade
+                'validade' : validade,
+                'dataNascimento': dataNascimento,
+                'contato' : contato
             }
         };
 
@@ -147,6 +153,32 @@ export const ModalAddDriver = ({db, modalVisible, setModalVisible, getDatabase, 
                                 ></ReactInputMask>
                             </div> 
 
+                </div>
+                <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '1rem'}}>
+                                <div style={{display: 'flex', flexDirection: 'column', alignItems: 'start'}}>
+                                    <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Data de Nascimento:</span>
+                                    <ReactInputMask 
+                                    value={dataNascimento}
+                                    onChange={text => setDataNascimento(text.target.value)}
+                                    mask={"99/99/9999"} 
+                                    placeholder="data de nascimento" 
+                                    className={styles.modalInputHalf} 
+                                    type='text'
+                                    ></ReactInputMask>
+                                </div> 
+
+
+                                <div style={{display: 'flex', flexDirection: 'column', alignItems: 'start'}}>
+                                    <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Telefone:</span>
+                                    <ReactInputMask 
+                                    value={contato}
+                                    onChange={text => setContato(text.target.value)}
+                                    mask={"(99)99999-9999"} 
+                                    placeholder="()_____-____" 
+                                    className={styles.modalInputHalf} 
+                                    type='text'
+                                    ></ReactInputMask>
+                                </div>
                 </div>
                 <div style={{display: 'flex', gap: '.8rem', marginTop: '.5rem'}}>
                     <button 

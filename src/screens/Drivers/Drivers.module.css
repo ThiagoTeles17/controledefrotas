@@ -68,7 +68,7 @@ table ,th, td{
 .modal{
     width: auto;
     min-height: 12rem;
-    height: 38rem;
+    height: 42rem;
     border-radius: .2rem;
     position: absolute;
     top: 50%;

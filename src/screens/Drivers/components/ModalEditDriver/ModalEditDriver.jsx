@@ -30,6 +30,8 @@ export const ModalEditDriver = ({
     const [cpf, setCpf] = useState('');
     const [categoria, setCategoria] = useState('');
     const [validade, setValidade] = useState('');
+    const [dataNascimento, setDataNascimento] = useState('');
+    const [contato, setContato] = useState('');
 
     //set values to inputs
     const setData = () => {
@@ -43,7 +45,10 @@ export const ModalEditDriver = ({
           setCpf(drivers[driverId].cpf && drivers[driverId].cpf);
           setCategoria(drivers[driverId].categoria && drivers[driverId].categoria);
           setValidade(drivers[driverId].validade && drivers[driverId].validade);
+          setDataNascimento(drivers[driverId].dataNascimento && drivers[driverId].dataNascimento);
+          setContato(drivers[driverId].contato && drivers[driverId].contato);
         }
+
         
     }
 
@@ -58,6 +63,8 @@ export const ModalEditDriver = ({
         setCnh('');
         setCategoria('');
         setValidade('');
+        setDataNascimento('');
+        setContato('');
     };
 
     const handleEditDriver = (event) => {
@@ -75,7 +82,9 @@ export const ModalEditDriver = ({
                 'cpf' : cpf,
                 'nome' : nome,
                 'rg' : rg,
-                'validade' : validade
+                'validade' : validade,
+                'dataNascimento': dataNascimento,
+                'contato' : contato
             }
         };
 
@@ -112,7 +121,7 @@ export const ModalEditDriver = ({
     };
 
     return(
-        <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+        <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingTop: '5rem', paddingBottom: '5rem'}}>
                 <img style={{width: '3rem', marginBottom: '.5rem'}} src={brasao} alt="" />
                 <span className={styles.modalTitle}>Editar Condutor</span>
 
@@ -212,6 +221,34 @@ export const ModalEditDriver = ({
                                     </div> 
 
                         </div>
+
+                        <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '1rem'}}>
+                                <div style={{display: 'flex', flexDirection: 'column', alignItems: 'start'}}>
+                                    <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Data de Nascimento:</span>
+                                    <ReactInputMask 
+                                    value={dataNascimento}
+                                    onChange={text => setDataNascimento(text.target.value)}
+                                    mask={"99/99/9999"} 
+                                    placeholder="data de nascimento" 
+                                    className={styles.modalInputHalf} 
+                                    type='text'
+                                    ></ReactInputMask>
+                                </div> 
+
+
+                                <div style={{display: 'flex', flexDirection: 'column', alignItems: 'start'}}>
+                                    <span style={{fontSize: '12px', marginBottom: '.3rem'}}>Telefone:</span>
+                                    <ReactInputMask 
+                                    value={contato}
+                                    onChange={text => setContato(text.target.value)}
+                                    mask={"(99)99999-9999"} 
+                                    placeholder="()_____-____" 
+                                    className={styles.modalInputHalf} 
+                                    type='text'
+                                    ></ReactInputMask>
+                                </div>
+                        </div> 
+
                         <div style={{display: 'flex', gap: '.8rem', marginTop: '.5rem'}}>
                             <button 
                             type='submit' 
@@ -223,7 +260,6 @@ export const ModalEditDriver = ({
                         </div> 
 
                         <button type="button" className={styles.modalBtn}
-                        style={{position: 'absolute', bottom: '.5rem'}}
                         onClick={handleRemoveDriver}><ImCancelCircle/>
                         Remover Condutor
                         </button>             

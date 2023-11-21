@@ -10,6 +10,8 @@ import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 const MechanicalPendences = ({curVehicle, db, setHistory}) => {
 
+    ///TODO Codigo nao funcionando corretamente
+
     const [pendencesList, setPendencesList] = useState([]);
 
     const pendencesRef = doc(db, 'assistencia', 'pendenciasMec');
