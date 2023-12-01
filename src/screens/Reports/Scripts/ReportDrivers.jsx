@@ -11,7 +11,7 @@ export const reportDrivers = (drivers) => {
             {text: drivers[driver].cnh, fontSize: 11, margin: [0,3,0,3]},
             {text: (drivers[driver].categoria).toUpperCase(), fontSize: 11, alignment: 'center', margin: [0,3,0,3]},
             {text: drivers[driver].validade, fontSize: 11, margin: [0,3,0,3]},
-            {text: drivers[driver].rg, fontSize: 11, margin: [0,3,0,3]},
+            {text: (drivers[driver].rg).toUpperCase(), fontSize: 11, margin: [0,3,0,3]},
             {text: drivers[driver].cpf, fontSize: 11, margin: [0,3,0,3]},
             {text: drivers[driver].ativo == true ? 'Ativo' : 'Inativo', fontSize: 11, margin: [0,3,0,3]} 
            ] 
@@ -39,7 +39,7 @@ export const reportDrivers = (drivers) => {
             }
         },
         table: {
-        widths: ['*', 'auto', 50, 60, 70, 'auto', 'auto'],
+        widths: ['*', 'auto', 50, 60, 'auto', 'auto', 'auto'],
         headerRows: 2,
         heights: 15,
         body : [
