@@ -17,7 +17,7 @@ function App() {
 
   const [selectedScreen, setSelectedScreen] = useState(curScreen);
 
-  const handleOnClick = (screen) => {
+  const changeSelectedScreen = (screen) => {
     setSelectedScreen(screen);
   }
 
@@ -29,7 +29,7 @@ function App() {
     <div className="App">
       <ScreenProvider>
         <ApiProvider>
-          <Header handleOnClick={(screen) => handleOnClick(screen)} screens={screens}/>
+          <Header handleOnClick={(screen) => changeSelectedScreen(screen)} screens={screens}/>
           {selectedScreen == 'Visão Geral' && <Dashboard/>}
           {selectedScreen == 'Gerenciar Veículos' && <ManangeVehicles/>}
           {selectedScreen == 'Condutores' && <Drivers/>}

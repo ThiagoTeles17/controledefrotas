@@ -19,7 +19,6 @@ import {GrCheckmark} from 'react-icons/gr';
 
 
 const Drivers = () => {
-
         
     const {db} = useContext(ApiContext);
 
@@ -37,9 +36,7 @@ const Drivers = () => {
     const [driverToEditId, setDriverToEditId] = useState();
 
     const getDatabase = async() => {
-
         setDrivers((await getDoc(doc(db, 'assistencia', 'condutores'))).data());
-
     };
 
     useEffect(() => {

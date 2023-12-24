@@ -9,7 +9,6 @@ import { FiTool } from 'react-icons/fi';
 import { BsPersonVcard } from 'react-icons/bs';
 import { HiOutlineDocumentText } from 'react-icons/hi';
 import { FaRegCircleUser } from "react-icons/fa6";
-
 const Header = ({screens, handleOnClick}) => {
 
     const {curScreen, setCurScreen} = useContext(ScreenContext);

@@ -20,14 +20,15 @@ export const ApiProvider = ({children}) => {
 
     const db = getFirestore(firebaseApp);
 
-
     const [curVehicle, setCurVehicle] = useState();
-    
-
-
+        
     return (
     <ApiContext.Provider value={{curVehicle, setCurVehicle, db}}>
         {children}
     </ApiContext.Provider>
     );
+}
+
+const getVehicles = () => {
+    
 }
