@@ -1,21 +1,11 @@
 import { useContext, useEffect, useState } from 'react';
 import styles from './CarImage.module.css';
 import { ApiContext } from '../../context/ApiContext';
-import { doc, getDoc } from 'firebase/firestore';
+
 
 const CarImage = ({vehicles, curVehicle}) => {
 
-    const {db} = useContext(ApiContext);
-
-    const [images, setImages] = useState();
-
-    const getImage = async() => {
-        setImages((await getDoc(doc(db, 'imgs', 'vehicles'))).data());
-    };
-
-    useEffect(() => {
-        getImage();
-    }, []);
+    const {images} = useContext(ApiContext);
 
     if(images == null){
         return

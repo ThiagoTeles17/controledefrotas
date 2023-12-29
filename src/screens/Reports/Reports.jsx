@@ -24,41 +24,29 @@ import { reportTires } from './Scripts/ReportTires';
 
 export const Reports = () => {
 
-    const {db} = useContext(ApiContext);
+    const {
+        db,
+        drivers,
+        activities,
+        insurances,
+        vehicles,
+        tires
+    } = useContext(ApiContext);
 
     const [modalVisible, setModalVisible] = useState(false);
 
     const [modalContent, setModalContent] = useState(<></>);
 
-    const [drivers, setDrivers] = useState('');
-    const [vehicles, setVehicles] = useState('');
-    const [atividades, setAtividades] = useState('');
-    const [insurances, setInsurances] = useState('');
-    const [tires, setTires] = useState('');
-
-
-    const getData = async() => {
-        setDrivers((await getDoc(doc(db, 'assistencia', 'condutores'))).data());
-        setVehicles((await getDoc(doc(db, 'assistencia', 'veiculos'))).data());
-        setAtividades((await getDoc(doc(db, 'assistencia', 'atividades'))).data());
-        setInsurances((await getDoc(doc(db, 'assistencia', 'seguros'))).data());
-        setTires((await getDoc(doc(db, 'assistencia', 'pneus'))).data());
-    };
+   
 
     const handleVehicleControl = () => {
         Object.keys(vehicles).map((i) => {
             GenerateVehicleControl(i, vehicles);
         })
-        
     };
-
-    useEffect(() => {
-        getData();
-    });
-
     return(
         <Container>
-            <ReportBox handleOnClick={() => reportVehicles(vehicles, atividades)} icon={<AiFillCar size={80}/>} title="Veículos"/>
+            <ReportBox handleOnClick={() => reportVehicles(vehicles, activities)} icon={<AiFillCar size={80}/>} title="Veículos"/>
             <ReportBox handleOnClick={() => reportDrivers(drivers)} icon={<BsPersonVcard size={80}/>} title="Condutores"/>
             <ReportBox handleOnClick={() => handleVehicleControl()} icon={<AiFillCar size={80}/>} title="Controle de Veículos"/>
             <ReportBox icon={<FaTools size={80}/>} title="Manutenções Pendentes"/>

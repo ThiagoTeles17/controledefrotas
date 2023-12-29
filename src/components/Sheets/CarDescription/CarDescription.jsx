@@ -8,22 +8,9 @@ import { ApiContext } from '../../../context/ApiContext.jsx';
 import { getDoc, doc } from 'firebase/firestore';
 
 
-const CarDescritpion = ({db, curVehicle}) => {
+const CarDescritpion = ({curVehicle}) => {
 
-    
-    const [vehicles, setVehicles] = useState();
-    const [activities, setActivities] = useState();
-    const [insurances, setInsurances] = useState();
-
-    const getData = async() => {
-        setVehicles((await getDoc(doc(db, 'assistencia', 'veiculos'))).data());
-        setActivities((await getDoc(doc(db, 'assistencia', 'atividades'))).data());
-        setInsurances((await getDoc(doc(db, 'assistencia', 'seguros'))).data());
-    }
-    
-    useEffect(() => {
-        getData();
-    }, []);
+    const {vehicles, activities, insurances} = useContext(ApiContext);
 
 
     if(vehicles == undefined || activities == undefined || insurances == undefined){

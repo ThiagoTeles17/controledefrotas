@@ -3,36 +3,25 @@ import {CiCircleRemove} from 'react-icons/ci';
 import {HiCheck} from 'react-icons/hi';
 import {BsTools} from 'react-icons/bs';
 import {AiFillPlusCircle} from 'react-icons/ai';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import Modal from 'react-modal';
 import brasao from '../../../assets/imgs/brasao.png';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { ApiContext } from '../../../context/ApiContext';
 
-const MechanicalPendences = ({curVehicle, db, setHistory}) => {
 
-    ///TODO Codigo nao funcionando corretamente
+const MechanicalPendences = ({curVehicle, db}) => {
 
-    const [pendencesList, setPendencesList] = useState([]);
+
+    const {mechanicalPendences, maintenanceHistory, getMechanicalPendences, getMaintenanceHistory} = useContext(ApiContext);
 
     const pendencesRef = doc(db, 'assistencia', 'pendenciasMec');
     const mecHistoryRef = doc(db, 'assistencia', 'historicoMec');
-
-    const getPendences = async() => {
-        setPendencesList((await getDoc(pendencesRef)).data());
-    }
-    const getHistory = async() => {
-        setHistory((await getDoc(mecHistoryRef)).data());
-    };
-
-    useEffect(() => {
-        getPendences();
-    }, [])
 
     let date = new Date();
     let curYear = String(date.getFullYear());
     let curMonth = String(date.getMonth()+1);
     let curDay = String(date.getDate());
-
 
     const [modalVisible, setModalVisible] = useState(false);
     const [modalContent, setModalContent] = useState('');
@@ -43,7 +32,6 @@ const MechanicalPendences = ({curVehicle, db, setHistory}) => {
     const [serviceDescription, setServiceDescription] = useState('');
     const [serviceShop, setServiceShop] = useState('');
     const [serviceDate, setServiceDate] = useState(`${curYear}-${curMonth.padStart(2, "0")}-${curDay.padStart(2, "0")}`);
-
 
     //prevent scroll when modal is open
     useEffect(() => {
@@ -114,7 +102,6 @@ const MechanicalPendences = ({curVehicle, db, setHistory}) => {
             );
         }
     }
-
     
     //On click to confirm pendence
     const handleOnClickConfirm = (item) => {
@@ -126,10 +113,10 @@ const MechanicalPendences = ({curVehicle, db, setHistory}) => {
     //On confirm pendence
     const handleConfirmPendence = () => {
 
-        //On confirm a pendence, it becomes a histoy item
+        //On confirm a pendence, it becomes a history item
 
         //filter pendences list to remove the current pendence
-        let filteredArray = pendencesList[curVehicle].filter((pendenceItem) => {
+        let filteredArray = mechanicalPendences[curVehicle].filter((pendenceItem) => {
             if(pendenceItem != curConfirmPendence){
                 return pendenceItem
             }
@@ -153,9 +140,9 @@ const MechanicalPendences = ({curVehicle, db, setHistory}) => {
 
 
         //concat new history item to previous history
-        let newHistory = mecHistoryRef[curVehicle] ? {
+        let newHistory = maintenanceHistory[curVehicle] ? {
             [curVehicle] : {
-                ...mecHistoryRef[curVehicle],
+                ...maintenanceHistory[curVehicle],
                 ...newHistoryItem
             }
         } : {
@@ -164,19 +151,18 @@ const MechanicalPendences = ({curVehicle, db, setHistory}) => {
             }
         };
 
-        let newPendencesList = {
+        let newMechanicalPendences = {
             [curVehicle] : [
                 ...filteredArray
             ]
         };
 
         setDoc(mecHistoryRef, newHistory);
-        setDoc(pendencesRef, newPendencesList);
+        setDoc(pendencesRef, newMechanicalPendences);
 
         
-        
-        getPendences();
-        getHistory();
+        getMechanicalPendences();
+        getMaintenanceHistory();
 
         setServiceDate(`${curYear}-${curMonth.padStart(2, "0")}-${curDay.padStart(2, "0")}`);
         setServiceDescription('');
@@ -194,9 +180,9 @@ const MechanicalPendences = ({curVehicle, db, setHistory}) => {
     const handleAddPendence = () =>{
 
 
-        let newArray = pendencesList[curVehicle] ? { 
+        let newArray = mechanicalPendences[curVehicle] ? { 
             [curVehicle] : [
-                ...pendencesList[curVehicle],
+                ...mechanicalPendences[curVehicle],
                 pendenceValue
             ]
         } : { 
@@ -206,7 +192,7 @@ const MechanicalPendences = ({curVehicle, db, setHistory}) => {
         };
 
         setDoc(pendencesRef, newArray);
-        getPendences();
+        getMechanicalPendences();
         setModalVisible(!modalVisible);
 
     }
@@ -214,7 +200,7 @@ const MechanicalPendences = ({curVehicle, db, setHistory}) => {
     //On click remove pendence
     const handleRemovePendence = (item) => {
 
-        let filteredArray = pendencesList[curVehicle].filter((pendenceItem) => {
+        let filteredArray = mechanicalPendences[curVehicle].filter((pendenceItem) => {
             if(pendenceItem != item){
                 return pendenceItem
             }
@@ -227,7 +213,7 @@ const MechanicalPendences = ({curVehicle, db, setHistory}) => {
         };
 
         setDoc(pendencesRef, newArray, {merge: true});
-        getPendences();
+        getMechanicalPendences();
 
     }
 
@@ -240,11 +226,11 @@ const MechanicalPendences = ({curVehicle, db, setHistory}) => {
                 Manutenções Pendentes
                 <AiFillPlusCircle onClick={handleOnClickAdd} className={styles.addButton}/>
             </div>
-                {pendencesList[curVehicle] ?
+                {mechanicalPendences[curVehicle] ?
                 <>
                 {
-                (pendencesList[curVehicle]).length > 0 ?
-                pendencesList[curVehicle].map((item, index) => {
+                (mechanicalPendences[curVehicle]).length > 0 ?
+                mechanicalPendences[curVehicle].map((item, index) => {
 
                     return(
                         <div key={index} className={styles.itemContainer}>

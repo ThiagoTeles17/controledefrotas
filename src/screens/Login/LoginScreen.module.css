@@ -1,0 +1,87 @@
+.container{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000038;
+    opacity: 1;
+    background-image:  linear-gradient(30deg, #000232 12%, transparent 12.5%, transparent 87%, #000232 87.5%, #000232), linear-gradient(150deg, #000232 12%, transparent 12.5%, transparent 87%, #000232 87.5%, #000232), linear-gradient(30deg, #000232 12%, transparent 12.5%, transparent 87%, #000232 87.5%, #000232), linear-gradient(150deg, #000232 12%, transparent 12.5%, transparent 87%, #000232 87.5%, #000232), linear-gradient(60deg, #00023277 25%, transparent 25.5%, transparent 75%, #00023277 75%, #00023277), linear-gradient(60deg, #00023277 25%, transparent 25.5%, transparent 75%, #00023277 75%, #00023277);
+    background-size: 62px 109px;
+    background-position: 0 0, 0 0, 31px 54px, 31px 54px, 0 0, 31px 54px;
+}
+.loginContainer{
+    padding: 4rem 5rem 4rem 5rem;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    background-color: rgb(255, 255, 255);
+}
+.titleContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;  
+    text-align: center;
+}
+.title{
+    font-size: 20px;
+    color: #000066;
+    margin-bottom: 1rem;
+}
+.subtitle{
+    font-size: 18px;
+    color: rgb(39, 39, 39);
+}
+.logo{
+    width: 4rem;
+}
+.inputContainer{
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+.inputContainer > input{
+    width: 30rem;
+    height: 2rem;
+    font-size: 14px;
+    padding-left: .7rem;
+    border-radius: .3rem;
+    border: none;
+    box-shadow: -1px 5px 10px 0px rgba(0,0,0,0.61);
+    -webkit-box-shadow: -1px 5px 10px 0px rgba(0,0,0,0.61);
+    -moz-box-shadow: -1px 5px 10px 0px rgba(0,0,0,0.61);
+}
+.inputContainer > input:focus{
+    border-width: 0px;
+    border: none;
+    outline: none;
+}
+.loginContainer > form > button{
+    width: 30rem;
+    height: 2rem;
+    margin-top: 1rem;
+    font-size: 14px;
+    background-color: white;
+    border-radius: .3rem;
+    border: none;
+    box-shadow: -1px 5px 10px 0px rgba(0,0,0,0.61);
+    -webkit-box-shadow: -1px 5px 10px 0px rgba(0,0,0,0.61);
+    -moz-box-shadow: -1px 5px 10px 0px rgba(0,0,0,0.61);
+    cursor: pointer;
+    transition: .7s;
+}
+.loginContainer > form >  button:hover{
+    background-color: #000083;
+    color: white;
+}
+.loginContainer > form{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}

@@ -9,20 +9,11 @@ import { useContext, useEffect, useState } from 'react';
 const ListBox = () => {
 
 
-    const {curVehicle, setCurVehicle, db} = useContext(ApiContext);
-
-    const [vehicles, setVehicles] = useState([]);
-
-
-
-    useEffect(() => {
-        const getVehicles = async() => {
-            setVehicles((await getDoc(doc(db, 'assistencia', 'veiculos'))).data());
-
-        }
-        getVehicles();
-    }, []);
+    const {curVehicle, setCurVehicle, db, vehicles} = useContext(ApiContext);
     
+ 
+
+
     const handleOnChange = (val) => {
         setCurVehicle(val.target.value);
     }

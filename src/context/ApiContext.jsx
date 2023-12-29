@@ -21,14 +21,91 @@ export const ApiProvider = ({children}) => {
     const db = getFirestore(firebaseApp);
 
     const [curVehicle, setCurVehicle] = useState();
+
+    const [vehicles, setVehicles] = useState([]);
+    const [drivers, setDrivers] = useState([]);
+    const [tires, setTires] = useState([]);
+    const [insurances, setInsurances] = useState([]);
+    const [activities, setActivities] = useState([]);
+    const [maintenanceHistory, setMaintenanceHistory] = useState([]);
+    const [mechanicalPendences, setMechanicalPendences] = useState([]);
+    const [images, setImages] = useState([]);
+    const [unities, setUnities] = useState([]);
+
+    var veh = [];
+    
+    //Creates functions to call database from any child component.
+    const getVehicles = async() => {
+        veh = (await(getDoc(doc(db, 'assistencia', 'veiculos')))).data()
+        setVehicles(veh);  
+        if(curVehicle == undefined){
+            setCurVehicle(Object.keys(veh)[0]);
+        }   
+    };
+    const getDrivers = async() => {
+        setDrivers((await(getDoc(doc(db, 'assistencia', 'condutores')))).data());      
+    };
+    const getTires = async() => {
+        setTires((await(getDoc(doc(db, 'assistencia', 'pneus')))).data());      
+    };
+    const getInsurances = async() => {
+        setInsurances((await(getDoc(doc(db, 'assistencia', 'seguros')))).data());      
+    };
+    const getActivities = async() => {
+        setActivities((await(getDoc(doc(db, 'assistencia', 'atividades')))).data());      
+    };
+    const getMaintenanceHistory = async() => {
+        setMaintenanceHistory((await (getDoc(doc(db, 'assistencia', 'historicoMec')))).data());
+    };
+    const getMechanicalPendences = async() => {
+        setMechanicalPendences((await(getDoc(doc(db, 'assistencia', 'pendenciasMec')))).data());
+    };
+    const getImages = async() => {
+        setImages((await (getDoc(doc(db, 'imgs', 'vehicles')))).data());
+    };
+    const getUnities = async() => {
+        setUnities((await(getDoc(doc(db, 'assistencia', 'unidades')))).data());
+    };  
+
+    useEffect(() => {
+        getVehicles();
+        getDrivers();
+        getTires();
+        getInsurances();
+        getActivities();
+        getMaintenanceHistory();
+        getMechanicalPendences();
+        getImages();
+        getUnities();
+    }, [])
+
+
         
-    return (
-    <ApiContext.Provider value={{curVehicle, setCurVehicle, db}}>
+   return (
+    <ApiContext.Provider value={{
+        curVehicle, 
+        setCurVehicle, 
+        db, 
+        getVehicles, 
+        getDrivers, 
+        getTires, 
+        getInsurances, 
+        getActivities, 
+        getMaintenanceHistory, 
+        getMechanicalPendences,
+        getImages,
+        getUnities,
+        vehicles,
+        drivers,
+        tires,
+        insurances,
+        activities,
+        maintenanceHistory,
+        mechanicalPendences,
+        images,
+        unities
+        }}>
         {children}
     </ApiContext.Provider>
     );
-}
-
-const getVehicles = () => {
-    
 }

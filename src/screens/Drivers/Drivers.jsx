@@ -13,14 +13,14 @@ import {AiFillPlusCircle} from 'react-icons/ai';
 
 import { ApiContext } from "../../context/ApiContext";
 import { ModalAddDriver } from "./components/ModalAddDriver/ModalAddDriver";
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { ModalEditDriver } from "./components/ModalEditDriver/ModalEditDriver";
 import {GrCheckmark} from 'react-icons/gr';
 
 
 const Drivers = () => {
         
-    const {db} = useContext(ApiContext);
+    const {db, drivers, getDrivers} = useContext(ApiContext);
 
     const [modalVisible, setModalVisible] = useState(false);
     const [modalContent, setModalContent] = useState('add');
@@ -29,19 +29,7 @@ const Drivers = () => {
     const [success, setSuccess] = useState(false);
     const [successMessage, setSuccesMessage] = useState('');
 
-    const [drivers, setDrivers] = useState();
-
-
-
     const [driverToEditId, setDriverToEditId] = useState();
-
-    const getDatabase = async() => {
-        setDrivers((await getDoc(doc(db, 'assistencia', 'condutores'))).data());
-    };
-
-    useEffect(() => {
-        getDatabase();
-    }, []);
 
     const handleModalContent = () => {
         if(modalContent === 'add'){
@@ -50,7 +38,7 @@ const Drivers = () => {
                 modalVisible={modalVisible}
                 setModalVisible={setModalVisible}
                 db={db}
-                getDatabase={() => getDatabase()}
+                getDatabase={() => getDrivers()}
                 setSuccessMessage={setSuccesMessage}
                 setSuccess={setSuccess}
                 />
@@ -64,7 +52,7 @@ const Drivers = () => {
                 driverId={driverToEditId}
                 db={db}
                 drivers={drivers}
-                getDatabase={() => getDatabase()}
+                getDatabase={() => getDrivers()}
                 setSuccessMessage={setSuccesMessage}
                 setSuccess={setSuccess}
                 />

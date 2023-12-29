@@ -3,9 +3,7 @@ import {IoIosArrowDown} from 'react-icons/io';
 import {LuHistory} from 'react-icons/lu';
 import {HiMiniArrowTopRightOnSquare} from 'react-icons/hi2'
 
-import { ApiContext } from "../../../context/ApiContext";
-
-const MaintenancesHistory = ({curVehicle, db, history}) => {
+const MaintenancesHistory = ({curVehicle, history}) => {
 
     const formatDate = (data) => {
         //return date on DD/MM/YYYY format

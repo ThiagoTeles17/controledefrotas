@@ -8,6 +8,7 @@ import { ScreenProvider, ScreenContext } from "./context/ScreenContext.jsx";
 import { useContext, useEffect, useState } from "react";
 import ManangeVehicles from "./screens/ManangeVehicles/ManangeVehicles.jsx";
 import Drivers from "./screens/Drivers/Drivers.jsx";
+import { LoginScreen } from "./screens/Login/LoginScreen.jsx";
 import { Reports } from "./screens/Reports/Reports.jsx";
 
 
@@ -16,6 +17,9 @@ function App() {
   const {curScreen} = useContext(ScreenContext);
 
   const [selectedScreen, setSelectedScreen] = useState(curScreen);
+
+  const [isLogged, setIsLogged] = useState(false);
+
 
   const changeSelectedScreen = (screen) => {
     setSelectedScreen(screen);
@@ -27,15 +31,22 @@ function App() {
   return (
 
     <div className="App">
-      <ScreenProvider>
-        <ApiProvider>
-          <Header handleOnClick={(screen) => changeSelectedScreen(screen)} screens={screens}/>
-          {selectedScreen == 'Visão Geral' && <Dashboard/>}
-          {selectedScreen == 'Gerenciar Veículos' && <ManangeVehicles/>}
-          {selectedScreen == 'Condutores' && <Drivers/>}
-          {selectedScreen == 'Relatórios' && <Reports/>}
-        </ApiProvider>
-      </ScreenProvider>
+      
+        {!isLogged ?
+          <LoginScreen/>
+        :
+        <ScreenProvider>
+          <ApiProvider>
+            <Header handleOnClick={(screen) => changeSelectedScreen(screen)} screens={screens}/>
+            {selectedScreen == 'Visão Geral' && <Dashboard/>}
+            {selectedScreen == 'Gerenciar Veículos' && <ManangeVehicles/>}
+            {selectedScreen == 'Condutores' && <Drivers/>}
+            {selectedScreen == 'Relatórios' && <Reports/>}
+          </ApiProvider>
+        </ScreenProvider>
+        }
+        
+      
     </div>
 
   );

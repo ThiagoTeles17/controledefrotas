@@ -15,8 +15,6 @@ import VehicleControl from "../../components/Sheets/VehicleControl/VehicleContro
 import {VscLoading} from 'react-icons/vsc'
 import {AiFillCar} from 'react-icons/ai';
 
-
-
 import { ApiContext } from "../../context/ApiContext";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import ReactModal from "react-modal";
@@ -24,41 +22,24 @@ import ReactModal from "react-modal";
 
 const Dashboard = () => {
 
-    const {curVehicle, db, setCurVehicle} = useContext(ApiContext);
+    const {curVehicle, db, setCurVehicle, getVehicles, getDrivers, getTires, getInsurances, getMaintenanceHistory, getMechanicalPendences, drives, tires, vehicles, insurances, maintenanceHistory, mechanicalPendences} = useContext(ApiContext);
 
-    const [vehicles, setVehicles] = useState([]);
-    const [mechanicalHistory, setMechanicalHistory] = useState([]);
     const [database, setDatabase] = useState([]);
 
     const [isLoaded, setIsLoaded] = useState(false);
 
-    const getDatabase = async() => {
-            
-        setDatabase((await getDocs(collection(db, 'assistencia'))));
-
-        let veh = (await getDoc(doc(db, 'assistencia', 'veiculos'))).data();
-        setVehicles(veh);
-
-        setMechanicalHistory((await getDoc(doc(db, 'assistencia', 'historicoMec'))).data());
-
-        if(curVehicle == null){
-            setCurVehicle(Object.keys(veh)[0]);
-        }
-    }
-
 
     useEffect (() => {
         
-        getDatabase();
-
+       
         setTimeout(() => {
             setIsLoaded(true);
         }, 200);
         
     }, []);
     
-    
-    if(database == [] || !isLoaded){
+    console.log(curVehicle)
+    if(vehicles == [] || !isLoaded){
         return (
             <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '25rem'}}>
                  <VscLoading className={styles.loading}/>
@@ -79,7 +60,6 @@ const Dashboard = () => {
                         <ListBox/>
                         <CarImage vehicles={vehicles} curVehicle={curVehicle}/>
                         <MechanicalPendences 
-                        setHistory={setMechanicalHistory} 
                         db={db} 
                         curVehicle={curVehicle}
                         />  
@@ -89,6 +69,7 @@ const Dashboard = () => {
                         <Tires db={db} curVehicle={curVehicle}/>
                     </VerticalContainer>
                     <VerticalContainer>
+                        {/*TODO - Tornar possivel a consulta ao detran do pr*/}
                         <LargeBtn 
                         title='Consulta Detran'
                         link={
@@ -101,8 +82,7 @@ const Dashboard = () => {
                         <VehicleControl curVehicle={curVehicle} vehicles={vehicles}/>
                         
                         <MaintenancesHistory 
-                        history={mechanicalHistory} 
-                        db={db} 
+                        history={maintenanceHistory} 
                         curVehicle={curVehicle}
                         />
 

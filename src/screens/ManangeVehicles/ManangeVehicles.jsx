@@ -24,7 +24,23 @@ import {GrCheckmark} from 'react-icons/gr';
 const ManangeVehicles = () => {
 
         
-    const {curVehicle, setCurVehicle, db} = useContext(ApiContext);
+    const {
+        curVehicle, 
+        setCurVehicle, 
+        db, 
+        vehicles, 
+        activities, 
+        unities, 
+        tires, 
+        insurances, 
+        images,
+        getVehicles,
+        getActivities,
+        getUnities,
+        getTires,
+        getInsurances,
+        getImages
+    } = useContext(ApiContext);
 
     const [modalVisible, setModalVisible] = useState(false);
     const [modalContent, setModalContent] = useState('add');
@@ -33,25 +49,10 @@ const ManangeVehicles = () => {
     const [success, setSuccess] = useState(false);
     const [successMessage, setSuccesMessage] = useState('');
 
-    const [vehicles, setVehicles] = useState();
-    const [activities, setActivities] = useState();
-    const [unities, setUnities] = useState();
-    const [tires, setTires] = useState();
-    const [insurances, setInsurances] = useState();
-    const [images, setImages] = useState();
-
     const [vehToEditId, setVehToEditId] = useState();
 
-    const getDatabase = async() => {
-        setVehicles((await getDoc(doc(db, 'assistencia', 'veiculos'))).data());
-        setActivities((await getDoc(doc(db, 'assistencia', 'atividades'))).data());
-        setUnities((await getDoc(doc(db, 'assistencia', 'unidades'))).data());
-        setTires((await getDoc(doc(db, 'assistencia', 'pneus'))).data());
-        setInsurances((await getDoc(doc(db, 'assistencia', 'seguros'))).data());
-        setImages((await getDoc(doc(db, 'imgs', 'vehicles'))).data());
-    };
-
     const [vehiclesSorted, setVehiclesSorted] = useState([]);
+
     const sortData = () => {
         if(vehicles){    
             const sorted = Object.keys(vehicles).sort((a, b) => {
@@ -62,11 +63,15 @@ const ManangeVehicles = () => {
             console.log(sorted.map((i) => {return vehicles[i].modelo}))
         }
     }
-    
-    useEffect(() => {
-        getDatabase();
 
-    }, []);
+    const getDatabase = () => {
+        getVehicles();
+        getActivities();
+        getUnities();
+        getTires();
+        getInsurances();
+        getImages();
+    };    
     
     useEffect(() => {
         sortData();

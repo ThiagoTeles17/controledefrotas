@@ -1,22 +1,14 @@
-import { doc, getDoc } from 'firebase/firestore';
+
 import styles from './Tires.module.css';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import {GiCarWheel} from 'react-icons/gi';
+import { ApiContext } from '../../../context/ApiContext';
 
 
-const Tires = ({db, curVehicle}) => {
+const Tires = ({curVehicle}) => {
 
-
-    const [tires, setTires] = useState([]);
-
-    const getTiresData = async() => {
-        setTires((await getDoc(doc(db, 'assistencia', 'pneus'))).data());
-    };
-
-    useEffect(() => {
-        getTiresData();
-    }, [])
+    const {tires} = useContext(ApiContext);
 
     const corEstado = {
             'Bom' : 'rgba(29, 255, 0, 0.67)',
