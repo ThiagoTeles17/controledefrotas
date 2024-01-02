@@ -1,10 +1,27 @@
 import styles from './LoginScreen.module.css';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import brasao from '../../assets/imgs/brasao.png'
+import { UserContext } from '../../context/UserContext';
 
 export const LoginScreen = () => {
 
-    const {email, setEmail} = useState();
+    const {signIn} = useContext(UserContext);
+    
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
+
+    const [errMessage, setErrMessage] = useState();
+
+    const handleSumbitLoginForm = async(event) => {
+        event.preventDefault();
+
+        try {
+            await signIn(email, password);
+        }
+        catch (err) {
+            setErrMessage(err.message);
+        }
+    };
 
     return(
         <div className={styles.container}>
@@ -17,16 +34,17 @@ export const LoginScreen = () => {
                 </div>
                
                 </div>
-                <form onSubmit={(e) => e.preventDefault()}>
+                <form onSubmit={(e) => handleSumbitLoginForm(e)}>
                     <div className={styles.inputContainer}>
                         <span>Email:</span>
-                        <input type="text" />
+                        <input type="text" onChange={(text) => setEmail(text.target.value)}/>
                     </div>
                     <div className={styles.inputContainer}>
                         <span>Senha:</span>
-                        <input type="password" />
+                        <input type="password" onChange={(text) => setPassword(text.target.value)}/>
                     </div>
                     <button type="submit">Entrar</button>
+                    <span style={{color: 'red', textAlign: 'center'}}>{errMessage}</span>
                 </form>
                 
             </div>

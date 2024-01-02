@@ -1,3 +1,4 @@
+
 .VerticalContainer{
     display: flex;
     flex-direction: column;
@@ -19,9 +20,8 @@ table ,th, td{
 }
 .tableHeader > td{
     color: white;
-    border: 1px solid rgb(5, 59, 105);;
+    border: 1px solid rgb(5, 59, 105);
 }
-
 .editBtn{
     color: rgb(9, 27, 131);
     transition: .1s;

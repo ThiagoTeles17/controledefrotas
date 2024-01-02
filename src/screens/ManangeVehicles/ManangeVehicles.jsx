@@ -19,10 +19,10 @@ import { ModalEditVehicle } from "./components/ModalEditVehicle/ModalEditVehicle
 import Box from "../../components/Sheets/CarDescription/Box/Box";
 import VerticalContainer from "../../components/VerticalContainer/VerticalContainer";
 import {GrCheckmark} from 'react-icons/gr';
+import { TableHeaderItem } from "../../components/TableHeaderItem/TableHeaderItem";
 
 
 const ManangeVehicles = () => {
-
         
     const {
         curVehicle, 
@@ -53,16 +53,51 @@ const ManangeVehicles = () => {
 
     const [vehiclesSorted, setVehiclesSorted] = useState([]);
 
-    const sortData = () => {
-        if(vehicles){    
-            const sorted = Object.keys(vehicles).sort((a, b) => {
-                setVehiclesSorted((vehicles[a].modelo).toLowerCase() < (vehicles[b].modelo).toLowerCase() ? 1 : -1);
-            })
-            setVehiclesSorted(sorted);
-            
-            console.log(sorted.map((i) => {return vehicles[i].modelo}))
+    const sortData = (sortBy, order) => {
+
+        let sorted = [];
+
+        if(sortBy === 'atividade'){
+            const sortedActivities = Object.keys(activities).sort((a, b) => {
+                if(order == 'asc'){
+                    return (activities[a]).toLowerCase() < (activities[b]).toLowerCase() ? -1 : 1;
+                }
+                else if(order == 'des'){
+                    return (activities[a]).toLowerCase() < (activities[b]).toLowerCase() ? 1 : -1;
+                }
+            });
+            let sortedVehicles = [];
+            sortedActivities.map((item) => {
+                sortedVehicles = [...sortedVehicles, item];
+            });
+            sorted = sortedVehicles;  
         }
-    }
+        else if(sortBy === 'status'){
+
+            sorted = Object.keys(vehicles).sort((a, b) => {
+                if(order == 'asc'){
+                    return (vehicles[a].ativo) == true && (vehicles[b].ativo == false) ? -1 : 1;
+                }
+                else if(order == 'des'){
+                    return (vehicles[a].ativo) == true && (vehicles[b].ativo == false) ? 1 : -1;
+                }
+             })
+
+        }
+        else{
+            
+            sorted = Object.keys(vehicles).sort((a, b) => {
+                if(order == 'asc'){
+                    return (vehicles[a][sortBy]).toLowerCase() < (vehicles[b][sortBy]).toLowerCase() ? -1 : 1;
+                }
+                else if(order == 'des'){
+                    return (vehicles[a][sortBy]).toLowerCase() < (vehicles[b][sortBy]).toLowerCase() ? 1 : -1;
+                }
+             })
+        }
+
+        setVehiclesSorted(sorted);
+    };
 
     const getDatabase = () => {
         getVehicles();
@@ -74,8 +109,8 @@ const ManangeVehicles = () => {
     };    
     
     useEffect(() => {
-        sortData();
-    }, [vehicles]);
+        sortData('marca', 'asc');
+    }, []);
 
     const handleModalContent = () => {
         if(modalContent === 'add'){
@@ -164,13 +199,13 @@ const ManangeVehicles = () => {
 
            <table>
                 <tr className={styles.tableHeader}>
-                    <td>Placa</td>
-                    <td style={{width: '25rem'}}>Modelo</td>
-                    <td>Unidade</td>
-                    <td>Despesa</td>
-                    <td>Atividade</td>           
-                    <td>Renavam</td>
-                    <td>Status</td>
+                    <TableHeaderItem title={'Placa'} sortData={sortData} sortBy={"placa"}/>
+                    <TableHeaderItem title={'Modelo'} sortData={sortData} sortBy={"marca"} style={{width: '25rem'}}/>
+                    <TableHeaderItem title={'Unidade'} sortData={sortData} sortBy={"unidade"}/>
+                    <TableHeaderItem title={'Despesa'} sortData={sortData} sortBy={"despesa"}/>
+                    <TableHeaderItem title={'Atividade'} sortData={sortData} sortBy={"atividade"}/> 
+                    <TableHeaderItem title={'Renavam'} sortData={sortData} sortBy={"renavam"}/>
+                    <TableHeaderItem title={'Status'} sortData={sortData} sortBy={"status"}/>
                     <td></td>
                 </tr>
                 {vehicles && 

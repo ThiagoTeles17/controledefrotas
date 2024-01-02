@@ -16,11 +16,14 @@ import { ModalAddDriver } from "./components/ModalAddDriver/ModalAddDriver";
 import { doc, getDoc } from "firebase/firestore";
 import { ModalEditDriver } from "./components/ModalEditDriver/ModalEditDriver";
 import {GrCheckmark} from 'react-icons/gr';
+import { TableHeaderItem } from "../../components/TableHeaderItem/TableHeaderItem";
 
 
 const Drivers = () => {
         
     const {db, drivers, getDrivers} = useContext(ApiContext);
+
+    const [sortedDrivers, setSortedDrivers] = useState([]);
 
     const [modalVisible, setModalVisible] = useState(false);
     const [modalContent, setModalContent] = useState('add');
@@ -72,11 +75,62 @@ const Drivers = () => {
         setDriverToEditId(id);
     }
 
+    const sortData = (sortBy, order) => {
+
+        let sorted;
+
+        if(sortBy == 'validade') {
+            
+            sorted = Object.keys(drivers).sort((a, b) => {
+
+                let [dayA, monthA, yearA] = (drivers[a].validade).split('/');
+                let [dayB, monthB, yearB] = (drivers[b].validade).split('/');
+
+                const dateA = new Date(+yearA, +monthA - 1, +dayA);
+                const dateB = new Date(+yearB, +monthB - 1, +dayB);
+
+                if(order == 'asc'){
+                    return dateA < dateB ? -1 : 1;
+                }
+                else if(order == 'des'){
+                    return dateA < dateB ? 1 : -1;
+                };
+
+            });
+      
+        }
+        else if(sortBy == 'status'){
+            sorted = Object.keys(drivers).sort((a, b) => {
+                if(order == 'asc'){
+                    return (drivers[a].ativo) == true && (drivers[b].ativo) == false ? -1 : 1;
+                }
+                else if(order == 'des'){
+                    return (drivers[a].ativo) == true && (drivers[b].ativo) == false ? 1 : -1;
+                }
+             });
+        }
+        else{
+            sorted = Object.keys(drivers).sort((a, b) => {
+                if(order == 'asc'){
+                    return (drivers[a][sortBy]).toLowerCase() < (drivers[b][sortBy]).toLowerCase() ? -1 : 1;
+                }
+                else if(order == 'des'){
+                    return (drivers[a][sortBy]).toLowerCase() < (drivers[b][sortBy]).toLowerCase() ? 1 : -1;
+                }
+             });
+        }
+        
+         setSortedDrivers(sorted);
+         
+    };
+
+    useEffect(() => {
+        sortData('nome', 'asc');
+    }, []);
+
 
     return(
-        <div className={styles.VerticalContainer}>
-
-           
+        <div className={styles.VerticalContainer}>           
 
             {/*Displays sucess message if succes is true*/}
             {success && <div className={styles.successMessage}>
@@ -92,19 +146,18 @@ const Drivers = () => {
 
             <AiFillPlusCircle onClick={() => handleAddVehicle()} className={styles.addBtn}/>
           
-
            <table>
                 <tr className={styles.tableHeader}>
-                    <td>Nome do Condutor</td>
-                    <td style={{width: '10rem'}}>CNH</td>
-                    <td style={{width: '5rem'}}>Categoria</td>
-                    <td style={{width: '5rem'}}>Validade</td>
-                    <td style={{width: '10rem'}}>Situação</td>          
-                    <td style={{width: '5rem'}}>Status</td>  
+                    <TableHeaderItem title={"Nome do Condutor"} sortBy={'nome'} sortData={sortData}/>
+                    <TableHeaderItem title={"CNH"} sortBy={"cnh"} style={{width: '10rem'}} sortData={sortData}/>
+                    <TableHeaderItem style={{width: '5rem'}} title={'Categoria'} sortBy={'categoria'} sortData={sortData}/>
+                    <TableHeaderItem title={'Validade'} sortBy={'validade'} sortData={sortData} style={{width: '5rem'}}/>
+                    <TableHeaderItem title={'Situação'} sortBy={'validade'} sortData={sortData} style={{width: '10rem'}}/>          
+                    <TableHeaderItem title={'Status'} sortBy={'status'} sortData={sortData} style={{width: '5rem'}}/>  
                     <td></td>
                 </tr>
                 {drivers && 
-                Object.keys(drivers).map((item, index) => {
+                sortedDrivers.map((item, index) => {
                     
                     //convert date string to javascript Date
                     let [day, month, year] = drivers[item].validade && (drivers[item].validade).split("/");
