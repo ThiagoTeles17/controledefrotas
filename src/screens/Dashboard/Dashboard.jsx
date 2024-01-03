@@ -16,15 +16,12 @@ import {VscLoading} from 'react-icons/vsc'
 import {AiFillCar} from 'react-icons/ai';
 
 import { ApiContext } from "../../context/ApiContext";
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
-import ReactModal from "react-modal";
 
+import { Detran } from "../Reports/Scripts/Detran";
 
 const Dashboard = () => {
 
-    const {curVehicle, db, setCurVehicle, getVehicles, getDrivers, getTires, getInsurances, getMaintenanceHistory, getMechanicalPendences, drives, tires, vehicles, insurances, maintenanceHistory, mechanicalPendences} = useContext(ApiContext);
-
-    const [database, setDatabase] = useState([]);
+    const {curVehicle, db, vehicles, maintenanceHistory} = useContext(ApiContext);
 
     const [isLoaded, setIsLoaded] = useState(false);
 
@@ -38,9 +35,7 @@ const Dashboard = () => {
         }
     }
 
-
-    useEffect (() => {
-        
+    useEffect (() => {  
        
         setTimeout(() => {
             setIsLoaded(true);
@@ -73,21 +68,15 @@ const Dashboard = () => {
                         db={db} 
                         curVehicle={curVehicle}
                         />  
-                   </VerticalContainer>
+                    </VerticalContainer>
                     <VerticalContainer>
                         <CarDescription db={db} curVehicle={curVehicle}/>
                         <Tires db={db} curVehicle={curVehicle}/>
                     </VerticalContainer>
                     <VerticalContainer>
-                        {/*TODO - Tornar possivel a consulta ao detran do pr*/}
                         <LargeBtn 
                         title='Consulta Detran'
-                        link={
-                            vehicles[curVehicle] ?
-                            `https://consultas.detrannet.sc.gov.br/servicos/consultaveiculo.asp?placa=${vehicles[curVehicle].placa}&renavam=${vehicles[curVehicle].renavam}`
-                            : ''
-                        }
-                        handleOnClick={() => handleConsultaDetran()}
+                        handleOnClick={() => Detran(vehicles[curVehicle].placa, vehicles[curVehicle].renavam, vehicles[curVehicle].ufOrigem)}
                         icon={<AiFillCar/>}
                         />
                         <VehicleControl curVehicle={curVehicle} vehicles={vehicles}/>
@@ -96,14 +85,11 @@ const Dashboard = () => {
                         history={maintenanceHistory} 
                         curVehicle={curVehicle}
                         />
-
                     </VerticalContainer>
             
                 </Container>
             );         
     }
-    
-
 }
 
 export default Dashboard;
