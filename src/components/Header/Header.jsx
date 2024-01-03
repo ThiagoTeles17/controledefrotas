@@ -79,11 +79,13 @@ const Header = ({screens, handleOnClick}) => {
                 <div>{curUserName}</div>
                 <div style={{textTransform: 'capitalize'}}>{curUserType}</div>
             </div>                    
-              
+
+            {isUserOptionsOpened &&
             <div className={styles.userOptions}>
-                    <div onClick={() => handleChangePassword()}>Alterar Senha</div>
-                    <div onClick={() => handleLogout()}>Logout</div>
+                <div onClick={() => handleChangePassword()}>Alterar Senha</div>
+                <div onClick={() => handleLogout()}>Logout</div>
             </div>
+            } 
             
             <Modal
             isOpen={passModalVisible}

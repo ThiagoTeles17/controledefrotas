@@ -56,18 +56,18 @@ export const GenerateVehicleControl = (curVehicle, vehicles) => {
         {   
             table: {
                 headerRows: 1,
-                widths: ['*', '*', '*', 50, '*', '*', '*', 50, '*', '*'],
+                widths: ['*', '*', '*', 50, '*', 150, '*', 50, '*', '*'],
                 body: [
                     [
                         {text: 'NOME DO CONDUTOR', style: 'tableHeader', fontSize: 11, alignment: 'center', bold: true},
                         {text: 'PLACA DO VEÍCULO', style: 'tableHeader', fontSize: 11, alignment: 'center', bold: true},
-                        {text: 'DATA SAÍDA', style: 'tableHeader', fontSize: 11, alignment: 'center', bold: true},
-                        {text: 'HORA', style: 'tableHeader', fontSize: 11, alignment: 'center', bold: true},
-                        {text: 'KM SAÍDA', style: 'tableHeader', fontSize: 11, alignment: 'center', bold: true},
+                        {text: 'DATA DE SAÍDA', style: 'tableHeader', fontSize: 11, alignment: 'center', bold: true},
+                        {text: 'HORA DA SAÍDA', style: 'tableHeader', fontSize: 11, alignment: 'center', bold: true},
+                        {text: 'KM DE SAÍDA', style: 'tableHeader', fontSize: 11, alignment: 'center', bold: true},
                         {text: 'DESTINO', style: 'tableHeader', fontSize: 11, alignment: 'center', bold: true},
-                        {text: 'DATA RETORNO', style: 'tableHeader', fontSize: 11, alignment: 'center', bold: true},
-                        {text: 'HORA', style: 'tableHeader', fontSize: 11, alignment: 'center', bold: true},
-                        {text: 'KM RETORNO', style: 'tableHeader', fontSize: 11, alignment: 'center', bold: true},
+                        {text: 'DATA DE RETORNO', style: 'tableHeader', fontSize: 11, alignment: 'center', bold: true},
+                        {text: 'HORA DO RETORNO', style: 'tableHeader', fontSize: 11, alignment: 'center', bold: true},
+                        {text: 'KM DO RETORNO', style: 'tableHeader', fontSize: 11, alignment: 'center', bold: true},
                         {text: 'ASSINATURA', style: 'tableHeader', fontSize: 11, alignment: 'center', bold: true}
                     ],
                     [
@@ -294,7 +294,7 @@ export const GenerateVehicleControl = (curVehicle, vehicles) => {
     const docDefinitions = {
         pageSize : 'A4',
         pageOrientation: 'landscape',
-        pageMargins: [35, 20, 35, 35],
+        pageMargins: [17, 20, 35, 15],
 
         content: [corpo],
         footer: [rodape]
