@@ -64,11 +64,11 @@ export const GenerateVehicleControl = (curVehicle, vehicles) => {
                         {text: 'DATA DE SAÍDA', style: 'tableHeader', fontSize: 11, alignment: 'center', bold: true},
                         {text: 'HORA DA SAÍDA', style: 'tableHeader', fontSize: 11, alignment: 'center', bold: true},
                         {text: 'KM DE SAÍDA', style: 'tableHeader', fontSize: 11, alignment: 'center', bold: true},
-                        {text: 'DESTINO', style: 'tableHeader', fontSize: 11, alignment: 'center', bold: true},
+                        {text: 'DESTINO', style: 'tableHeader', fontSize: 11, alignment: 'center', bold: true, margin: [0, 6, 0, 0]},
                         {text: 'DATA DE RETORNO', style: 'tableHeader', fontSize: 11, alignment: 'center', bold: true},
                         {text: 'HORA DO RETORNO', style: 'tableHeader', fontSize: 11, alignment: 'center', bold: true},
                         {text: 'KM DO RETORNO', style: 'tableHeader', fontSize: 11, alignment: 'center', bold: true},
-                        {text: 'ASSINATURA', style: 'tableHeader', fontSize: 11, alignment: 'center', bold: true}
+                        {text: 'ASSINATURA', style: 'tableHeader', fontSize: 11, alignment: 'center', bold: true, margin: [0, 6, 0, 0]}
                     ],
                     [
                         {text: ' ', margin: [0,3,0,3], fontSize: 10},
@@ -294,14 +294,12 @@ export const GenerateVehicleControl = (curVehicle, vehicles) => {
     const docDefinitions = {
         pageSize : 'A4',
         pageOrientation: 'landscape',
-        pageMargins: [17, 20, 35, 15],
+        pageMargins: [17, 20, 35, 20],
 
         content: [corpo],
         footer: [rodape]
     };
 
     pdfMake.createPdf(docDefinitions).open();
-
-
 
 };

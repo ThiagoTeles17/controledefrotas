@@ -28,6 +28,16 @@ const Dashboard = () => {
 
     const [isLoaded, setIsLoaded] = useState(false);
 
+    const handleConsultaDetran = async() => {
+        if(vehicles[curVehicle].ufOrigem == 'sc'){
+            window.open(`https://consultas.detrannet.sc.gov.br/servicos/consultaveiculo.asp?placa=${vehicles[curVehicle].placa}&renavam=${vehicles[curVehicle].renavam}`);
+        }
+        else if(vehicles[curVehicle].ufOrigem == 'pr'){
+            await navigator.clipboard.writeText(vehicles[curVehicle].renavam);
+            window.open('https://www.extratodebito.detran.pr.gov.br/detranextratos/geraExtrato.do?action=iniciarProcesso');
+        }
+    }
+
 
     useEffect (() => {
         
@@ -77,6 +87,7 @@ const Dashboard = () => {
                             `https://consultas.detrannet.sc.gov.br/servicos/consultaveiculo.asp?placa=${vehicles[curVehicle].placa}&renavam=${vehicles[curVehicle].renavam}`
                             : ''
                         }
+                        handleOnClick={() => handleConsultaDetran()}
                         icon={<AiFillCar/>}
                         />
                         <VehicleControl curVehicle={curVehicle} vehicles={vehicles}/>

@@ -33,7 +33,7 @@ export const ApiProvider = ({children}) => {
     const [unities, setUnities] = useState([]);
 
     var veh = [];
-    
+        
     //Creates functions to call database from any child component.
     const getVehicles = async() => {
         veh = (await(getDoc(doc(db, 'assistencia', 'veiculos')))).data()

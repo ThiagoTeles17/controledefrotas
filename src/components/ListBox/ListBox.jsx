@@ -1,31 +1,34 @@
 import styles from './ListBox.module.css';
-
-import { getDoc, doc } from 'firebase/firestore';
-
 import { ApiContext } from '../../context/ApiContext';
 import { useContext, useEffect, useState } from 'react';
 
 
 const ListBox = () => {
 
-
-    const {curVehicle, setCurVehicle, db, vehicles} = useContext(ApiContext);
+    const {curVehicle, setCurVehicle, vehicles} = useContext(ApiContext);
     
- 
+    const [sortedVehicles, setSortedVehicles] = useState();
 
+    const sortData = () => {
+        const ordened = Object.keys(vehicles).sort((a, b) => {
+            return (vehicles[a].modelo).toLowerCase() < (vehicles[b].modelo).toLowerCase() ? -1 : 1;            
+        });
+        setSortedVehicles(ordened);
+    };
+ 
+    useEffect(() => {
+        sortData();
+    }, [vehicles]);
 
     const handleOnChange = (val) => {
         setCurVehicle(val.target.value);
-    }
-
+    };
 
     return(
-
         <select value={curVehicle} onChange={value => handleOnChange(value)} className={styles.selectBox}>
             
-            {vehicles &&
-                Object.keys(vehicles).map((veiculo, index) => {
-                    
+            {sortedVehicles &&
+                sortedVehicles.map((veiculo, index) => {                    
                     let vehDisplay = vehicles[veiculo].modelo + ' - ' + (vehicles[veiculo].placa).toUpperCase(); 
                     return(
                         <option value={veiculo} key={index}>     

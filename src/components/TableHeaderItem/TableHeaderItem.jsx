@@ -17,16 +17,14 @@ export const TableHeaderItem = ({title, sortData, sortBy, style}) => {
             setSortDirection('asc');
         }
 
-
     };
 
     return (
         <td style={style}>
             <div className={styles.container}>
                 <span>{title}</span>
-                <span style={{cursor: 'pointer'}} onClick={() => handleOnClick()}><LuArrowDownUp/></span>
+                <span style={{cursor: 'pointer'}} onClick={() => handleOnClick()} className={styles.arrowDownUp}><LuArrowDownUp/></span>
             </div>
-            
         </td>
     );
 

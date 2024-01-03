@@ -11,7 +11,6 @@ import {AiOutlinePlus} from 'react-icons/ai';
 import {AiFillPlusCircle} from 'react-icons/ai';
 import { Pannel } from "./components/Pannel/Pannel";
 
-
 import { ApiContext } from "../../context/ApiContext";
 import { ModalAddVehicle } from "./components/ModalAddVehicle/ModalAddVehicle";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
@@ -21,13 +20,10 @@ import VerticalContainer from "../../components/VerticalContainer/VerticalContai
 import {GrCheckmark} from 'react-icons/gr';
 import { TableHeaderItem } from "../../components/TableHeaderItem/TableHeaderItem";
 
-
 const ManangeVehicles = () => {
         
     const {
-        curVehicle, 
-        setCurVehicle, 
-        db, 
+        db,
         vehicles, 
         activities, 
         unities, 
@@ -52,6 +48,7 @@ const ManangeVehicles = () => {
     const [vehToEditId, setVehToEditId] = useState();
 
     const [vehiclesSorted, setVehiclesSorted] = useState([]);
+
 
     const sortData = (sortBy, order) => {
 
@@ -146,7 +143,6 @@ const ManangeVehicles = () => {
                 />
             );
         }
-       
     }
 
     const handleAddVehicle = () => {
@@ -186,7 +182,7 @@ const ManangeVehicles = () => {
             />
             {successMessage}
             </div>}
-
+            
             <Container>           
 
             <AiFillPlusCircle onClick={() => handleAddVehicle()} className={styles.addBtn}/>
@@ -208,16 +204,14 @@ const ManangeVehicles = () => {
                     <TableHeaderItem title={'Status'} sortData={sortData} sortBy={"status"}/>
                     <td></td>
                 </tr>
-                {vehicles && 
+                {vehiclesSorted && 
                 vehiclesSorted.map((item, index) => {
-
                     const carModel = () => {
                         //return the name of car with informations
                         if(vehicles[item].marca && vehicles[item].modelo && vehicles[item].ano){
                             return `${vehicles[item].marca} ${vehicles[item].modelo} ${vehicles[item].ano}`
                         }
                     }
-
                     return(
                         <tr>
                             <td

@@ -36,14 +36,14 @@ export const Reports = () => {
     const [modalVisible, setModalVisible] = useState(false);
 
     const [modalContent, setModalContent] = useState(<></>);
-
-   
+  
 
     const handleVehicleControl = () => {
         Object.keys(vehicles).map((i) => {
             GenerateVehicleControl(i, vehicles);
-        })
+        });
     };
+
     return(
         <Container>
             <ReportBox handleOnClick={() => reportVehicles(vehicles, activities)} icon={<AiFillCar size={80}/>} title="Veículos"/>
@@ -55,13 +55,14 @@ export const Reports = () => {
             <ReportBox handleOnClick={() => reportInsurances(vehicles, insurances)} icon={<IoShieldCheckmark size={80}/>} title="Seguros"/>
 
 
-            {/*<Modal
+
+           {/*<Modal
             isOpen={modalVisible}
             className={styles.modal}
             style={{overlay: {backgroundColor: 'rgba(214, 214, 214, 0.5)', zIndex: '10'}}}
             >   
             {modalContent}
-            </Modal>*/} 
+            </Modal>*/}
 
         </Container>
     );
