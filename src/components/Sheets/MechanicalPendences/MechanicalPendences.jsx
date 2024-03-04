@@ -32,6 +32,16 @@ const MechanicalPendences = ({curVehicle, db}) => {
     const [serviceDescription, setServiceDescription] = useState('');
     const [serviceShop, setServiceShop] = useState('');
     const [serviceDate, setServiceDate] = useState(`${curYear}-${curMonth.padStart(2, "0")}-${curDay.padStart(2, "0")}`);
+    const [partsList, setPartsList] = useState({
+        'items' : {
+            
+        }
+    });
+    const [addPartInputVisible, setAddPartInputVisible] = useState(false);
+    const [partDesc, setPartDesc] = useState('');
+    const [partQuantity, setPartQuantity] = useState(1);
+    const [partsIdCounter, setPartsIdCounter] = useState(1);
+    const [sortedPartsList, setSortedPartsList] = useState(partsList);
 
     //prevent scroll when modal is open
     useEffect(() => {
@@ -42,12 +52,12 @@ const MechanicalPendences = ({curVehicle, db}) => {
         }
       }, [modalVisible]);
 
+      
+    
     //Set content that will show on modal
     const handleModalContent = () => {
         if(modalContent === 'add'){
             return(
-
-
                 <form style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem'}}> 
                 <img style={{width: '3rem', marginBottom: '.5rem'}} src={brasao} alt="" />
 
@@ -73,19 +83,144 @@ const MechanicalPendences = ({curVehicle, db}) => {
             );
         }
         else if (modalContent === 'confirmPendence'){
+
+            //Sorts Parts Items
+            
+                 
+            
+            //Displays inputs to set description and quantity of a part
+            const handleAddPart = () => {
+
+                setPartsIdCounter(partsIdCounter + 1);
+                if((partDesc && partDesc.length > 0) && (partQuantity > 0)){
+                let newPartsList = {
+                    ...partsList,
+                    'items': {
+                        ...partsList['items'],
+                        [partsIdCounter] : {
+                            'desc' : partDesc,
+                            'quantity' : partQuantity
+                        }
+                }};
+                let sorted = Object.keys(newPartsList.items).sort((a, b) => {
+                    return a > b ? -1 : 1
+                });
+                setSortedPartsList(sorted);
+                setPartsList(newPartsList);
+                setPartDesc(null);
+                setPartQuantity(1);
+                setAddPartInputVisible(false);
+                }
+                else{
+                    if(!partDesc || partDesc.length < 0){
+                        alert("Digite uma descrição para a peça");
+                    }
+                    else if (partQuantity <= 0){
+                        alert("Digite uma quantidade válida");
+                    }
+                }
+
+            }
+
+
             return(
                 <form onSubmit={(e) => {e.preventDefault(); handleConfirmPendence()}} style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem'}}> 
 
                 <span className={styles.modalTitle}>Marcar como concluído</span>
                     <div style={{display: 'flex', flexDirection: 'column', alignItems: 'start'}}>
-                        <span style={{fontSize: '12px', marginBottom: '.3rem', marginTop: '.5rem'}}>Descrição do serviço realizado:</span>
-                        <input value={serviceDescription} autoFocus onChange={(val) => setServiceDescription(val.target.value)} className={styles.modalInput} type='text'></input>
                         
-                        <span style={{fontSize: '12px', marginBottom: '.3rem', marginTop: '.5rem'}}>Oficina:</span>
-                        <input onChange={(val) => setServiceShop(val.target.value)} className={styles.modalInput} type='text'></input>
+                        <div className={styles.horizontalFlex} style={{width: '100%', gap: "1rem", justifyContent: 'space-between', alignItems: 'center'}}>
+                            <div className={styles.verticalFlex}>
+                                <span style={{fontSize: '12px', marginBottom: '.3rem', marginTop: '.5rem'}}>Descrição do serviço realizado:</span>
+                                <input value={serviceDescription} autoFocus onChange={(val) => setServiceDescription(val.target.value)} className={styles.modalInput} type='text'></input>
+                            </div>
+                         
+                            <div className={styles.verticalFlex}>
+                                <span style={{fontSize: '12px', marginBottom: '.3rem', marginTop: '.5rem'}}>Oficina:</span>
+                                <input onChange={(val) => setServiceShop(val.target.value)} className={styles.modalInput} type='text'></input>
+                            </div>
+                            <div className={styles.verticalFlex}>
+                                <span style={{fontSize: '12px', marginBottom: '.3rem', marginTop: '.5rem'}}>Data do serviço:</span>
+                                <input value={serviceDate} onChange={(val) => setServiceDate(val.target.value)} className={styles.modalInput} type='date'></input>
+                            </div>
+                        </div>
+                        
 
-                        <span style={{fontSize: '12px', marginBottom: '.3rem', marginTop: '.5rem'}}>Data do serviço:</span>
-                        <input value={serviceDate} onChange={(val) => setServiceDate(val.target.value)} className={styles.modalInput} type='date'></input>
+                        
+
+                        <div className={styles.partsTable}>
+                            <div className={styles.tableHeader}>
+                                <span>
+                                    Peças substituídas:
+                                </span>
+                                <AiFillPlusCircle onClick={() => setAddPartInputVisible(true)} className={styles.addItemBtn}/>
+                            </div>
+                            <table className={styles.partListTable}>
+                                <tr>
+                                    <th style={{textAlign: 'left', width: '80%'}}>Descrição</th>
+                                    <th>Quantidade</th>
+                                </tr>
+                            </table>
+
+                            {addPartInputVisible &&
+                            <table style={{backgroundColor: 'blue', margin: '1rem 0 1rem 0'}}>
+                                <tr>
+                                    <th style={{color: 'white', fontStyle: 'normal'}} colSpan='2'>Adicionar Peça</th>
+                                </tr>
+                                <tr style={{padding: 0}}>
+                                    <td style={{padding: 0, width: '80%'}}>
+                                        <input
+                                        placeholder='Descrição' 
+                                        className={styles.partInput} 
+                                        type="text" 
+                                        value={partDesc}
+                                        onChange={(text) => setPartDesc(text.target.value)}
+                                        />
+                                    </td>
+                                    <td style={{padding: 0, borderLeft: '1px solid gray'}}>
+                                        <input 
+                                        placeholder='Quantidade' 
+                                        className={styles.partInput} 
+                                        type="number" 
+                                        value={partQuantity}
+                                        onChange={(text) => setPartQuantity(text.target.value)}
+                                        />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style={{padding: 0}} colSpan='2'>
+                                        <button type='button' onClick={() => handleAddPart()} className={styles.buttonAddPart}>Adicionar</button>
+                                    </th>
+                                </tr>
+                            </table>
+                            }
+
+                            <div className={styles.tableItemsContainer}>
+                            <table>
+                                {sortedPartsList.length > 0 ? 
+                                    sortedPartsList.map(item => {
+                                    return(
+                                            <tr className={styles.tableItem}>
+                                                <td style={{width: '80%'}}>
+                                                    {partsList.items[item].desc}
+                                                </td>
+                                                <td style={{textAlign: 'center'}}>
+                                                    {partsList.items[item].quantity}
+                                                </td>
+                                            </tr>                                         
+                                    )
+                                    
+                                })
+                                :
+                                <tr className={styles.tableItem}>
+                                    <td style={{fontStyle: 'italic', color: 'gray', textAlign: 'center'}}>Adicione uma ou mais peças</td>
+                                </tr>
+                                
+                                }
+                                                                                               
+                            </table>
+                            </div>
+                        </div>
 
                     </div>
                     <div style={{display: 'flex', gap: '.8rem'}}>
@@ -95,13 +230,21 @@ const MechanicalPendences = ({curVehicle, db}) => {
                         >
                         Confirmar
                         </button>
-                        <button onClick={() => setModalVisible(false)} className={styles.modalBtn}>Cancelar</button>
+                        <button 
+                            onClick={() =>
+                             {
+                                setModalVisible(false); 
+                                setPartsList({'items' : {}}); 
+                                setSortedPartsList({'items' : {}})}
+                            } 
+                            className={styles.modalBtn}>Cancelar</button>
                     </div> 
                     
                     </form>      
             );
         }
     }
+    
     
     //On click to confirm pendence
     const handleOnClickConfirm = (item) => {
@@ -157,8 +300,8 @@ const MechanicalPendences = ({curVehicle, db}) => {
             ]
         };
 
-        setDoc(mecHistoryRef, newHistory);
-        setDoc(pendencesRef, newMechanicalPendences);
+        setDoc(mecHistoryRef, newHistory, {merge: true});
+        setDoc(pendencesRef, newMechanicalPendences, {merge: true});
 
         
         getMechanicalPendences();
@@ -177,7 +320,7 @@ const MechanicalPendences = ({curVehicle, db}) => {
             setModalVisible(!modalVisible);
     }
     //On add new pendence
-    const handleAddPendence = () =>{
+    const handleAddPendence = () => {
 
 
         let newArray = mechanicalPendences[curVehicle] ? { 
@@ -191,7 +334,7 @@ const MechanicalPendences = ({curVehicle, db}) => {
             ]
         };
 
-        setDoc(pendencesRef, newArray);
+        setDoc(pendencesRef, newArray, {merge: true});
         getMechanicalPendences();
         setModalVisible(!modalVisible);
 

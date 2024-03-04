@@ -69,7 +69,7 @@
     color: rgb(78, 78, 78);
 }
 .modal{
-    width: 25rem;
+    min-width: 25rem;
     min-height: 12rem;
     height: auto;
     border-radius: .2rem;
@@ -122,4 +122,116 @@
 }
 .modalBtn:active{
     background-color: rgb(2, 119, 197);
+}
+.horizontalFlex{
+    display: flex;
+    flex-direction: row;
+}
+.verticalFlex{
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+.partsTable{
+    margin-top: 2rem;
+    width: 100%;
+    min-height: 2rem;
+    border: 1px solid gray;
+
+    .tableHeader{
+        width: 100%;
+        height: 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 1rem 0 1rem;
+        background-color: rgb(133, 133, 133);
+        color: white;
+
+        .addItemBtn{
+            cursor: pointer;
+            transition: .3s;
+            
+        }
+        .addItemBtn:hover{
+            color: #ffa735;
+        }
+    }
+
+     
+    th{
+        border: 1px solid gray;
+        color: #000000;
+        font-weight: 100;
+        font-style: italic;
+    }
+    td, tr, table{
+        border: none;
+    }
+
+}
+
+.partListTable{
+    width: 100% !important;
+    height: 2rem;
+    padding: 0 1rem 0 1rem;
+    background-color: rgb(188, 188, 188);
+    color: white;
+    border: none;
+    
+    th{
+        border: 1px solid gray;
+        color: #000000;
+        font-weight: 100;
+        font-style: italic;
+    }
+    td{
+        border: none;
+    }
+
+}
+.partInput{
+    width: 100%;
+    height: 2rem;
+    border: none;
+    font-size: 15px;  
+    padding-left: 1rem;  
+   
+}
+.partInput:focus{
+    outline: none;
+}
+.partInput::placeholder{
+    font-style: italic;
+}
+.buttonAddPart{
+    width: 100%;
+    height: 3rem;
+}
+.tableItemsContainer{
+    width: 100%;
+    overflow-y: auto;
+    max-height: 8rem;
+    border: none;
+    table{
+        border: none;
+    }
+    th{
+        border: 1px solid gray;
+        color: #000000;
+        font-weight: 100;
+        font-style: italic;
+    }
+    td{
+        border: none;
+    }
+    .tableItem{
+        border: none;
+        background-color: rgb(235, 235, 235);
+        color: black;
+        font-weight: 50;
+    }
+
 }
