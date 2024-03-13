@@ -132,6 +132,14 @@
     flex-direction: column;
 }
 
+.btnStyleOne{
+    cursor: pointer;
+    transition: .3s;
+    
+}
+.btnStyleOne:hover{
+    color: #ffa735;
+}
 
 
 .partsTable{
@@ -150,14 +158,7 @@
         background-color: rgb(133, 133, 133);
         color: white;
 
-        .addItemBtn{
-            cursor: pointer;
-            transition: .3s;
-            
-        }
-        .addItemBtn:hover{
-            color: #ffa735;
-        }
+        
     }
 
      
@@ -208,8 +209,17 @@
 }
 .buttonAddPart{
     width: 100%;
-    height: 3rem;
+    height: 2rem;
+    cursor: pointer;
+    transition: .4s;
+    background-color: aliceblue;
+    border: none;
 }
+.buttonAddPart:hover{
+    background-color: #c7c7c7;
+    color: rgb(0, 143, 0);
+}
+
 .tableItemsContainer{
     width: 100%;
     overflow-y: auto;

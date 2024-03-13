@@ -55,7 +55,8 @@ export const ApiProvider = ({children}) => {
         setActivities((await(getDoc(doc(db, 'assistencia', 'atividades')))).data());      
     };
     const getMaintenanceHistory = async() => {
-        setMaintenanceHistory((await (getDoc(doc(db, 'assistencia', 'historicoMec')))).data());
+        setMaintenanceHistory((await (getDoc(doc(db, 'assistencia', 'historicoMec')))).data());      
+        
     };
     const getMechanicalPendences = async() => {
         setMechanicalPendences((await(getDoc(doc(db, 'assistencia', 'pendenciasMec')))).data());

@@ -82,6 +82,7 @@ const Dashboard = () => {
                         <VehicleControl curVehicle={curVehicle} vehicles={vehicles}/>
                         
                         <MaintenancesHistory 
+                        db={db}
                         history={maintenanceHistory} 
                         curVehicle={curVehicle}
                         />

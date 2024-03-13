@@ -8,6 +8,7 @@ import Modal from 'react-modal';
 import brasao from '../../../assets/imgs/brasao.png';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { ApiContext } from '../../../context/ApiContext';
+import { IoMdClose } from 'react-icons/io';
 
 
 const MechanicalPendences = ({curVehicle, db}) => {
@@ -32,16 +33,15 @@ const MechanicalPendences = ({curVehicle, db}) => {
     const [serviceDescription, setServiceDescription] = useState('');
     const [serviceShop, setServiceShop] = useState('');
     const [serviceDate, setServiceDate] = useState(`${curYear}-${curMonth.padStart(2, "0")}-${curDay.padStart(2, "0")}`);
-    const [partsList, setPartsList] = useState({
-        'items' : {
-            
-        }
-    });
+    const [NFlink, setNFlink] = useState('');
+    const [partsList, setPartsList] = useState({});
     const [addPartInputVisible, setAddPartInputVisible] = useState(false);
     const [partDesc, setPartDesc] = useState('');
     const [partQuantity, setPartQuantity] = useState(1);
-    const [partsIdCounter, setPartsIdCounter] = useState(1);
+    const [partsIdCounter, setPartsIdCounter] = useState(0);
     const [sortedPartsList, setSortedPartsList] = useState(partsList);
+    const [commitmentNumber, setCommitmentNumber] = useState('');
+    const [NFnumber, setNFnumber] = useState('');
 
     //prevent scroll when modal is open
     useEffect(() => {
@@ -84,9 +84,6 @@ const MechanicalPendences = ({curVehicle, db}) => {
         }
         else if (modalContent === 'confirmPendence'){
 
-            //Sorts Parts Items
-            
-                 
             
             //Displays inputs to set description and quantity of a part
             const handleAddPart = () => {
@@ -143,8 +140,25 @@ const MechanicalPendences = ({curVehicle, db}) => {
                                 <span style={{fontSize: '12px', marginBottom: '.3rem', marginTop: '.5rem'}}>Data do serviço:</span>
                                 <input value={serviceDate} onChange={(val) => setServiceDate(val.target.value)} className={styles.modalInput} type='date'></input>
                             </div>
+                            
+                        
                         </div>
                         
+                        <div className={styles.horizontalFlex} style={{width: '100%', gap: "1rem", justifyContent: 'space-between', alignItems: 'center'}}>
+                             
+                            <div className={styles.verticalFlex}>
+                                <span style={{fontSize: '12px', marginBottom: '.3rem', marginTop: '.5rem'}}>Empenho:</span>
+                                <input value={commitmentNumber} onChange={(val) => setCommitmentNumber(val.target.value)} className={styles.modalInput} type='text'></input>
+                            </div>
+                            <div className={styles.verticalFlex}>
+                                <span style={{fontSize: '12px', marginBottom: '.3rem', marginTop: '.5rem'}}>Número da NF:</span>
+                                <input value={NFnumber} onChange={(val) => setNFnumber(val.target.value)} className={styles.modalInput} type='text'></input>
+                            </div>
+                            <div className={styles.verticalFlex}>
+                                <span style={{fontSize: '12px', marginBottom: '.3rem', marginTop: '.5rem'}}>Link para a NF:</span>
+                                <input value={NFlink} onChange={(val) => setNFlink(val.target.value)} className={styles.modalInput} type='text'></input>
+                            </div>
+                        </div>
 
                         
 
@@ -153,7 +167,7 @@ const MechanicalPendences = ({curVehicle, db}) => {
                                 <span>
                                     Peças substituídas:
                                 </span>
-                                <AiFillPlusCircle onClick={() => setAddPartInputVisible(true)} className={styles.addItemBtn}/>
+                                <AiFillPlusCircle onClick={() => setAddPartInputVisible(true)} className={styles.btnStyleOne}/>
                             </div>
                             <table className={styles.partListTable}>
                                 <tr>
@@ -163,9 +177,21 @@ const MechanicalPendences = ({curVehicle, db}) => {
                             </table>
 
                             {addPartInputVisible &&
-                            <table style={{backgroundColor: 'blue', margin: '1rem 0 1rem 0'}}>
+                            <table style={{backgroundColor: 'rgb(0, 112, 240)', margin: '1rem 0 1rem 0'}}>
                                 <tr>
-                                    <th style={{color: 'white', fontStyle: 'normal'}} colSpan='2'>Adicionar Peça</th>
+                                    <th style={{color: 'white', fontStyle: 'normal'}}
+                                    colSpan='2'
+                                    >
+                                        <span>Adicionar Peça</span>
+                                        <IoMdClose onClick={() => { 
+                                            setAddPartInputVisible(false);
+                                            setPartDesc('');
+                                            setPartQuantity(1);
+                                        }} 
+                                        className={styles.btnStyleOne} 
+                                        style={{position: 'absolute', right: '3rem'}}
+                                        />
+                                    </th>
                                 </tr>
                                 <tr style={{padding: 0}}>
                                     <td style={{padding: 0, width: '80%'}}>
@@ -192,6 +218,7 @@ const MechanicalPendences = ({curVehicle, db}) => {
                                         <button type='button' onClick={() => handleAddPart()} className={styles.buttonAddPart}>Adicionar</button>
                                     </th>
                                 </tr>
+                                
                             </table>
                             }
 
@@ -199,13 +226,14 @@ const MechanicalPendences = ({curVehicle, db}) => {
                             <table>
                                 {sortedPartsList.length > 0 ? 
                                     sortedPartsList.map(item => {
+                                        console.log(partsList)
                                     return(
                                             <tr className={styles.tableItem}>
                                                 <td style={{width: '80%'}}>
-                                                    {partsList.items[item].desc}
+                                                    {partsList.items && partsList.items[item].desc}
                                                 </td>
                                                 <td style={{textAlign: 'center'}}>
-                                                    {partsList.items[item].quantity}
+                                                    {partsList.items && partsList.items[item].quantity}
                                                 </td>
                                             </tr>                                         
                                     )
@@ -275,12 +303,13 @@ const MechanicalPendences = ({curVehicle, db}) => {
             ['serv' + serviceId()]: {
                 'desc' : serviceDescription,
                 'date' : serviceDate,
-                'shop' : serviceShop
+                'shop' : serviceShop,
+                'nfLink' : NFlink,
+                'commitment' : commitmentNumber,
+                'nfNumber' : NFnumber,
+                'partsList' : partsList              
             }
         };
-
-
-
 
         //concat new history item to previous history
         let newHistory = maintenanceHistory[curVehicle] ? {
@@ -311,7 +340,14 @@ const MechanicalPendences = ({curVehicle, db}) => {
         setServiceDescription('');
         setServiceShop('');
         setModalVisible(!modalVisible);
-
+        setPartsIdCounter(0);
+        setPartDesc('');
+        setPartQuantity(1);
+        setPartsList({});
+        setNFlink('');
+        setCommitmentNumber('');
+        setNFnumber('');
+        
     };
 
     //On click add button

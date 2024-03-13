@@ -125,6 +125,7 @@ const Drivers = () => {
     };
 
     useEffect(() => {
+        
         sortData('nome', 'asc');
     }, []);
 

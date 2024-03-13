@@ -42,9 +42,7 @@
 
 .accordionDesc{
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
     background-color: rgb(228, 228, 228);
     width: 100%;
     min-height: 4rem;
@@ -54,6 +52,14 @@
     font-size: 14px;
     border-bottom: 1px solid rgb(187, 187, 187);
     text-transform: capitalize;
+    gap: 2rem;
+
+    .accordionRow{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
 }
 .arrowDown{
     transition: .2s;
@@ -67,12 +73,12 @@ details[open]{
         transform: rotate(180deg);
     }
 }
-.openNfeBtn{
+.accordionBtn{
     cursor: pointer;
     transition: .2s;
     color: rgb(0, 0, 0);
 }
-.openNfeBtn:hover{
+.accordionBtn:hover{
     color: rgb(54, 54, 54);
 }
 .doNotHavePrevRegisters{
