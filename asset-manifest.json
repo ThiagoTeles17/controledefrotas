@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/veiculos/static/css/main.7881b4c1.css",
+    "main.js": "/veiculos/static/js/main.4efa6776.js",
+    "static/media/brasao.png": "/veiculos/static/media/brasao.89c7616080701ff38443.png",
+    "index.html": "/veiculos/index.html",
+    "main.7881b4c1.css.map": "/veiculos/static/css/main.7881b4c1.css.map",
+    "main.4efa6776.js.map": "/veiculos/static/js/main.4efa6776.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7881b4c1.css",
+    "static/js/main.4efa6776.js"
+  ]
+}
